@@ -1,0 +1,30 @@
+{
+  "name": "pop_sales_backend",
+  "version": "1.0.0",
+  "description": "Este sistema é uma plataforma SaaS (Software como Serviço) voltada para o gerenciamento de empresas e colaboradores, com foco em funções como vendas, entregas, cobranças e promoções. O sistema inclui funcionalidades para monitoramento de rotas, gestão de colaboradores, controle de desempenho, e muito mais.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MendoncaGabriel/pop_sales_backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MendoncaGabriel/pop_sales_backend/issues"
+  },
+  "homepage": "https://github.com/MendoncaGabriel/pop_sales_backend#readme",
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "fastify": "^5.2.1",
+    "prisma": "^6.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
