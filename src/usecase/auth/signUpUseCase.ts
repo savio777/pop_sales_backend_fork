@@ -23,11 +23,11 @@ export class SignUpUseCase {
     const saltRounds = 10; 
     const passwordHash = await bcrypt.hash(data.password, saltRounds);
 
-    const user = await this.userRepository.create({
+    const { password, ...userWithoutPassword } = await this.userRepository.create({
       ...data,
       password: passwordHash
-    })
-    
-    return {user}
+    });
+  
+    return {user: userWithoutPassword}
   }
 }

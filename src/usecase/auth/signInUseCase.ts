@@ -10,7 +10,7 @@ interface SignInInputs {
   password: string
 }
 
-export class SignUpUseCase {
+export class SignInUseCase {
   constructor(
     private readonly userRepository: UserRepository
   ) {}
