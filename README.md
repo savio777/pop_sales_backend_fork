@@ -97,3 +97,7 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 1. Clone este repositório:
    ```bash
    git clone https://github.com/MendoncaGabriel/pop_sales_backend.git
+
+2. Rodar o Projeto com Docker:
+```bash
+   docker-compose up --build
