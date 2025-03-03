@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Este sistema é uma plataforma SaaS (Software como Serviço) voltada para o gerenciamento de empresas e colaboradores, com foco em funções como vendas, entregas, cobranças e promoções. O sistema inclui funcionalidades para monitoramento de rotas, gestão de colaboradores, controle de desempenho, e muito mais.",
   "main": "index.js",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "start": "node dist/server.js",
     "test": "vitest",
