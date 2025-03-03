@@ -1,12 +1,12 @@
 import { ZodError } from "zod";
-import { TokenError } from "./http/error/token.error";
-import { ConflictError } from "./http/error/conflict.error";
-import { NotFoundError } from "./http/error/notfound.error";
-import { UnauthorizedError } from "./http/error/unauthorized.error";
+import { TokenError } from "./error/token.error";
+import { ConflictError } from "./error/conflict.error";
+import { NotFoundError } from "./error/notfound.error";
+import { UnauthorizedError } from "./error/unauthorized.error";
 import { fromZodError } from "zod-validation-error";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
-import { BadRequestError } from "./http/error/badRequest.error";
-import { env } from "./env/env";
+import { BadRequestError } from "./error/badRequest.error";
+import { env } from "./lib/env";
 
 export function errorHandler(error: FastifyError, req: FastifyRequest, res: FastifyReply) {
 
