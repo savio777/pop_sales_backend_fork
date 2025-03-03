@@ -6,9 +6,9 @@ import { z } from "zod";
 export class SignUpController {
   async handle(req: FastifyRequest, res: FastifyReply){
     const signUpSchema = z.object({
-      name: z.string(),
+      name: z.string().min(5, "name is very small").max(50, "name is very big"),
       email: z.string().email(),
-      password: z.string(),
+      password: z.string().min(4, "password is very small").max(20, "password is very big"),
       phone: z.string().optional()
     })
 
