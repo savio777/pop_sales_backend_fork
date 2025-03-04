@@ -5,13 +5,9 @@ app.get('/', async (request, reply) => {
   return { message: 'Olá, Fastify com Prisma!' }
 })
 
-app.listen(
-  { port: env.PORT, host: env.HOST },
-  (err, address) => {
-    if (err) {
-      console.error(err)
-      process.exit(1)
-    }
-    console.log(`Servidor rodando em ${address}`)
-  }
-)
+app.listen({
+  host: "0.0.0.0",
+  port: 3333
+}).then(() => {
+  console.log('🚀 Http Server Running!')
+})
