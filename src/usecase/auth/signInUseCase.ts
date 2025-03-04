@@ -39,7 +39,9 @@ export class SignInUseCase {
       env.PRIVATE_KEY, 
       signOptions 
     );
+
+    const { password, ...userWithoutPassword } = user
     
-    return {user, token}
+    return {user: userWithoutPassword, token}
   }
 }
