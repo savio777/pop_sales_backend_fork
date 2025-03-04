@@ -9,13 +9,8 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-<<<<<<< HEAD
       "@/*": ["src/*"]
     },
-=======
-      "@/*":["./src/*"] 
-    }
->>>>>>> f8db68553747dfd1eb2b517e68011c24497ec662
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
