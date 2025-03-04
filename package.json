@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/MendoncaGabriel/pop_sales_backend#readme",
   "dependencies": {
+    "@fastify/jwt": "^9.0.4",
     "@prisma/client": "^6.4.1",
     "@types/jsonwebtoken": "^9.0.9",
     "bcrypt": "^5.1.1",

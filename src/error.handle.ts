@@ -7,6 +7,7 @@ import { fromZodError } from "zod-validation-error";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { BadRequestError } from "./error/badRequest.error";
 import { env } from "./lib/env";
+import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonwebtoken";
 
 export function errorHandler(error: FastifyError, req: FastifyRequest, res: FastifyReply) {
 
@@ -39,6 +40,33 @@ export function errorHandler(error: FastifyError, req: FastifyRequest, res: Fast
       statusCode: 401,
       timestamp: new Date().getTime(),
       instance: "TokenError",
+      code: error.message,
+    });
+  }
+
+  if (error instanceof TokenExpiredError) {
+    return res.status(401).send({
+      statusCode: 401,
+      timestamp: new Date().getTime(),
+      instance: "TokenExpiredError",
+      code: error.message,
+    });
+  }
+
+  if (error instanceof NotBeforeError) {
+    return res.status(401).send({
+      statusCode: 401,
+      timestamp: new Date().getTime(),
+      instance: "NotBeforeError",
+      code: error.message,
+    });
+  }
+
+  if (error instanceof JsonWebTokenError) {
+    return res.status(401).send({
+      statusCode: 401,
+      timestamp: new Date().getTime(),
+      instance: "NotBeforeError",
       code: error.message,
     });
   }
