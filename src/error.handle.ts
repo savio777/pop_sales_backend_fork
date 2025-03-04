@@ -8,6 +8,7 @@ import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { BadRequestError } from "./error/badRequest.error";
 import { env } from "./lib/env";
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonwebtoken";
+import { ForbiddenError } from "./error/forbiddenError.error";
 
 export function errorHandler(error: FastifyError, req: FastifyRequest, res: FastifyReply) {
 
@@ -98,6 +99,14 @@ export function errorHandler(error: FastifyError, req: FastifyRequest, res: Fast
     });
   }
 
+  if (error instanceof ForbiddenError) {
+    return res.status(403).send({
+      statusCode: 403,
+      timestamp: new Date().getTime(),
+      error: "ForbiddenError",
+      message: error.message,
+    });
+  }
   
   if (error instanceof Error) {
     return res.status(400).send({
