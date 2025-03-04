@@ -1,6 +1,6 @@
+import { env } from "@/env";
 import { NotFoundError } from "@/error/notfound.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
-import { env } from "@/lib/env";
 import { UserRepository } from "@/repository/userRepository";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken"

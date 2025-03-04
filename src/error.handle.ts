@@ -6,9 +6,9 @@ import { UnauthorizedError } from "./error/unauthorized.error";
 import { fromZodError } from "zod-validation-error";
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import { BadRequestError } from "./error/badRequest.error";
-import { env } from "./lib/env";
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonwebtoken";
 import { ForbiddenError } from "./error/forbiddenError.error";
+import { env } from "./env";
 
 export function errorHandler(error: FastifyError, req: FastifyRequest, res: FastifyReply) {
 
