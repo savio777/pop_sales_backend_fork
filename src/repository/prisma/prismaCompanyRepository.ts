@@ -3,6 +3,14 @@ import { CompanyRepository } from "../companyRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaCompanyRepository implements CompanyRepository {
+  async findByName(name: string): Promise<Company | null> {
+    const company = await db.company.findUnique({
+      where: {
+        name
+      }
+   })
+   return company
+  }
   async create(data: Prisma.CompanyCreateInput): Promise<Company> {
     const company = await db.company.create({
       data
