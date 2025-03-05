@@ -22,6 +22,6 @@ export class CreateCompanyUseCase {
       name
     })
     
-    return company
+    return {company}
   }
 }

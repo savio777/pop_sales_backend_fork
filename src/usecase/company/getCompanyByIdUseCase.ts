@@ -7,6 +7,6 @@ export class GetCompanyByIdUseCase {
 
   async execute(id: string){
     const company = await this.companyRepository.getById(id)
-    return company
+    return {company}
   }
 }
