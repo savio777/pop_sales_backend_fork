@@ -27,7 +27,7 @@ model Permission {
   updatedAt   DateTime @updatedAt
 }
 
-model Companie {
+model Company {
   id String @id @default(uuid())
   name String @unique
   createdAt   DateTime @default(now())
