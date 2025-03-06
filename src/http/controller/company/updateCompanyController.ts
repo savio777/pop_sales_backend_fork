@@ -30,5 +30,7 @@ export class UpdateCompanyController {
       userId,
       name
     })
+
+    return res.status(200).send(company)
   }
 }
