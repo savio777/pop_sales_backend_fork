@@ -6,5 +6,9 @@ import { RBAC } from "../middleware/rbac";
 const createCompanyController = new CreateCompanyController()
 
 export function CompanyRoutes(app: FastifyInstance){
-  app.post("/", {preHandler: [Auth, RBAC(["create.company"])]}, createCompanyController.handle)
+  app.post(
+    "/", 
+    {preHandler: [Auth, RBAC(["create.company"])]},
+    createCompanyController.handle
+  )
 }
