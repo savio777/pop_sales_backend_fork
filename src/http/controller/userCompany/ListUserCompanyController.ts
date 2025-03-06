@@ -10,6 +10,7 @@ export class ListUserCompanyController {
       limit: z.coerce.number().default(200),
       page: z.coerce.number().default(1),
     });
+    
     const listUserCompaniesParams = z.object({
       companyId: z.string().uuid()
     });
