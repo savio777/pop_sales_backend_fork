@@ -9,7 +9,8 @@ async function main() {
         "create.company",
         "list.company",
         "update.company",
-        "set.user.company"
+        "set.user.company",
+        "list.user.company"
       ]
     },
     // { 
