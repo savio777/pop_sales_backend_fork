@@ -3,6 +3,19 @@ import { CompanyRepository } from "../companyRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaCompanyRepository implements CompanyRepository {
+  async list(
+    { userId, limit, page }:
+    { userId: string; page: number; limit: number; }
+  ): Promise<Company[]> {
+    const companys = await db.company.findMany({
+      where: {
+        userId
+      },
+      take: limit,
+      skip: (page - 1) * limit
+    })
+    return companys
+  }
   async findByName(name: string): Promise<Company | null> {
     const company = await db.company.findUnique({
       where: {
