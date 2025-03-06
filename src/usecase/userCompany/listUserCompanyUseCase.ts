@@ -1,5 +1,4 @@
 import { UserCompanyRepository } from "@/repository/userCompanyRepository";
-import { UserCompany } from "@prisma/client";
 
 export class ListUserCompanyUseCase {
   constructor(
