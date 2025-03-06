@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { UserRepository } from "@/repository/userRepository";
 
@@ -20,8 +21,10 @@ export class CreateCompanyUseCase {
     }
 
     const user = await this.userRepository.getById(userId);
+    if(!user){
+      throw new NotFoundError("user not found")
+    }
     
-
     const company = await this.companyRepository.create({
       name,
       user: {
