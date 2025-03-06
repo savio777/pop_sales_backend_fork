@@ -9,7 +9,7 @@ export class PrismaCompanyRepository implements CompanyRepository {
   ): Promise<Company[]> {
     const companys = await db.company.findMany({
       where: {
-        userId
+        ownerId: userId
       },
       take: limit,
       skip: (page - 1) * limit
