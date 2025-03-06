@@ -11,7 +11,7 @@ export class CreateCompanyController {
       name: z.string()
     })
 
-    const {name} = createCompanySchema.parse(createCompanySchema)
+    const {name} = createCompanySchema.parse(req.body)
 
     const companyRepository = new PrismaCompanyRepository()
     const createCompanyUseCase = new CreateCompanyUseCase(companyRepository)
