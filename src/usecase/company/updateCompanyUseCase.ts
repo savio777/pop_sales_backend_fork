@@ -5,7 +5,9 @@ import { CompanyRepository } from "@/repository/companyRepository";
 import { UserRepository } from "@/repository/userRepository";
 
 interface UpdateCompanySchema {
-  name: string
+  id: string, 
+  name: string, 
+  userId: string
 }
 
 export class UpdateCompanyUseCase {
@@ -15,8 +17,7 @@ export class UpdateCompanyUseCase {
   ){}
 
   async execute(
-    {id, data, userId}:
-    {id: string, data: UpdateCompanySchema, userId: string}
+    {id, name, userId}:UpdateCompanySchema
   ){
     const user = await this.userRepository.getById(userId)
     if(!user){
@@ -33,7 +34,7 @@ export class UpdateCompanyUseCase {
     }
 
     const companyUpdate = await this.companyRepository.update({
-      id, data
+      id, data: {name}
     })
 
     return {company:companyUpdate}
