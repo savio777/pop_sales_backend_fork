@@ -32,6 +32,7 @@ export class ListCompaniesController {
       limit,
       page,
     });
-    return { companies };
+
+    return res.status(200).send(companies);
   }
 }
