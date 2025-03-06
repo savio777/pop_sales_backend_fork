@@ -30,7 +30,7 @@ export class UpdateCompanyUseCase {
       throw new BadRequestError("company not exist")
     }
 
-    if (company.userId !== userId) {
+    if (company.ownerId !== userId) {
       throw new UnauthorizedError("you do not have permission to edit this company")
     }
 
