@@ -17,7 +17,7 @@ model User {
   updatedAt  DateTime       @updatedAt
   Permission Permission[]
   ownedCompanies Company[]  @relation("Owner")
-  collaborations CompanyUser[]
+  collaborations UserCompany[]
 }
 
 model Permission {
@@ -42,10 +42,10 @@ model Company {
   owner     User          @relation("Owner", fields: [ownerId], references: [id])
   ownerId   String
   status    StatusCompany @default(ACTIVE)
-  collaborators CompanyUser[]
+  collaborators UserCompany[]
 }
 
-model CompanyUser {
+model UserCompany {
   id        String   @id @default(uuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
