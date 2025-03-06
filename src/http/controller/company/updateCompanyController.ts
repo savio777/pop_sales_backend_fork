@@ -12,11 +12,16 @@ export class UpdateCompanyController {
     }
     const userId = req.userAuth.id
 
-    const updateCompanySchema = z.object({
+    const updateCompanyParams = z.object({
       id: z.string(),
+    })
+
+    const updateCompanyBody = z.object({
       name: z.string()
     })
-    const {id, name} = updateCompanySchema.parse(req.body)
+
+    const {id} = updateCompanyParams.parse(req.params)
+    const {name} = updateCompanyBody.parse(req.body)
 
     const companyRepository = new PrismaCompanyRepository()
     const userRepository = new PrismaUserRepository()
