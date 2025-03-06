@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { UserRepository } from "@/repository/userRepository";
@@ -17,6 +18,10 @@ export class UpdateCompanyUseCase {
     {id, data, userId}:
     {id: string, data: UpdateCompanySchema, userId: string}
   ){
+    const user = await this.userRepository.getById(userId)
+    if(!user){
+      throw new NotFoundError("user not found with userId")
+    }
     
     const company = await this.companyRepository.getById(id)
     if(!company){
