@@ -12,18 +12,10 @@ export class PrismaCompanyRepository implements CompanyRepository {
    return company
   }
   async create(
-    {userId, data}:
-    {userId: string, data: Prisma.CompanyCreateInput}
+   data: Prisma.CompanyCreateInput
   ): Promise<Company> {
     const company = await db.company.create({
-      data: {
-        ...data,
-        user: {
-          connect: {
-            id: userId
-          }
-        },
-      },
+      data
     })
     return company
   }

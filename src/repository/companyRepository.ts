@@ -2,8 +2,7 @@ import { Company, Prisma } from "@prisma/client"
 
 export interface CompanyRepository {
   create(
-    {userId, data}:
-    {userId: string, data: Prisma.CompanyCreateInput}
+   data: Prisma.CompanyCreateInput
   ): Promise<Company>
   getById(id: string): Promise<Company | null>
   findByName(name: string): Promise<Company | null>
