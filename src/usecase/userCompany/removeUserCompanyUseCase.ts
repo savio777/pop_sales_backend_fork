@@ -1,13 +1,10 @@
 import { BadRequestError } from "@/error/badRequest.error";
-import { CompanyRepository } from "@/repository/companyRepository";
 import { UserCompanyRepository } from "@/repository/userCompanyRepository";
-import { UserRepository } from "@/repository/userRepository";
 
 export class RemoveUserCompanyUseCase {
   constructor(
     private readonly userCompanyRepository: UserCompanyRepository,
-    private readonly companyRepository: CompanyRepository,
-    private readonly userRepository: UserRepository
+
   ){}
 
   async execute(
