@@ -1,12 +1,10 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { NotFoundError } from "@/error/notfound.error";
+import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { UserRepository } from "@/repository/userRepository";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export class GetMayUserController {
-  constructor(
-    private readonly userRepository: UserRepository
-  ){}
 
   async handle(req: FastifyRequest, res: FastifyReply){
     if (!req.userAuth?.id) {
@@ -14,10 +12,10 @@ export class GetMayUserController {
     }
     const userId = req.userAuth.id
 
-    const user = await this.userRepository.getById(userId)
-    if(!user){
-      throw new NotFoundError("user not found")
-    }
+    const userRepository = new PrismaUserRepository()
+    const getUserByIdUseCase = new GetUserByIdUseCase
+
+
 
     return res.status(200).send(user)
   }
