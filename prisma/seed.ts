@@ -6,7 +6,8 @@ async function main() {
     { 
       name: 'Admin', 
       permissions: [
-        'create.company'
+        'create.company',
+        "list.company"
       ]
     },
     // { 
