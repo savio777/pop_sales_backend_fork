@@ -2,17 +2,17 @@
 
 ## Requisitos Funcionais
 
-- [ ] **Autenticação e Autorização**
-  - [ ] Admin deve ter diferentes níveis de permissão.
-  - [ ] Empresas devem ter autenticação segura para acessar o painel administrativo.
-  - [ ] Colaboradores devem ser autenticados de acordo com o módulo (Promotor, Vendedor, Entregador, Cobrador).
+- [x] **Autenticação e Autorização**
+  - [x] Admin deve ter diferentes níveis de permissão.
+  - [x] Empresas devem ter autenticação segura para acessar o painel administrativo.
+  - [x] Colaboradores devem ser autenticados de acordo com o módulo (Promotor, Vendedor, Entregador, Cobrador).
   
-- [ ] **Gerenciamento de Empresas**
-  - [ ] Admin pode cadastrar novas empresas.
-  - [ ] Admin pode listar todas as empresas registradas.
-  - [ ] Admin pode atualizar os dados de uma empresa.
-  - [ ] Admin pode alterar o status de uma empresa (Ativa/Inativa).
-  - [ ] Admin pode listar colaboradores de uma empresa específica.
+- [X] **Gerenciamento de Empresas**
+  - [x] Admin pode cadastrar novas empresas.
+  - [x] Admin pode listar todas as empresas registradas.
+  - [x] Admin pode atualizar os dados de uma empresa.
+  - [X] Admin pode alterar o status de uma empresa (Ativa/Inativa).
+  - [x] Admin pode listar colaboradores de uma empresa específica.
 
 - [ ] **Gerenciamento de Colaboradores**
   - [ ] Admin pode cadastrar novos colaboradores.

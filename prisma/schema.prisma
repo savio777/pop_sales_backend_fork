@@ -8,14 +8,16 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
+  id         String         @id @default(uuid())
   name       String
-  phone      String?       @unique
-  email      String       @unique
+  phone      String?        @unique
+  email      String         @unique
   password   String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
   Permission Permission[]
+  ownedCompanies Company[]  @relation("Owner")
+  collaborations UserCompany[]
 }
 
 model Permission {
@@ -25,4 +27,33 @@ model Permission {
   users       User[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum StatusCompany {
+  ACTIVE
+  INACTIVE
+}
+
+model Company {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  owner     User          @relation("Owner", fields: [ownerId], references: [id])
+  ownerId   String
+  status    StatusCompany @default(ACTIVE)
+  collaborators UserCompany[]
+}
+
+model UserCompany {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, companyId])
 }
