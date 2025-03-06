@@ -27,11 +27,11 @@ export class CreateCompanyUseCase {
     
     const company = await this.companyRepository.create({
       name,
-      user: {
+      owner: {
         connect: {
-          id: userId,
-        },
-      },
+          id: userId
+        }
+      }
     });
 
     return { company };

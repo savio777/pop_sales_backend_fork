@@ -11,7 +11,7 @@
   - [x] Admin pode cadastrar novas empresas.
   - [x] Admin pode listar todas as empresas registradas.
   - [x] Admin pode atualizar os dados de uma empresa.
-  - [ ] Admin pode alterar o status de uma empresa (Ativa/Inativa).
+  - [X] Admin pode alterar o status de uma empresa (Ativa/Inativa).
   - [ ] Admin pode listar colaboradores de uma empresa específica.
 
 - [ ] **Gerenciamento de Colaboradores**
