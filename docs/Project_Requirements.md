@@ -8,7 +8,7 @@
   - [x] Colaboradores devem ser autenticados de acordo com o módulo (Promotor, Vendedor, Entregador, Cobrador).
   
 - [ ] **Gerenciamento de Empresas**
-  - [ ] Admin pode cadastrar novas empresas.
+  - [x] Admin pode cadastrar novas empresas.
   - [ ] Admin pode listar todas as empresas registradas.
   - [ ] Admin pode atualizar os dados de uma empresa.
   - [ ] Admin pode alterar o status de uma empresa (Ativa/Inativa).
