@@ -4,11 +4,12 @@ async function main() {
   // Criando permissões básicas
   const permissions = [
     { 
-      name: 'Admin', 
+      name: "Admin", 
       permissions: [
-        'create.company',
+        "create.company",
         "list.company",
-        "update.company"
+        "update.company",
+        "set.user.company"
       ]
     },
     // { 
