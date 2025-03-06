@@ -3,6 +3,20 @@ import { UserCompanyRepository } from "../userCompanyRepository";
 import { UserCompany } from "@prisma/client";
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
+  async list(
+    { companyId, limit, page }:
+    { companyId: string; page: number; limit: number; }
+  ): Promise<UserCompany[]> {
+    const userCompanies = await db.userCompany.findMany({
+      where: {
+        companyId
+      },
+      take: limit,
+      skip: (page - 1) * limit
+    })
+    return userCompanies
+  }
+  
   async getByUserIdAndCompanyId(
     { userId, companyId }:
     { userId: string; companyId: string; }

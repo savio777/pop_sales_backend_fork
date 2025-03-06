@@ -11,4 +11,8 @@ export interface UserCompanyRepository {
     {userId: string, companyId: string}
   ): Promise<UserCompany | null>
   getById(id: string): Promise<UserCompany | null>
+  list(
+    {companyId, limit, page}:
+    {companyId: string, page: number, limit: number}
+  ): Promise<UserCompany[]>
 }
