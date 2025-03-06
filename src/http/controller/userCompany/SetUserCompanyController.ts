@@ -12,20 +12,19 @@ export class SetUserCompanyController {
       method: z.enum(["ADD", "REMOVE"])
     })
 
+    const setUserCompanyBody = z.object({
+      userId: z.string().uuid(),
+      companyId: z.string().uuid()
+    })
+
+    const {userId, companyId} = setUserCompanyBody.parse(req.body)
     const {method} = setUserCompanyParams.parse(req.params)
+
     const userCompanyRepository = new PrismaUserCompanyRepository()
+    const companyRepository = new PrismaCompanyRepository()
+    const userRepository = new PrismaUserRepository()
     
     if(method === "ADD"){
-      const setUserCompanyBody = z.object({
-        userId: z.string().uuid(),
-        companyId: z.string().uuid()
-      })
-
-      const {userId, companyId} = setUserCompanyBody.parse(req.body)
-
-      const companyRepository = new PrismaCompanyRepository()
-      const userRepository = new PrismaUserRepository()
-
       const createUserCompanyUseCase = new CreateUserCompanyUseCase(
         userCompanyRepository,
         companyRepository,
@@ -35,21 +34,18 @@ export class SetUserCompanyController {
       const userCompany = await createUserCompanyUseCase.execute({
         userId, companyId
       })
+
       return res.status(200).send(userCompany)
     }
 
     if(method === "REMOVE"){
-      const setUserCompanyBody = z.object({
-        userCompanyId: z.string().uuid()
-      })
-
-      const {userCompanyId} = setUserCompanyBody.parse(req.body)
-
       const removeUserCompanyUseCase = new RemoveUserCompanyUseCase(
         userCompanyRepository
       )
 
-      await removeUserCompanyUseCase.execute(userCompanyId)
+      await removeUserCompanyUseCase.execute({
+        userId, companyId
+      })
       return res.status(200).send()
     }
   }

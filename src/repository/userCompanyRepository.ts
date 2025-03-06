@@ -6,5 +6,9 @@ export interface UserCompanyRepository {
     {userId: string, companyId: string}
   ): Promise<UserCompany>
   remove(id: string): Promise<void>
+  getByUserIdAndCompanyId(
+    {userId, companyId}:
+    {userId: string, companyId: string}
+  ): Promise<UserCompany | null>
   getById(id: string): Promise<UserCompany | null>
 }

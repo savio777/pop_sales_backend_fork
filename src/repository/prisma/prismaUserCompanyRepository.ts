@@ -3,6 +3,20 @@ import { UserCompanyRepository } from "../userCompanyRepository";
 import { UserCompany } from "@prisma/client";
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
+  async getByUserIdAndCompanyId(
+    { userId, companyId }:
+    { userId: string; companyId: string; }
+  ): Promise<UserCompany | null> {
+   const userCompany = await db.userCompany.findFirst({
+    where: {
+      AND: {
+        userId,
+        companyId
+      }
+    }
+   })
+   return userCompany
+  }
   async getById(id: string): Promise<UserCompany | null> {
     const userCompany = await db.userCompany.findUnique({
       where: {
