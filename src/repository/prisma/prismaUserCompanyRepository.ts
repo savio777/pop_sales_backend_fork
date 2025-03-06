@@ -11,7 +11,7 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
     })
     return userCompany
   }
-  async add({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
+  async create({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
    const userCompany = await db.userCompany.create({
     data: {
       userId,

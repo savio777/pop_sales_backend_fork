@@ -1,7 +1,7 @@
 import { UserCompany } from "@prisma/client"
 
 export interface UserCompanyRepository {
-  add(
+  create(
     {userId, companyId}:
     {userId: string, companyId: string}
   ): Promise<UserCompany>
