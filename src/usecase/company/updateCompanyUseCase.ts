@@ -6,7 +6,8 @@ import { UserRepository } from "@/repository/userRepository";
 
 interface UpdateCompanySchema {
   id: string, 
-  name: string, 
+  name?: string, 
+  status?: "ACTIVE" | "INACTIVE",
   userId: string
 }
 
@@ -17,26 +18,30 @@ export class UpdateCompanyUseCase {
   ){}
 
   async execute(
-    {id, name, userId}:UpdateCompanySchema
+    {id, name, userId, status}: UpdateCompanySchema
   ){
     const user = await this.userRepository.getById(userId)
-    if(!user){
+    if (!user) {
       throw new NotFoundError("user not found with userId")
     }
     
     const company = await this.companyRepository.getById(id)
-    if(!company){
+    if (!company) {
       throw new BadRequestError("company not exist")
     }
 
-    if(company.userId !== userId){
-      throw new UnauthorizedError("you not have permission to edit this company")
+    if (company.userId !== userId) {
+      throw new UnauthorizedError("you do not have permission to edit this company")
     }
 
     const companyUpdate = await this.companyRepository.update({
-      id, data: {name}
+      id, 
+      data: {
+        ...(status && { status }),
+        ...(name && { name })
+      }
     })
 
-    return {company:companyUpdate}
+    return { company: companyUpdate }
   }
 }

@@ -17,11 +17,12 @@ export class UpdateCompanyController {
     })
 
     const updateCompanyBody = z.object({
-      name: z.string()
+      name: z.string().optional(),
+      status: z.enum(["ACTIVE", "INACTIVE"]).optional()
     })
 
     const {companyId} = updateCompanyParams.parse(req.params)
-    const {name} = updateCompanyBody.parse(req.body)
+    const {name, status} = updateCompanyBody.parse(req.body)
 
     const companyRepository = new PrismaCompanyRepository()
     const userRepository = new PrismaUserRepository()
@@ -33,7 +34,8 @@ export class UpdateCompanyController {
     const company = await updateCompanyUseCase.execute({
       id: companyId,
       userId,
-      name
+      name,
+      status
     })
 
     return res.status(200).send(company)
