@@ -16,7 +16,7 @@
 
 - [ ] **Gerenciamento de Colaboradores**
   - [X] Admin pode cadastrar novos colaboradores. (endpoint de signup)
-  - [ ] Admin pode editar os dados de um colaborador.
+  - [X] Admin pode editar os dados de um colaborador.
   - [ ] Admin pode alterar o status de um colaborador (Ativo/Inativo).
   - [ ] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrança).
   

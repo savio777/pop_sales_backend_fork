@@ -5,7 +5,7 @@ interface UpdateUserInputs {
   name?: string
   phone?: string
   email?: string
-  password?: string
+  status?: "ACTIVE" | "INACTIVE"
 }
 
 export class UpdateUserUseCase {

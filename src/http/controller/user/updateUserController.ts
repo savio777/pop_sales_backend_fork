@@ -14,6 +14,7 @@ export class UpdateUserController {
       name: z.string().trim().optional(),
       phone: z.string().min(8, { message: "Número de telefone inválido" }).optional(),
       email: z.string().email({ message: "E-mail inválido" }).optional(),
+      status: z.enum(["ACTIVE", "INACTIVE"]).optional()
     });
     
 
