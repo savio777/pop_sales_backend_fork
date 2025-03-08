@@ -7,4 +7,8 @@ export interface UserModuleRepository {
   remove(
     {userId, moduleId}:{userId: string, moduleId: string}
   ): Promise<void>
+  list(
+    {userId, limit, page}:
+    {userId: string, limit: number, page: number}
+  ): Promise<UserModule[]>
 }
