@@ -12,6 +12,7 @@ export class ListUseModuleUseCase {
     const userModules = await this.userModuleRepository.list({
       userId, limit, page
     })
+    
     return {userModules}
   }
 }
