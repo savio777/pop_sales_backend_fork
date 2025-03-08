@@ -1,18 +1,60 @@
 import { db } from "@/lib/prisma";
 import { UserCompanyRepository } from "../userCompanyRepository";
-import { UserCompany } from "@prisma/client";
+import { $Enums, UserCompany } from "@prisma/client";
+
+interface ListUserCompany {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+      id: string;
+      name: string;
+      phone: string | null;
+      email: string;
+      status: $Enums.StatusUser;
+  };
+  company: {
+      id: string;
+      name: string;
+      status: $Enums.StatusCompany;
+      ownerId: string;
+  };
+}[]
+
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
   async list(
     { companyId, limit, page }:
     { companyId: string; page: number; limit: number; }
-  ): Promise<UserCompany[]> {
+  ): Promise<ListUserCompany[]> {
     const userCompanies = await db.userCompany.findMany({
       where: {
         companyId
       },
       take: limit,
-      skip: (page - 1) * limit
+      skip: (page - 1) * limit,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            status: true
+          }
+        },
+        company: {
+          select: {
+            id: true,
+            name: true,
+            status: true,
+            ownerId: true
+          }
+        }
+      }
     })
     return userCompanies
   }
