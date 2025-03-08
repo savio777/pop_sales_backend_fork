@@ -13,19 +13,42 @@ enum StatusUser {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  name      String
-  phone     String?    @unique
-  email     String     @unique
-  password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  status    StatusUser @default(ACTIVE)
+  id         String       @id @default(uuid())
+  name       String
+  phone      String?      @unique
+  email      String       @unique
+  password   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  status     StatusUser   @default(ACTIVE)
+
+  userModules UserModule[]
 
   Permission     Permission[]
   ownedCompanies Company[]     @relation("Owner")
   collaborations UserCompany[]
 }
+
+model Module {
+  id         String       @id @default(uuid())
+  name       String       @unique // Exemplo: "Entregador", "Vendedor"
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  userModules UserModule[]
+}
+
+// Tabela intermediária para o relacionamento muitos-para-muitos
+model UserModule {
+  userId   String
+  moduleId String
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, moduleId]) // Define a chave composta para evitar duplicatas
+}
+
 
 model Permission {
   id          String   @id @default(uuid())

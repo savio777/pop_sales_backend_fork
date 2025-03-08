@@ -42,6 +42,19 @@ async function main() {
       data: perm
     });
   }
+
+  const modules = [
+    {name: "Promotor"}, 
+    {name: "Vendedor"}, 
+    {name: "Entregador"}, 
+    {name: "Cobrandor"}
+  ]
+
+  for (const module of modules) {
+    await db.module.create({
+      data: module
+    });
+  }
 }
 
 main()
