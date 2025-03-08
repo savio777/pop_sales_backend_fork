@@ -15,7 +15,8 @@ async function main() {
         "create.user.module",
         "remove.user.module",
         "list.user.module",
-        "list.modules"
+        "list.modules",
+        "create.modules"
       ]
     },
     // { 
