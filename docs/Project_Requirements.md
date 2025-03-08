@@ -18,7 +18,7 @@
   - [X] Admin pode cadastrar novos colaboradores. (endpoint de signup)
   - [X] Admin pode editar os dados de um colaborador.
   - [x] Admin pode alterar o status de um colaborador (Ativo/Inativo).
-  - [ ] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrador).
+  - [x] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrador).
   
 - [ ] **Gestão de Rota e Serviços**
   - [ ] Empresa pode criar, listar, editar e remover rotações.
