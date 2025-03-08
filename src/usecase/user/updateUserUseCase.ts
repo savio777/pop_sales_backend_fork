@@ -13,10 +13,11 @@ export class UpdateUserUseCase {
   ){}
 
   async execute(
-    id: string, data:UpdateUserInputs
+    {userId, data}:
+    {userId: string, data:UpdateUserInputs}
   ){
     const user = await this.userRepository.update({
-      id, data
+      id: userId, data
     })
 
     return {user}
