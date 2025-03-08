@@ -1,7 +1,7 @@
 import {db} from "../src/lib/prisma"
 
 async function main() {
-  // Criando permissões básicas
+  // PERMISSIONS
   const permissions = [
     { 
       name: "Admin", 
@@ -19,27 +19,6 @@ async function main() {
         "create.modules"
       ]
     },
-    // { 
-    //   name: 'DeliveryPerson',
-    //   permissions: [
-    //     'get:routes:view',
-    //     'post:deliveries:create'
-    //   ]
-    // },
-    // { 
-    //   name: 'Salesperson', 
-    //   permissions: [
-    //     'post:sales:create', 
-    //     'get:customers:view'
-    //   ]
-    // },
-    // { 
-    //   name: 'Promoter', 
-    //   permissions: [
-    //     'get:products:view',
-    //     'post:brands:promote'
-    //   ]
-    // },
   ];  
   
   for (const perm of permissions) {
@@ -48,18 +27,59 @@ async function main() {
     });
   }
 
+  // USER
+  const user = await db.user.create({
+    data: {
+      name: "ADMIN",
+      email: "admin@admin.com",
+      password: "admin",
+    }
+  })
+
+  // COMPANY
+  const company = await db.company.create({
+    data: {
+      name: "POP SALES",
+      ownerId: user.id
+    }
+  })
+
+  // MODULES
   const modules = [
-    {name: "Promotor"}, 
-    {name: "Vendedor"}, 
-    {name: "Entregador"}, 
-    {name: "Cobrandor"}
+    "Promotor",
+    "Vendedor",
+    "Entregador",
+    "Cobrandor"
   ]
 
   for (const module of modules) {
-    await db.module.create({
-      data: module
+    const moduleCreate = await db.module.create({
+      data: {
+        name: module,
+        companyId: company.id,
+      },
+
     });
+
+    // USER MODULES
+    await db.userModule.create({
+      data: {
+        moduleId: moduleCreate.id,
+        userId: user.id
+      }
+    })
+      
   }
+
+  // USER COMPANY
+  await db.userCompany.create({
+    data: {
+      companyId: company.id,
+      userId: user.id
+    }
+  })
+
+
 }
 
 main()
