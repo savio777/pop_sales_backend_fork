@@ -1,4 +1,23 @@
-import { UserCompany } from "@prisma/client"
+import { $Enums, UserCompany } from "@prisma/client"
+
+interface ListUserCompany {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+      id: string;
+      name: string;
+      phone: string | null;
+      email: string;
+      status: $Enums.StatusUser;
+  };
+  company: {
+      id: string;
+      name: string;
+      status: $Enums.StatusCompany;
+      ownerId: string;
+  };
+}[]
 
 export interface UserCompanyRepository {
   create(
@@ -14,5 +33,5 @@ export interface UserCompanyRepository {
   list(
     {companyId, limit, page}:
     {companyId: string, page: number, limit: number}
-  ): Promise<UserCompany[]>
+  ): Promise<ListUserCompany[]>
 }

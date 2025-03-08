@@ -10,6 +10,6 @@ export class ListUserCompanyUseCase {
     {companyId: string, limit: number, page: number}
   ){
     const userCompanies = await this.userCompanyRepository.list(data)
-    return userCompanies
+    return {userCompanies}
   }
 }
