@@ -12,7 +12,7 @@ async function main() {
         "set.user.company",
         "list.user.company",
         "update.user",
-        "set.module.user"
+        "create.user.module"
       ]
     },
     // { 
