@@ -1,4 +1,5 @@
 import {db} from "../src/lib/prisma"
+import bcrypt from 'bcrypt';
 
 async function main() {
   // PERMISSIONS
@@ -27,12 +28,15 @@ async function main() {
     });
   }
 
+  const saltRounds = 10; 
+  const passwordHash = await bcrypt.hash("admin", saltRounds);
+
   // USER
   const user = await db.user.create({
     data: {
-      name: "ADMIN",
+      name: process.env.,
       email: "admin@admin.com",
-      password: "admin",
+      password: passwordHash,
     }
   })
 
