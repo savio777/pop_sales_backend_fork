@@ -22,11 +22,17 @@ async function main() {
       ]
     },
   ];  
+
+  let permissionAdminId: string
   
   for (const perm of permissions) {
-    await db.permission.create({
+    const permission = await db.permission.create({
       data: perm
     });
+
+    if(perm.name === "Admin"){
+      permissionAdminId = permission.id
+    }
   }
 
   const USER_ROOT_PASSWORD = process.env.USER_ROOT_PASSWORD
@@ -46,6 +52,20 @@ async function main() {
       name: USER_ROOT_NAME,
       email: USER_ROOT_EMAIL,
       password: passwordHash,
+    }
+  })
+
+  // USER PERMISSIONS
+  await db.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      Permission: {
+        connect: {
+          id: permissionAdminId!
+        }
+      }
     }
   })
 
