@@ -10,7 +10,8 @@ async function main() {
         "list.company",
         "update.company",
         "set.user.company",
-        "list.user.company"
+        "list.user.company",
+        "update.user"
       ]
     },
     // { 
