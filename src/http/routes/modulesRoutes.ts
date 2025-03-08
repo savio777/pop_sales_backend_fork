@@ -9,7 +9,7 @@ const createModuleController = new CreateModuleController()
 
 export function ModulesRoutes(app: FastifyInstance){
   app.get(
-    "/", 
+    "/:companyId", 
     {preHandler: [Auth, RBAC(["list.modules"])]},
     listModuleController.handle
   )
