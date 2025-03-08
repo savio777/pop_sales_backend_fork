@@ -1,7 +1,5 @@
 import { PrismaModuleRepository } from "@/repository/prisma/prismaModuleRepository";
-import { PrismaUserModuleRepository } from "@/repository/prisma/prismaUserModuleRepository";
 import { ListModuleUseCase } from "@/usecase/module/listModuleUseCase";
-import { ListUseModuleUseCase } from "@/usecase/userModule/listUserModuleUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -21,10 +19,10 @@ export class ListModuleController {
       moduleRepository
     )
 
-    const userModules = await createUserModuleUseCase.execute({
-      userId, limit, page
+    const modules = await listModuleUseCase.execute({
+      limit, page
     })
     
-    return res.status(200).send(userModules)
+    return res.status(200).send(modules)
   }
 }
