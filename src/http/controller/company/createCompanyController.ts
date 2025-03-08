@@ -28,8 +28,8 @@ export class CreateCompanyController {
       userCompany
     )
 
-    await createCompanyUseCase.execute({name, userId})
+    const compay = await createCompanyUseCase.execute({name, userId})
 
-    return res.status(200).send()
+    return res.status(200).send(compay)
   }
 }
