@@ -11,7 +11,7 @@ export class RemoveUserModuleController {
       userId: z.string().uuid(),
       moduleId: z.string().uuid()
     })
-    const data = removeUserModuleRequestBody.parse(req.body)
+    const data = removeUserModuleRequestBody.parse(req.params)
 
     const userRepository = new PrismaUserRepository()
     const moduleRepository = new PrismaModuleRepository()
