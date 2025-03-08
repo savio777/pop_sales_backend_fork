@@ -4,11 +4,13 @@ import { db } from "@/lib/prisma";
 
 export class PrismaModuleRepository implements ModuleRepository {
   async list(
-    { limit, page }: 
-    { limit: number; page: number; }
+    { limit, page, companyId }: 
+    { limit: number; page: number; companyId: string }
   ): Promise<Module[]> {
-    //TODO: aqui seria interessante filtrar por companyId para buscar apenas modulos de uma empresa especifica
     const modules = await db.module.findMany({ 
+      where: {
+        companyId
+      },
       take: limit,
       skip: (page - 1) * limit
     })
