@@ -11,7 +11,8 @@ async function main() {
         "update.company",
         "set.user.company",
         "list.user.company",
-        "update.user"
+        "update.user",
+        "set.module.user"
       ]
     },
     // { 
