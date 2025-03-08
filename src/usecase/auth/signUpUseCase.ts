@@ -35,8 +35,10 @@ export class SignUpUseCase {
     const passwordHash = await bcrypt.hash(data.password, saltRounds);
 
     const { password, ...userWithoutPassword } = await this.userRepository.create({
-      ...data,
-      password: passwordHash
+      name: data.name,
+      email: data.email,
+      password: passwordHash,
+      phone: data.phone
     });
 
     await this.userCompanyRepository.create({
