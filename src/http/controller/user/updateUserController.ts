@@ -11,11 +11,11 @@ export class UpdateUserController {
     })
 
     const userRequestBody = z.object({
-      name: z.string().optional(),
-      phone: z.string().min(8, "invalid phone number").optional(),
-      email: z.string().email().optional(),
-      password: z.string().optional()
-    })
+      name: z.string().trim().optional(),
+      phone: z.string().min(8, { message: "Número de telefone inválido" }).optional(),
+      email: z.string().email({ message: "E-mail inválido" }).optional(),
+    });
+    
 
     const {userId} = userRequestParams.parse(req.params)
     const data = userRequestBody.parse(req.body)
