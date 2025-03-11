@@ -7,12 +7,15 @@ export function RBAC(roles: string[]) {
       throw new ForbiddenError("You do not have permission to access this endpoint.");
     }
 
-    const hasPermission = req.userAuth.Permission.some((perm) =>
-      roles.some((role) => perm.permissions.includes(role))
-    );
+    const allPermissions = req.userAuth.Permission.flatMap(perm => perm.permissions);
 
+    const hasPermission = allPermissions.every(permission => 
+      roles.includes(permission)
+    );
+    
     if (!hasPermission) {
       throw new ForbiddenError("Access denied. Insufficient permission.");
     }
   };
+
 }
