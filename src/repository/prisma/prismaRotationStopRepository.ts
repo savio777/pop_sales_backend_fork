@@ -3,6 +3,14 @@ import { RotationStopRepository } from "../rotationStopRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaRotationStopRepository implements RotationStopRepository {
+  async getByRotationId(id: string): Promise<RotationStop[] | null> {
+    const rotationStop = await db.rotationStop.findMany({
+      where: {
+        rotationId: id
+      }
+    })
+    return rotationStop
+  }
   async create(data: Prisma.RotationStopCreateInput): Promise<RotationStop> {
     const rotationStop = await db.rotationStop.create({
       data

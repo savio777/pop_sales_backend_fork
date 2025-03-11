@@ -1,5 +1,6 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
+import { PrismaRotationStopRepository } from "@/repository/prisma/prismaRotationStopRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { DeleteRotationUseCase } from "@/usecase/rotation/deleteRotationUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -19,9 +20,11 @@ export class DeleteRotationController {
 
     const rotationRepository = new PrismaRotationRepository()
     const userRepository = new PrismaUserRepository()
+    const rotationStopRepository = new PrismaRotationStopRepository()
     const deleteRotationUseCase = new DeleteRotationUseCase(
       rotationRepository,
-      userRepository
+      rotationStopRepository,
+      userRepository,
     )
 
     await deleteRotationUseCase.execute({
