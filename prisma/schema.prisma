@@ -27,11 +27,14 @@ model User {
   Permission     Permission[]
   ownedCompanies Company[]     @relation("Owner")
   collaborations UserCompany[]
+  
+  createdRotations  Rotation[] @relation("CreatedRotations")
+  assignedRotations Rotation[] @relation("AssignedRotations")
 }
 
 model Module {
   id        String   @id @default(uuid())
-  name      String   @unique // Exemplo: "Entregador", "Vendedor"
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -40,7 +43,6 @@ model Module {
   companyId   String?
 }
 
-// Tabela intermediária para o relacionamento muitos-para-muitos
 model UserModule {
   userId   String
   moduleId String
@@ -48,7 +50,7 @@ model UserModule {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
-  @@id([userId, moduleId]) // Define a chave composta para evitar duplicatas
+  @@id([userId, moduleId])
 }
 
 model Permission {
@@ -88,4 +90,26 @@ model UserCompany {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, companyId])
+}
+
+model Rotation {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy   User   @relation("CreatedRotations", fields: [createdById], references: [id])
+  createdById String // Usuário que criou
+
+  assignedTo   User   @relation("AssignedRotations", fields: [assignedToId], references: [id])
+  assignedToId String // Usuário a quem foi atribuido a rotação
+
+  stops RotationStop[] // Relação com os endereços da rotação
+}
+
+model RotationStop { // Pontos de parada de uma rotação
+  id         String   @id @default(uuid())
+  address    String
+  sequence   Int // Define a ordem da parada
+  rotation   Rotation @relation(fields: [rotationId], references: [id])
+  rotationId String
 }
