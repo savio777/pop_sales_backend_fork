@@ -16,14 +16,16 @@ async function main() {
         "update.user",
         "create.rotation",
         "list.rotations.assigned.to.me",
-        "list.rotations.created.by.me"
+        "list.rotations.created.by.me",
+        "delete.rotation"
       ]
     },
     {
       name: "Manager", // Gestor
       permissions: [
         "list.rotations.created.by.me",
-        "update.user"
+        "update.user",
+        "delete.rotation"
       ]
     },
     {

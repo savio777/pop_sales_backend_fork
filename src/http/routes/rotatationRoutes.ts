@@ -4,10 +4,12 @@ import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
 import { ListRotationsUserAssignedController } from "../controller/rotation/listRotationsUserAssignedController";
 import { ListRotationsUserCreatedController } from "../controller/rotation/listRotationsUserCreatedController";
+import { DeleteRotationController } from "../controller/rotation/deleteRotationController";
 
 const createRotationController = new CreateRotationController()
 const listRotationsUserAssignedController = new ListRotationsUserAssignedController()
 const listRotationsUserCreatedController = new ListRotationsUserCreatedController()
+const deleteRotationController = new DeleteRotationController()
 
 export function RotationRoutes(app: FastifyInstance){
   app.post(
@@ -24,5 +26,10 @@ export function RotationRoutes(app: FastifyInstance){
     "/created-by-me",
     {preHandler: [Auth, RBAC(["list.rotations.created.by.me"])]},
     listRotationsUserCreatedController.handle
+  )
+  app.delete(
+    "/:rotationId",
+    {preHandler: [Auth, RBAC(["delete.rotation"])]},
+    deleteRotationController.handle
   )
 }
