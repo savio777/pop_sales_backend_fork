@@ -33,11 +33,20 @@ export class PrismaRotationRepository implements RotationRepository {
     })
     return rotation
   }
-  async update(data: Prisma.RotationUpdateInput): Promise<Rotation> {
-    
+  async update({id, data}:{id: string, data: Prisma.RotationUpdateInput}): Promise<Rotation> {
+    const rotation = await db.rotation.update({
+      where: {
+        id
+      },
+      data
+    })
+    return rotation
   }
   async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await db.rotation.delete({
+      where: {
+        id
+      }
+    })
   }
-  
 } 
