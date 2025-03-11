@@ -82,7 +82,8 @@ async function main() {
     "Promotor",
     "Vendedor",
     "Entregador",
-    "Cobrandor"
+    "Cobrandor",
+    "Gestor"
   ]
 
   for (const module of modules) {

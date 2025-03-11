@@ -14,7 +14,7 @@
   - [X] Admin pode alterar o status de uma empresa (Ativa/Inativa).
   - [x] Admin pode listar colaboradores de uma empresa específica.
 
-- [ ] **Gerenciamento de Colaboradores**
+- [X] **Gerenciamento de Colaboradores**
   - [X] Admin pode cadastrar novos colaboradores. (endpoint de signup)
   - [X] Admin pode editar os dados de um colaborador.
   - [x] Admin pode alterar o status de um colaborador (Ativo/Inativo).
