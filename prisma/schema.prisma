@@ -22,35 +22,12 @@ model User {
   updatedAt DateTime   @updatedAt
   status    StatusUser @default(ACTIVE)
 
-  userModules UserModule[]
-
   Permission     Permission[]
   ownedCompanies Company[]     @relation("Owner")
   collaborations UserCompany[]
   
   createdRotations  Rotation[] @relation("CreatedRotations")
   assignedRotations Rotation[] @relation("AssignedRotations")
-}
-
-model Module {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userModules UserModule[]
-  Company     Company?     @relation(fields: [companyId], references: [id])
-  companyId   String?
-}
-
-model UserModule {
-  userId   String
-  moduleId String
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-
-  @@id([userId, moduleId])
 }
 
 model Permission {
@@ -76,7 +53,6 @@ model Company {
   ownerId       String
   status        StatusCompany @default(ACTIVE)
   collaborators UserCompany[]
-  module        Module[]
 }
 
 model UserCompany {
