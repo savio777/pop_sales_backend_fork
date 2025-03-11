@@ -2,19 +2,19 @@ import { BadRequestError } from "@/error/badRequest.error";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { UserRepository } from "@/repository/userRepository";
 
-export class ListByCreatedByIdUseCase {
+export class ListByAssignedRoIdUseCase {
   constructor(
     private readonly rotationRepository: RotationRepository,
     private readonly userRepository: UserRepository
   ){}
 
-  async execute(createdById: string){
-    const user = await this.userRepository.getById(createdById)
+  async execute(assignedToId: string){
+    const user = await this.userRepository.getById(assignedToId)
     if(!user){
-      throw new BadRequestError("user created not exist")
+      throw new BadRequestError("user assigned not exist")
     }
 
-    const rotation = await this.rotationRepository.listByCreatedById(createdById)
+    const rotation = await this.rotationRepository.listByAssignedToId(assignedToId)
 
     return {rotation}
   }
