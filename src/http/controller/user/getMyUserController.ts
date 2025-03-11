@@ -14,8 +14,10 @@ export class GetMyUserController {
     const userRepository = new PrismaUserRepository()
     const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
 
-    const user = await getUserByIdUseCase.execute(userId)
+    const {user} = await getUserByIdUseCase.execute(userId)
 
-    return res.status(200).send(user)
+    const {password, ...userWithOutPassword} = user
+
+    return res.status(200).send({user: userWithOutPassword})
   }
 }

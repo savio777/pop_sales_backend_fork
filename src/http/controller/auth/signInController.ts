@@ -39,6 +39,8 @@ export class SignInController {
       signOptions 
     );
 
-    return res.status(200).send({user, token})
+    const {password, ...userWithOutPassword} = user
+
+    return res.status(200).send({user: userWithOutPassword, token})
   }
 }

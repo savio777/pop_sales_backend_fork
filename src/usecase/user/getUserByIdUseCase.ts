@@ -11,6 +11,6 @@ export class GetUserByIdUseCase {
     if(!user){
       throw new NotFoundError("user not found")
     }
-    return user
+    return {user}
   }
 }
