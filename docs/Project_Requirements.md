@@ -21,7 +21,7 @@
   - [x] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrador).
   
 - [ ] **Gestão de Rota e Serviços**
-  - [ ] Empresa pode criar, listar (listar minhas rotações, Gestor: listar rotações criadas), editar e remover rotações.
+  - [X] Empresa pode criar, listar (listar minhas rotações, Gestor: listar rotações criadas), XxeditarxX e remover rotações.
   - [ ] Empresa pode criar, listar, atualizar e remover serviços.
   - [ ] Empresa pode relacionar serviços a uma rotação.
   - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações).
