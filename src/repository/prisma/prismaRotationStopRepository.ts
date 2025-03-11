@@ -17,7 +17,7 @@ export class PrismaRotationStopRepository implements RotationStopRepository {
     })
     return rotationStop
   }
-  async update(data: Prisma.RotationStopUpdateInput): Promise<RotationStop> {
+  async update({id, data}:{id: string, data: Prisma.RotationStopUpdateInput}): Promise<RotationStop> {
     const rotationStop = await db.rotationStop.update({
       where: {
         id
@@ -27,7 +27,10 @@ export class PrismaRotationStopRepository implements RotationStopRepository {
     return rotationStop
   }
   async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await db.rotationStop.delete({
+      where: {
+        id
+      }
+    })
   }
-
 }
