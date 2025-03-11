@@ -5,6 +5,6 @@ export interface RotationRepository {
   getById(id: string): Promise<Rotation | null>
   listByCreatedById(createdById: string): Promise<Rotation[] | null>
   listByAssignedToId(assignedToId: string): Promise<Rotation[] | null>
-  update(data: Prisma.RotationUpdateInput): Promise<Rotation>
+  update({id, data}:{id: string, data: Prisma.RotationUpdateInput}): Promise<Rotation>
   delete(id: string): Promise<void>
 }
