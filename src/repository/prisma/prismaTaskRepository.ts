@@ -1,21 +1,44 @@
 import { Prisma, Task } from "@prisma/client";
 import { TaskRepository } from "../taskRepository";
+import { db } from "@/lib/prisma";
 
 export class PrismaTaskRepository implements TaskRepository {
-  create(data: Prisma.TaskCreateInput): Promise<Task> {
-    throw new Error("Method not implemented.");
+  async create(data: Prisma.TaskCreateInput): Promise<Task> {
+    const task = await db.task.create({
+      data
+    });
+    return task
   }
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<void> {
+    await db.task.delete({
+      where: {
+        id
+      }
+    });
+    
   }
-  listByUserAssigned(userAssignedId: string): Promise<Task[] | null> {
-    throw new Error("Method not implemented.");
+  async listByUserAssigned(userAssignedId: string): Promise<Task[] | null> {
+    const tasks = await db.task.findMany({
+      where: {
+        assignedToId: userAssignedId
+      }
+    });
+    return tasks
   }
-  listByCompany(companyId: string): Promise<Task[] | null> {
-    throw new Error("Method not implemented.");
+  async listByCompany(companyId: string): Promise<Task[] | null> {
+    const tasks = await db.task.findMany({
+      where: {
+        companyId
+      }
+    });
+    return tasks
   }
-  listByUserCreated(UserCreatedId: string): Promise<Task[] | null> {
-    throw new Error("Method not implemented.");
+  async listByUserCreated(userCreatedId: string): Promise<Task[] | null> {
+    const tasks = await db.task.findMany({
+      where: {
+        createdById: userCreatedId
+      }
+    });
+    return tasks
   }
-  
 }
