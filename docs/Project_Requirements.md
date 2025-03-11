@@ -24,7 +24,8 @@
   - [X] Empresa pode criar, listar (listar minhas rotações, Gestor: listar rotações criadas), XxeditarxX e remover rotações.
   - [ ] Empresa pode criar, listar, atualizar e remover serviços.
   - [ ] Empresa pode relacionar serviços a uma rotação.
-  - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações).
+  <!-- serviço e rotação ja estarã relacionadas ao usuario uma vez criada -->
+  <!-- - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações). -->
   
 - [ ] **Monitoramento e Rastreamento**
   - [ ] Empresa pode visualizar a localização do colaborador em tempo real.
