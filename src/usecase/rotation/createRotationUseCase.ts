@@ -9,9 +9,14 @@ export class CreateRotationUseCase {
   ){}
 
   async execute({assignedToId, createdById}:{createdById: string, assignedToId: string}){
-    const user = await this.userRepository.getById(createdById)
-    if(!user){
-      throw new BadRequestError("user not exist")
+    const userCreated = await this.userRepository.getById(createdById)
+    if(!userCreated){
+      throw new BadRequestError("user created does not exist")
+    }
+
+    const userAssigned = await this.userRepository.getById(assignedToId)
+    if(!userAssigned){
+      throw new BadRequestError("user assigned does not exist")
     }
 
     const rotation = await this.rotationRepository.create({
