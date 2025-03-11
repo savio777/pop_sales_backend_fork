@@ -9,7 +9,7 @@ export function RBAC(roles: string[]) {
 
     const allPermissions = req.userAuth.Permission.flatMap(perm => perm.permissions);
 
-    const hasPermission = allPermissions.every(permission => 
+    const hasPermission = allPermissions.some(permission => 
       roles.includes(permission)
     );
     
