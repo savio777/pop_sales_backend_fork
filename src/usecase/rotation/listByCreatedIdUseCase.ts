@@ -2,7 +2,7 @@ import { BadRequestError } from "@/error/badRequest.error";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { UserRepository } from "@/repository/userRepository";
 
-export class ListByCreatedByIdUseCase {
+export class ListByCreatedIdUseCase {
   constructor(
     private readonly rotationRepository: RotationRepository,
     private readonly userRepository: UserRepository
