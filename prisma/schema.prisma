@@ -22,33 +22,9 @@ model User {
   updatedAt DateTime   @updatedAt
   status    StatusUser @default(ACTIVE)
 
-  userModules UserModule[]
-
   Permission     Permission[]
   ownedCompanies Company[]     @relation("Owner")
   collaborations UserCompany[]
-}
-
-model Module {
-  id        String   @id @default(uuid())
-  name      String   @unique // Exemplo: "Entregador", "Vendedor"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userModules UserModule[]
-  Company     Company?     @relation(fields: [companyId], references: [id])
-  companyId   String?
-}
-
-// Tabela intermediária para o relacionamento muitos-para-muitos
-model UserModule {
-  userId   String
-  moduleId String
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-
-  @@id([userId, moduleId]) // Define a chave composta para evitar duplicatas
 }
 
 model Permission {
@@ -74,7 +50,6 @@ model Company {
   ownerId       String
   status        StatusCompany @default(ACTIVE)
   collaborators UserCompany[]
-  module        Module[]
 }
 
 model UserCompany {

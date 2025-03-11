@@ -14,11 +14,6 @@ async function main() {
         "set.user.company",
         "list.user.company",
         "update.user",
-        "create.user.module",
-        "remove.user.module",
-        "list.user.module",
-        "list.modules",
-        "create.modules"
       ]
     },
   ];  
@@ -76,33 +71,6 @@ async function main() {
       ownerId: user.id
     }
   })
-
-  // MODULES
-  const modules = [
-    "Promotor",
-    "Vendedor",
-    "Entregador",
-    "Cobrandor"
-  ]
-
-  for (const module of modules) {
-    const moduleCreate = await db.module.create({
-      data: {
-        name: module,
-        companyId: company.id,
-      },
-
-    });
-
-    // USER MODULES
-    await db.userModule.create({
-      data: {
-        moduleId: moduleCreate.id,
-        userId: user.id
-      }
-    })
-      
-  }
 
   // USER COMPANY
   await db.userCompany.create({
