@@ -15,9 +15,24 @@ async function main() {
         "list.user.company",
         "update.user",
         "create.rotation",
-        "list.my.rotations"
+        "list.rotations.assigned.to.me",
+        "list.rotations.created.by.me"
       ]
     },
+    {
+      name: "Manager", // Gestor
+      permissions: [
+        "list.rotations.created.by.me",
+        "update.user"
+      ]
+    },
+    {
+      name: "Employee", // Empregado
+      permissions: [
+        "list.rotations.assigned.to.me",
+      ]
+    },
+    
   ];  
 
   let permissionAdminId: string
