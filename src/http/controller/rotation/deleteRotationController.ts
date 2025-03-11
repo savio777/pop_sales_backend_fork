@@ -15,7 +15,7 @@ export class DeleteRotationController {
       rotationRepository
     )
 
-    await rotationRepository.delete(rotationId)
+    await deleteRotationUseCase.execute(rotationId)
 
     return res.status(200).send()
   }
