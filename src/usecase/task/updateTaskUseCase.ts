@@ -5,7 +5,7 @@ interface UpdateTask {
   title?: string;
   description?: string;
   status?: "COMPLETED" | "PENDING";
-  finishedAt: Date;
+  finishedAt?: Date;
 }
 
 export class UpdateTaskUseCase {
