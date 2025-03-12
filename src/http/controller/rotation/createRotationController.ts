@@ -8,7 +8,6 @@ import { z } from "zod";
 
 export class CreateRotationController {
   async handle(req: FastifyRequest, res: FastifyReply){
-
     const stopsRequestBody = z.object({
       sequence: z.coerce.number(),
       address: z.string()

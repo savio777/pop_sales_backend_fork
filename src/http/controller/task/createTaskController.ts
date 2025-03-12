@@ -8,7 +8,6 @@ import { z } from "zod";
 
 export class CreateTaskController {
   async handle(req: FastifyRequest, res: FastifyReply){
-
     const userCreatedId = req.userAuth.id
 
     const createTaskRequestBody = z.object({

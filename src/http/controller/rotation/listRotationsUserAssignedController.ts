@@ -6,9 +6,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 export class ListRotationsUserAssignedController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    if (!req.userAuth?.id) {
-      throw new BadRequestError("userId not informed");
-    }
     const userId = req.userAuth.id
 
     const rotationRepository = new PrismaRotationRepository()

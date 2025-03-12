@@ -4,11 +4,7 @@ import { GetUserByIdUseCase } from "@/usecase/user/getUserByIdUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export class GetMyUserController {
-
   async handle(req: FastifyRequest, res: FastifyReply){
-    if (!req.userAuth?.id) {
-      throw new BadRequestError("userId not informed");
-    }
     const userId = req.userAuth.id
 
     const userRepository = new PrismaUserRepository()

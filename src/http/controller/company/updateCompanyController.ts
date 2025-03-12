@@ -7,9 +7,6 @@ import { z } from "zod";
 
 export class UpdateCompanyController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    if (!req.userAuth?.id) {
-      throw new BadRequestError("userId not informed");
-    }
     const userId = req.userAuth.id
 
     const updateCompanyParams = z.object({

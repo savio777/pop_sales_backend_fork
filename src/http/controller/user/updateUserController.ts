@@ -5,7 +5,6 @@ import { z } from "zod";
 
 export class UpdateUserController {
   async handle(req: FastifyRequest, res: FastifyReply){
-
     const userRequestParams = z.object({
       userId: z.string().uuid()
     })
