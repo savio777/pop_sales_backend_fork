@@ -97,11 +97,17 @@ model RotationStop {
   rotationId String
 }
 
+enum TaskStatus {
+  COMPLETED
+  PENDING
+}
+
 model Task {
-  id          String    @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
   description String?
   finishedAt  DateTime?
+  status      TaskStatus @default(PENDING)
 
   rotation   Rotation @relation(fields: [rotationId], references: [id])
   rotationId String // Relacionamento com a rotação
