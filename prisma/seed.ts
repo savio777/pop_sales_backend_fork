@@ -17,7 +17,8 @@ async function main() {
         "create.rotation",
         "list.rotations.assigned.to.me",
         "list.rotations.created.by.me",
-        "delete.rotation"
+        "delete.rotation",
+        "create.task"
       ]
     },
     {
@@ -25,7 +26,8 @@ async function main() {
       permissions: [
         "list.rotations.created.by.me",
         "update.user",
-        "delete.rotation"
+        "delete.rotation",
+        "create.task"
       ]
     },
     {
