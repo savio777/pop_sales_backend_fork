@@ -36,6 +36,10 @@ type TaskWithRelations = {
 
 
 export interface TaskRepository {
+  update(
+    {id, data}:
+    {id: string, data: Prisma.TaskUpdateInput}
+  ): Promise<Task>
   create(data: Prisma.TaskCreateInput): Promise<Task>
   delete(id: string): Promise<void>
   listByUserAssigned(userAssignedId: string): Promise<Task[] | null>

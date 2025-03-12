@@ -38,6 +38,18 @@ type TaskWithRelations = {
 
 
 export class PrismaTaskRepository implements TaskRepository {
+  async update(
+    {id, data}:
+    {id: string, data: Prisma.TaskUpdateInput}
+  ): Promise<Task> {
+    const task = await db.task.update({
+      where: {
+        id
+      },
+      data
+    })
+    return task
+  }
   async getById(id: string): Promise<TaskWithRelations | null> {
     const task = await db.task.findUnique({
       where: { id },
