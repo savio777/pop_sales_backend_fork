@@ -6,4 +6,5 @@ export interface TaskRepository {
   listByUserAssigned(userAssignedId: string): Promise<Task[] | null>
   listByCompany(companyId: string): Promise<Task[] | null>
   listByUserCreated(userCreatedId: string): Promise<Task[] | null>
+  getById(id: string): Promise<Task | null>
 }

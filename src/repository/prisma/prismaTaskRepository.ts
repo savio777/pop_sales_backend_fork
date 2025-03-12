@@ -3,6 +3,14 @@ import { TaskRepository } from "../taskRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaTaskRepository implements TaskRepository {
+  async getById(id: string): Promise<Task | null> {
+    const task = await db.task.findUnique({
+      where: {
+        id
+      }
+    })
+    return task
+  }
   async create(data: Prisma.TaskCreateInput): Promise<Task> {
     const task = await db.task.create({
       data
