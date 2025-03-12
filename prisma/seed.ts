@@ -18,7 +18,8 @@ async function main() {
         "list.rotations.assigned.to.me",
         "list.rotations.created.by.me",
         "delete.rotation",
-        "create.task"
+        "create.task",
+        "delete.task",
       ]
     },
     {
@@ -27,7 +28,8 @@ async function main() {
         "list.rotations.created.by.me",
         "update.user",
         "delete.rotation",
-        "create.task"
+        "create.task",
+        "delete.task"
       ]
     },
     {
