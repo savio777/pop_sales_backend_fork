@@ -7,7 +7,7 @@ export class PrismaTaskRepository implements TaskRepository {
     const task = await db.task.findUnique({
       where: {
         id
-      }
+      },
     })
     return task
   }
