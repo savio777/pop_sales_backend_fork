@@ -20,7 +20,8 @@ async function main() {
         "delete.rotation",
         "create.task",
         "delete.task",
-        "get.task"
+        "get.task.by.id",
+        "update.task"
       ]
     },
     {
@@ -31,7 +32,8 @@ async function main() {
         "delete.rotation",
         "create.task",
         "delete.task",
-        "get.task"
+        "get.task.by.id",
+        "update.task"
       ]
     },
     {
