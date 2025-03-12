@@ -21,7 +21,8 @@ async function main() {
         "create.task",
         "delete.task",
         "get.task.by.id",
-        "update.task"
+        "update.task",
+        "list.task"
       ]
     },
     {
@@ -33,7 +34,8 @@ async function main() {
         "create.task",
         "delete.task",
         "get.task.by.id",
-        "update.task"
+        "update.task",
+        "list.task"
       ]
     },
     {

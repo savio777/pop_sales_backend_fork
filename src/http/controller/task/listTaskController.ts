@@ -7,10 +7,10 @@ import { ListTaskUseCase } from "@/usecase/task/listTaskUseCase";
 
 
 export class ListTaskController {
-  async listTasks(req: FastifyRequest, res: FastifyReply) {
+  async handle(req: FastifyRequest, res: FastifyReply) {
     const ListTaskRequestSchema = z.object({
-      limit: z.number().min(1, { message: "Limit deve ser maior que 0" }),
-      page: z.number().min(1, { message: "Page deve ser maior que 0" }),
+      limit: z.coerce.number().default(200),
+      page: z.coerce.number().default(1),
       userCreatedId: z.string().optional(),
       userAssignedId: z.string().optional(),
       companyId: z.string().optional(),
