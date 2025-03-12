@@ -68,8 +68,6 @@ interface listTask {
   };
 }
 
-
-
 export interface TaskRepository {
   update(
     {id, data}:
