@@ -15,9 +15,11 @@ export class CreateRotationController {
 
     const assignedRequestBody = z.object({
       assignedToId: z.string().uuid(),
-      stops: z.array(stopsRequestBody)
+      stops: z.array(stopsRequestBody),
+      tasks: z.array(z.string().uuid())
     })
-    const {assignedToId, stops} = assignedRequestBody.parse(req.body)
+
+    const {assignedToId, stops, tasks} = assignedRequestBody.parse(req.body)
 
     const rotationRepository = new PrismaRotationRepository()
     const userRepository = new PrismaUserRepository()
@@ -35,7 +37,7 @@ export class CreateRotationController {
 
 
     const rotation = await createRotationUseCase.execute({
-      assignedToId, createdById, stops
+      assignedToId, createdById, stops, tasks
     })
 
     return res.status(200).send(rotation)

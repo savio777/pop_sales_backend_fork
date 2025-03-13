@@ -29,7 +29,6 @@ export class CreateRotationUseCase {
       throw new BadRequestError("user assigned does not exist")
     }
 
-    // Criando a rotação
     const rotation = await this.rotationRepository.create({
       createdBy: {connect: {id: createdById }},
       assignedTo: {connect: {id: assignedToId }},
