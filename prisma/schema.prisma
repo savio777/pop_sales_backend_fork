@@ -85,8 +85,6 @@ model Rotation {
   assignedToId String // Usuário a quem foi atribuido a rotação
 
   stops RotationStop[] // Relação com os endereços da rotação
-
-  Task Task[]
 }
 
 model RotationStop {
@@ -95,6 +93,7 @@ model RotationStop {
   sequence   Int // Define a ordem da parada
   rotation   Rotation @relation(fields: [rotationId], references: [id])
   rotationId String
+  Task       Task[]
 }
 
 enum TaskStatus {
@@ -108,9 +107,8 @@ model Task {
   description String?
   finishedAt  DateTime?
   status      TaskStatus @default(PENDING)
-
-  rotation   Rotation @relation(fields: [rotationId], references: [id])
-  rotationId String // Relacionamento com a rotação
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   createdBy   User   @relation("CreatedTasks", fields: [createdById], references: [id])
   createdById String // Usuário que criou a tarefa
@@ -121,6 +119,6 @@ model Task {
   company   Company @relation(fields: [companyId], references: [id])
   companyId String // Empresa à qual a tarefa pertence
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  RotationStop   RotationStop? @relation(fields: [rotationStopId], references: [id])
+  rotationStopId String?
 }
