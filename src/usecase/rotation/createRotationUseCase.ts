@@ -1,6 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { RotationRepository } from "@/repository/rotationRepository";
-import { RotationStopRepository } from "@/repository/rotationStopRepository";
 import { UserRepository } from "@/repository/userRepository";
 
 interface RotationsStops {
@@ -11,13 +10,12 @@ interface RotationsStops {
 export class CreateRotationUseCase {
   constructor(
     private readonly rotationRepository: RotationRepository,
-    private readonly rotationStopRepository: RotationStopRepository,
     private readonly userRepository: UserRepository,
   ){}
 
   async execute(
-    {assignedToId, createdById, stops}:
-    {createdById: string, assignedToId: string, stops: RotationsStops[]}
+    {assignedToId, createdById, stops, tasks}:
+    {createdById: string, assignedToId: string, stops: RotationsStops[], tasks: string[]}
   ){
     const userCreated = await this.userRepository.getById(createdById)
     if(!userCreated){
@@ -29,23 +27,23 @@ export class CreateRotationUseCase {
       throw new BadRequestError("user assigned does not exist")
     }
 
+    // Criar Paradas
+    let stopCreateds = []
+    for(let stop of stops){
+      const result = await this.rotationStopRepository.create({
+        address: stop.address,
+        sequence: stop.sequence,
+      })
+      stopCreateds.push(result)
+    }
+
+    // Criar Rotação
     const rotation = await this.rotationRepository.create({
       createdBy: {connect: {id: createdById }},
       assignedTo: {connect: {id: assignedToId }},
     })
 
-    let stopCreateds = []
 
-    // Atribuind os endereços de parada a rotação
-    for(let stop of stops){
-      const result = await this.rotationStopRepository.create({
-        address: stop.address,
-        sequence: stop.sequence,
-        rotation: {connect: {id: rotation.id}}
-      })
-      stopCreateds.push(result)
-
-    }
 
 
     return {rotation, stop:stopCreateds}
