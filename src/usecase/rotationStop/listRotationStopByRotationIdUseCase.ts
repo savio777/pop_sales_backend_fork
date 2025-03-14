@@ -1,6 +1,6 @@
 import { RotationStopRepository } from "@/repository/rotationStopRepository";
 
-export class ListRotationStopByRotationId {
+export class ListRotationStopByRotationIdUseCase {
   constructor(
     private readonly rotationStopRepository: RotationStopRepository
   ){}
