@@ -20,11 +20,11 @@
   - [x] Admin pode alterar o status de um colaborador (Ativo/Inativo).
   - [x] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrador).
   
-- [ ] **Gestão de Rota e Serviços**
+- [X] **Gestão de Rota e Serviços (tasks)**
   - [X] Empresa pode criar, listar (listar minhas rotações, Gestor: listar rotações criadas), XxeditarxX e remover rotações.
-  - [ ] Empresa pode criar, listar, atualizar e remover serviços.
-  - [ ] Empresa pode relacionar serviços a uma rotação.
-  <!-- serviço e rotação ja estarã relacionadas ao usuario uma vez criada -->
+  - [X] Empresa pode criar, listar, atualizar e remover serviços.
+  - [X] Empresa pode relacionar serviços a uma rotação.
+  <!-- serviço e rotação ja estara relacionadas ao usuario uma vez criada -->
   <!-- - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações). -->
   
 - [ ] **Monitoramento e Rastreamento**
