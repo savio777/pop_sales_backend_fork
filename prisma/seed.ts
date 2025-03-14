@@ -25,7 +25,8 @@ async function main() {
         "list.task",
         "create.rotation.stop",
         "update.rotation",
-        "list.rotation.stop"
+        "list.rotation.stop",
+        "list.task.by.rotation.stop.id"
       ]
     },
     {
@@ -41,7 +42,8 @@ async function main() {
         "list.task",
         "create.rotation.stop",
         "update.rotation",
-        "list.rotation.stop"
+        "list.rotation.stop",
+        "list.task.by.rotation.stop.id"
       ]
     },
     {

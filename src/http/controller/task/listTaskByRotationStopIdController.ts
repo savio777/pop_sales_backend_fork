@@ -1,9 +1,6 @@
 import { z } from "zod";
-import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ListTaskUseCase } from "@/usecase/task/listTaskUseCase";
 import { ListTaskByRotationStopIdUseCase } from "@/usecase/task/listTaskByRotationStopIdUseCase";
 
 
