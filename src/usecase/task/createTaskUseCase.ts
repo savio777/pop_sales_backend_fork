@@ -6,7 +6,7 @@ import { UserRepository } from "@/repository/userRepository";
 interface CreateTaskSchema {
   title: string, 
   description?: string, 
-  rotationId: string, 
+  rotationStopId: string, 
   companyId: string, 
   userAssignedId: string, 
   userCreatedId: string
@@ -20,7 +20,7 @@ export class CreateTaskUseCase {
   ){}
 
   async execute(
-    {companyId, rotationId, title, userAssignedId, userCreatedId, description}:CreateTaskSchema
+    {companyId, rotationStopId, title, userAssignedId, userCreatedId, description}:CreateTaskSchema
   ){
     const company = await this.companyRepository.getById(companyId)
     if(!company){
@@ -40,7 +40,7 @@ export class CreateTaskUseCase {
     const task = await this.taskRepository.create({
       title,
       description,
-      rotation: {connect: {id: rotationId}},
+      RotationStop: {connect: {id: rotationStopId}},
       company: {connect: {id: companyId}},
       assignedTo: {connect: {id: userAssignedId}},
       createdBy: {connect: {id: userCreatedId}}

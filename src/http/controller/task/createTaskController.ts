@@ -14,9 +14,10 @@ export class CreateTaskController {
       companyId: z.string().uuid(),
       title: z.string(), 
       description: z.string().optional(), 
-      rotationId: z.string().uuid(), 
+      rotationStopId: z.string().uuid(), 
       userAssignedId: z.string().uuid()
     })
+    
     const data = createTaskRequestBody.parse(req.body)
 
     const taskRepository = new PrismaTaskRepository()
