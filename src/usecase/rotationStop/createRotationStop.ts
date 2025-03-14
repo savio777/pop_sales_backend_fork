@@ -22,7 +22,7 @@ export class CreateRotationStopUseCase {
       throw new BadRequestError("rotation not exist")
     }
 
-    let stopCreateds = this.rotationStopRepository.create({
+    let stopCreateds = await this.rotationStopRepository.create({
       address: stop.address,
       sequence: stop.sequence,
       Rotation: {
