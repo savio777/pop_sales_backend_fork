@@ -1,4 +1,3 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
