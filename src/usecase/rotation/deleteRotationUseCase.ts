@@ -28,15 +28,16 @@ export class DeleteRotationUseCase {
       throw new UnauthorizedError("you not have permission to delete this") 
     }
 
-    // Deletar as tasks
-    const tasks = await this.taskRepository.
-
-    // Deleta as paradas relacionadas a esta rotação
     const stops = await this.rotationStopRepository.getByRotationId(rotation.id)
-    if(stops){
-      for(let stop of stops){
-        await this.rotationStopRepository.delete(stop.id)
-      }
+
+    // Deletat tasks
+    if (stops && stops.length > 0) {
+      await Promise.all(stops.map(stop => this.taskRepository.delete(stop.id)));
+    }
+    
+    // Deleta as paradas
+    if(stops && stops.length > 0){
+      await Promise.all(stops.map(stop =>  this.rotationStopRepository.delete(stop.id)))
     }
 
     // Deleta a rotação
