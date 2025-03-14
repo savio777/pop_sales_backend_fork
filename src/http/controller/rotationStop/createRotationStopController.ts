@@ -7,9 +7,14 @@ import { z } from "zod";
 export class CreateRotationStopController {
   async handle(req: FastifyRequest, res: FastifyReply) {
     const stopsRequestBody = z.object({
-      sequence: z.coerce.number(),
-      address: z.string(),
+      rotationId: z.string().uuid(),
+      stop: z.object({
+        sequence: z.coerce.number(),
+        address: z.string(),
+      })
     });
+    
+    const data = stopsRequestBody.parse(req.body)
 
     const rotationStopRepository = new PrismaRotationStopRepository()
     const rotationRepository = new PrismaRotationRepository()
@@ -18,8 +23,8 @@ export class CreateRotationStopController {
       rotationRepository
     )
 
-    await createRotationStopUseCase.execute({
-      
-    })
+    const stop = await createRotationStopUseCase.execute(data)
+
+    return res.status(200).send(stop)
   }
 }
