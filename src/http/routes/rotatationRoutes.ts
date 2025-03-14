@@ -5,11 +5,13 @@ import { RBAC } from "../middleware/rbac";
 import { ListRotationsUserAssignedController } from "../controller/rotation/listRotationsUserAssignedController";
 import { ListRotationsUserCreatedController } from "../controller/rotation/listRotationsUserCreatedController";
 import { DeleteRotationController } from "../controller/rotation/deleteRotationController";
+import { UpdateRotationController } from "../controller/rotation/updateRotationController";
 
 const createRotationController = new CreateRotationController()
 const listRotationsUserAssignedController = new ListRotationsUserAssignedController()
 const listRotationsUserCreatedController = new ListRotationsUserCreatedController()
 const deleteRotationController = new DeleteRotationController()
+const updateRotationController = new UpdateRotationController()
 
 export function RotationRoutes(app: FastifyInstance){
   app.post(
@@ -31,5 +33,10 @@ export function RotationRoutes(app: FastifyInstance){
     "/:rotationId",
     {preHandler: [Auth, RBAC(["delete.rotation"])]},
     deleteRotationController.handle
+  )
+  app.patch(
+    "/:rotationId",
+    {preHandler: [Auth, RBAC(["update.rotation"])]},
+    updateRotationController.handle
   )
 }

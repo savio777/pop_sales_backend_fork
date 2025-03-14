@@ -23,7 +23,8 @@ async function main() {
         "get.task.by.id",
         "update.task",
         "list.task",
-        "create.rotation.stop"
+        "create.rotation.stop",
+        "update.rotation"
       ]
     },
     {
@@ -37,7 +38,8 @@ async function main() {
         "get.task.by.id",
         "update.task",
         "list.task",
-        "create.rotation.stop"
+        "create.rotation.stop",
+        "update.rotation"
       ]
     },
     {
