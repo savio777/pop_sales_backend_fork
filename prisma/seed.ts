@@ -22,7 +22,8 @@ async function main() {
         "delete.task",
         "get.task.by.id",
         "update.task",
-        "list.task"
+        "list.task",
+        "create.rotation.stop"
       ]
     },
     {
@@ -35,7 +36,8 @@ async function main() {
         "delete.task",
         "get.task.by.id",
         "update.task",
-        "list.task"
+        "list.task",
+        "create.rotation.stop"
       ]
     },
     {
