@@ -101,4 +101,6 @@ export interface TaskRepository {
       finishedAt?: Date,
     }
   ): Promise<listTask[] | null>
+  listByRotationStopId(rotationStopId: string): Promise<Task[] | null>
+
 }

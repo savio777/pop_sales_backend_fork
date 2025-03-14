@@ -72,6 +72,14 @@ interface listTask {
 
 
 export class PrismaTaskRepository implements TaskRepository {
+  async listByRotationStopId(rotationStopId: string): Promise<Task[] | null> {
+    const task = await db.task.findMany({
+      where: {
+        rotationStopId
+      }
+    })
+    return task
+  }
   async listTask({
     limit,
     page,
@@ -112,6 +120,7 @@ export class PrismaTaskRepository implements TaskRepository {
         status: true,
         createdAt: true,
         updatedAt: true,
+        rotationStopId: true,
         company: {
           select: {
             id: true,
@@ -133,19 +142,7 @@ export class PrismaTaskRepository implements TaskRepository {
             status: true
           }
         },
-        rotation: {
-          select: {
-            id: true,
-            createdAt: true,
-            stops: {
-              select: {
-                id: true,
-                address: true,
-                sequence: true
-              }
-            }
-          }
-        }
+        
       }
     });
   
@@ -175,6 +172,7 @@ export class PrismaTaskRepository implements TaskRepository {
         status: true,
         createdAt: true,
         updatedAt: true,
+        rotationStopId: true,
         company: {
           select: {
             id: true,
@@ -196,19 +194,7 @@ export class PrismaTaskRepository implements TaskRepository {
             status: true
           }
         },
-        rotation: {
-          select: {
-            id: true,
-            createdAt: true,
-            stops: {
-              select: {
-                id: true,
-                address: true,
-                sequence: true
-              }
-            }
-          }
-        }
+        
       }
     });
   
