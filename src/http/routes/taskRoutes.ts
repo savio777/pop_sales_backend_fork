@@ -46,6 +46,4 @@ export function TaskRoutes(app: FastifyInstance){
     {preHandler:[Auth, RBAC(["list.task.by.rotation.stop.id"])]},
     listTaskByRotationStopIdController.handle
   )
-
-  
 }
