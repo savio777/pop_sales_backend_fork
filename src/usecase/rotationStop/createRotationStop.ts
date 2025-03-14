@@ -14,7 +14,7 @@ export class CreateRotationStopUseCase {
   ){}
 
   async execute(
-    {stops, rotationId}:{ stops: RotationsStops[], rotationId: string}
+    {stop, rotationId}:{ stop: RotationsStops, rotationId: string}
   ){
 
     const rotation = await this.rotationRepository.getById(rotationId)
@@ -22,20 +22,16 @@ export class CreateRotationStopUseCase {
       throw new BadRequestError("rotation not exist")
     }
 
-    let stopCreateds = await Promise.all(
-      stops.map(stop => 
-        this.rotationStopRepository.create({
-          address: stop.address,
-          sequence: stop.sequence,
-          Rotation: {
-            connect: {
-              id: rotationId
-            }
-          }
-        })
-      )
-    )
-
-    return {stops: stopCreateds}
+    let stopCreateds = this.rotationStopRepository.create({
+      address: stop.address,
+      sequence: stop.sequence,
+      Rotation: {
+        connect: {
+          id: rotationId
+        }
+      }
+    })
+    
+    return {stop: stopCreateds}
   }
 }
