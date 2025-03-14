@@ -10,8 +10,8 @@ export class UpdateRotationUseCase {
   ){}
 
   async execute(
-    {assignedToId, createdById, rotationId}:
-    {createdById: string, assignedToId: string, rotationId: string}
+    {assignedToId, createdById, id}:
+    {createdById: string, assignedToId: string, id: string}
   ){
     const userCreated = await this.userRepository.getById(createdById)
     if(!userCreated){
@@ -23,7 +23,7 @@ export class UpdateRotationUseCase {
       throw new BadRequestError("user assigned does not exist")
     }
 
-    const rotation = await this.rotationRepository.getById(rotationId)
+    const rotation = await this.rotationRepository.getById(id)
     if(!rotation){
       throw new BadRequestError("rotation does not exist")
     }
@@ -33,7 +33,7 @@ export class UpdateRotationUseCase {
     }
 
     const rotationUpdated = await this.rotationRepository.update({
-      id: rotationId,
+      id,
       data: {
         assignedTo: {
           connect: {
