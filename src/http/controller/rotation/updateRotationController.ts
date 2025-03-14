@@ -6,16 +6,17 @@ import { z } from "zod";
 
 export class UpdateRotationController {
   async handle(req: FastifyRequest, res: FastifyReply){
+    const createdById = req.userAuth.id
+
     const updateRotationRequestBody = z.object({
       assignedToId: z.string().uuid(),
-      createdById: z.string().uuid(),
     })
     const updateRotationRequestParams = z.object({
       rotationId: z.string().uuid()
     })
 
     const {rotationId} = updateRotationRequestParams.parse(req.params)
-    const {assignedToId, createdById} = updateRotationRequestBody.parse(req.body)
+    const {assignedToId} = updateRotationRequestBody.parse(req.body)
 
     const rotationRepository = new PrismaRotationRepository()
     const userRepository = new PrismaUserRepository()
