@@ -13,6 +13,7 @@ describe("Create user use case", () => {
     const userRepository = new PrismaUserRepository()
     const companyRepository = new PrismaCompanyRepository()
     const userCompanyRepository = new PrismaUserCompanyRepository()
+    
 
     const sut = new CreateUserUseCase(
       userRepository,
