@@ -1,13 +1,13 @@
 import { NotFoundError } from "@/error/notfound.error";
 import { UserRepository } from "@/repository/userRepository";
 
-export class GetUserByIdUseCase {
+export class GetUserByEmailUseCase {
   constructor(
     private readonly userRepository: UserRepository
   ){}
 
-  async execute(userId: string){
-    const user = await this.userRepository.getById(userId)
+  async execute(email: string){
+    const user = await this.userRepository.getByEmail(email)
     if(!user){
       throw new NotFoundError("user not found")
     }

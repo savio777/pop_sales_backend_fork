@@ -8,10 +8,6 @@ import { z } from "zod";
 
 export class CreateCompanyController {
   async handle(req: FastifyRequest, res: FastifyReply){
-
-    if (!req.userAuth?.id) {
-      throw new BadRequestError("userId not informed");
-    }
     const userId = req.userAuth.id
     
     const createCompanySchema = z.object({

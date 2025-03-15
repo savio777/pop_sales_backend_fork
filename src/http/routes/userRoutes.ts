@@ -8,6 +8,14 @@ const getMyUserController = new GetMyUserController()
 const updateUserController = new UpdateUserController()
 
 export function UserRoutes(app: FastifyInstance){
-  app.get("/", {preHandler: [Auth]}, getMyUserController.handle)
-  app.patch("/:userId", {preHandler: [Auth, RBAC(["update.user"])]}, updateUserController.handle)
+  app.get(
+    "/", 
+    {preHandler: [Auth]}, 
+    getMyUserController.handle
+  )
+  app.patch(
+    "/:userId", 
+    {preHandler: [Auth, RBAC(["update.user"])]}, 
+    updateUserController.handle
+  )
 }

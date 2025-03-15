@@ -1,3 +1,4 @@
+import { BadRequestError } from "@/error/badRequest.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
 import { db } from "@/lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -28,4 +29,8 @@ export async function Auth(req: FastifyRequest, _res: FastifyReply) {
   }
 
   req.userAuth = user
+
+  if (!req.userAuth?.id) {
+    throw new BadRequestError("userId not informed");
+  }
 }

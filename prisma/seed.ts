@@ -14,8 +14,45 @@ async function main() {
         "set.user.company",
         "list.user.company",
         "update.user",
+        "create.rotation",
+        "list.rotations.assigned.to.me",
+        "list.rotations.created.by.me",
+        "delete.rotation",
+        "create.task",
+        "delete.task",
+        "get.task.by.id",
+        "update.task",
+        "list.task",
+        "create.rotation.stop",
+        "update.rotation",
+        "list.rotation.stop",
+        "list.task.by.rotation.stop.id"
       ]
     },
+    {
+      name: "Manager", // Gestor
+      permissions: [
+        "list.rotations.created.by.me",
+        "update.user",
+        "delete.rotation",
+        "create.task",
+        "delete.task",
+        "get.task.by.id",
+        "update.task",
+        "list.task",
+        "create.rotation.stop",
+        "update.rotation",
+        "list.rotation.stop",
+        "list.task.by.rotation.stop.id"
+      ]
+    },
+    {
+      name: "Employee", // Empregado
+      permissions: [
+        "list.rotations.assigned.to.me",
+      ]
+    },
+    
   ];  
 
   let permissionAdminId: string

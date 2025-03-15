@@ -5,7 +5,6 @@ import { z } from "zod";
 
 export class ListUserCompanyController {
   async handle(req: FastifyRequest, res: FastifyReply){
-
     const listUserCompaniesQuery = z.object({
       limit: z.coerce.number().default(200),
       page: z.coerce.number().default(1),

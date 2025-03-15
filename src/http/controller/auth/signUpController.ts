@@ -1,9 +1,10 @@
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaUserCompanyRepository } from "@/repository/prisma/prismaUserCompanyRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
-import { SignUpUseCase } from "@/usecase/auth/signUpUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
+import bcrypt from 'bcrypt';
+import { CreateUserUseCase } from "@/usecase/user/createUserUseCase";
 
 export class SignUpController {
   async handle(req: FastifyRequest, res: FastifyReply){
@@ -21,14 +22,25 @@ export class SignUpController {
     const companyRepository = new PrismaCompanyRepository()
     const userCompanyRepository = new PrismaUserCompanyRepository()
 
-    const signUpUseCase = new SignUpUseCase(
+    const signUpUseCase = new CreateUserUseCase(
       userRepository, 
       companyRepository,
       userCompanyRepository
     )
 
-    const {user} = await signUpUseCase.execute(data)
+    const saltRounds = 10; 
+    const passwordHash = await bcrypt.hash(data.password, saltRounds);
 
-    return res.status(201).send({user})
+    const result = await signUpUseCase.execute({
+      name: data.name,
+      email: data.email,
+      companyId: data.companyId,
+      password: passwordHash,
+      phone: data.phone
+    });
+
+    const { password, ...userWithOutPassword } = result.user
+
+    return res.status(201).send({user: userWithOutPassword})
   }
 }

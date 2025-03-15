@@ -14,17 +14,20 @@
   - [X] Admin pode alterar o status de uma empresa (Ativa/Inativa).
   - [x] Admin pode listar colaboradores de uma empresa específica.
 
-- [ ] **Gerenciamento de Colaboradores**
+- [X] **Gerenciamento de Colaboradores**
   - [X] Admin pode cadastrar novos colaboradores. (endpoint de signup)
   - [X] Admin pode editar os dados de um colaborador.
   - [x] Admin pode alterar o status de um colaborador (Ativo/Inativo).
   - [x] Admin pode definir os módulos de atuação (Promotor, Vendedor, Entregador, Cobrador).
   
-- [ ] **Gestão de Rota e Serviços**
-  - [ ] Empresa pode criar, listar, editar e remover rotações.
-  - [ ] Empresa pode criar, listar, atualizar e remover serviços.
-  - [ ] Empresa pode relacionar serviços a uma rotação.
-  - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações).
+- [X] **Gestão de Rota e Serviços (tasks)**
+  - [X] Empresa pode criar, listar (listar minhas rotações, Gestor: listar rotações criadas), XxeditarxX e remover rotações.
+  - [X] Empresa pode criar, listar, atualizar e remover serviços.
+  - [X] Empresa pode relacionar serviços a uma rotação.
+  <!-- serviço e rotação ja estara relacionadas ao usuario uma vez criada -->
+  <!-- - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações). -->
+
+- [ ] **Teste de integração e unitarios**
   
 - [ ] **Monitoramento e Rastreamento**
   - [ ] Empresa pode visualizar a localização do colaborador em tempo real.
@@ -68,6 +71,11 @@
   - [ ] Colaborador pode ter múltiplas funções na mesma rota.
   - [ ] Sistema realiza monitoramento de execução através de check-in, check-out e rastreamento.
 
+- [ ] **Produtos e Orçamentos**
+  - [ ] Deve ser possível cadastrar produto
+  - [ ] Deve ser possível cadastrar  clientes
+  - [ ] Deve ser possível gerar orçamento em pdf
+  - [ ] Deve ser possível importar produtos via Excel
 ---
 
 ## Requisitos Não Funcionais

@@ -25,6 +25,12 @@ model User {
   Permission     Permission[]
   ownedCompanies Company[]     @relation("Owner")
   collaborations UserCompany[]
+
+  createdRotations  Rotation[] @relation("CreatedRotations")
+  assignedRotations Rotation[] @relation("AssignedRotations")
+
+  createdTasks  Task[] @relation("CreatedTasks")
+  assignedTasks Task[] @relation("AssignedTasks")
 }
 
 model Permission {
@@ -50,6 +56,8 @@ model Company {
   ownerId       String
   status        StatusCompany @default(ACTIVE)
   collaborators UserCompany[]
+
+  Task Task[]
 }
 
 model UserCompany {
@@ -63,4 +71,54 @@ model UserCompany {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, companyId])
+}
+
+model Rotation {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy   User   @relation("CreatedRotations", fields: [createdById], references: [id])
+  createdById String // Usuário que criou
+
+  assignedTo   User   @relation("AssignedRotations", fields: [assignedToId], references: [id])
+  assignedToId String // Usuário a quem foi atribuido a rotação
+
+  RotationStop RotationStop[] // Relação com os endereços da rotação
+}
+
+model RotationStop {
+  id         String    @id @default(uuid())
+  address    String
+  sequence   Int // Define a ordem da parada
+  Task       Task[]
+  Rotation   Rotation? @relation(fields: [rotationId], references: [id])
+  rotationId String?
+}
+
+enum TaskStatus {
+  COMPLETED
+  PENDING
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  finishedAt  DateTime?
+  status      TaskStatus @default(PENDING)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  createdBy   User   @relation("CreatedTasks", fields: [createdById], references: [id])
+  createdById String // Usuário que criou a tarefa
+
+  assignedTo   User   @relation("AssignedTasks", fields: [assignedToId], references: [id])
+  assignedToId String // Usuário a quem foi designada a tarefa
+
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId String // Empresa à qual a tarefa pertence
+
+  RotationStop   RotationStop? @relation(fields: [rotationStopId], references: [id])
+  rotationStopId String?
 }
