@@ -37,10 +37,14 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.13.8",
+    "install": "0.13.0",
+    "npm": "11.2.0",
     "prisma": "6.4.1",
+    "supertest": "7.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "3.0.8"
   }
 }
