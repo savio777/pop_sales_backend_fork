@@ -26,6 +26,8 @@
   - [X] Empresa pode relacionar serviços a uma rotação.
   <!-- serviço e rotação ja estara relacionadas ao usuario uma vez criada -->
   <!-- - [ ] Empresa pode atribuir atividades a colaboradores (serviços e rotações). -->
+
+- [ ] **Teste de integração e unitarios**
   
 - [ ] **Monitoramento e Rastreamento**
   - [ ] Empresa pode visualizar a localização do colaborador em tempo real.
@@ -69,6 +71,11 @@
   - [ ] Colaborador pode ter múltiplas funções na mesma rota.
   - [ ] Sistema realiza monitoramento de execução através de check-in, check-out e rastreamento.
 
+- [ ] **Produtos e Orçamentos**
+  - [ ] Deve ser possível cadastrar produto
+  - [ ] Deve ser possível cadastrar  clientes
+  - [ ] Deve ser possível gerar orçamento em pdf
+  - [ ] Deve ser possível importar produtos via Excel
 ---
 
 ## Requisitos Não Funcionais
