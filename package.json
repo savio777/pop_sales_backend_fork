@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "test": "vitest",
+    "test": "vitest --run",
     "dev": "tsx watch src/server.ts",
     "build": "tsup src --out-dir dist"
   },
