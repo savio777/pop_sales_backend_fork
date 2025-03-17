@@ -1,20 +1,14 @@
-import { defineConfig } from 'vitest/config'
-import dotenv from 'dotenv'
+import { defineConfig } from 'vite';
+import dotenv from 'dotenv';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
-dotenv.config()
-
-if (process.env.NODE_ENV === 'test' && process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = process.env.DATABASE_URL.replace('public', 'test')
-}
-
-if (process.env.NODE_ENV === 'test' && process.env.DATABASE_URL && process.env.DATABASE_URL.includes('public')) {
-  throw new Error('Não é possível testar com o banco de dados de produção (schema "public")')
-}
+dotenv.config();
 
 export default defineConfig({
-  test: {
-    environment: 'node',
-    globals: true,
-    setupFiles: [],
+  plugins: [tsconfigPaths()],
+  resolve: {
+    alias: {
+      '@': '/src', 
+    },
   },
-})
+});
