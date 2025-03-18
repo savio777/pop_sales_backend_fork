@@ -22,8 +22,9 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const company = this.company.find(i => i.id === id)
     return company || null
   }
-  findByName(name: string): Promise<Company | null> {
-    throw new Error("Method not implemented.");
+  async findByName(name: string): Promise<Company | null> {
+    const company = this.company.find(i => i.name === name)
+    return company || null
   }
   update({ id, data }: { id: string; data: Prisma.CompanyUpdateInput; }): Promise<Company | null> {
     throw new Error("Method not implemented.");
