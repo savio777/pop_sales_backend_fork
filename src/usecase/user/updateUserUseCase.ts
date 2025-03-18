@@ -1,4 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { UserRepository } from "@/repository/userRepository";
 
 interface UpdateUserInputs {
@@ -22,11 +22,10 @@ export class UpdateUserUseCase {
     })
 
     if(!user){
-      throw new Error("não foi possivel atualizar os dados do usuário")
+      throw new NotFoundError("não foi possivel atualizar os dados do usuário")
     }
   
     const { password, ...userWithoutPassword } = user!
     return {user: userWithoutPassword}
-
   }
 }
