@@ -18,8 +18,9 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     return company
   }
   
-  getById(id: string): Promise<Company | null> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<Company | null> {
+    const company = this.company.find(i => i.id === id)
+    return company || null
   }
   findByName(name: string): Promise<Company | null> {
     throw new Error("Method not implemented.");

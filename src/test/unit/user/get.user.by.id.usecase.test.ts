@@ -1,30 +1,31 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { GetUserByEmailUseCase } from "@/usecase/user/getUserByEmailUseCase";
 import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserRepository";
+import { GetUserByIdUseCase } from "@/usecase/user/getUserByIdUseCase";
+import { randomUUID } from "crypto";
 import { NotFoundError } from "@/error/notfound.error";
 
-describe("Get user by email", () => {
-  let sut: GetUserByEmailUseCase;
+describe("Get user by id", () => {
+  let sut: GetUserByIdUseCase;
   let userRepository: InMemoryUserRepository;
 
 
   beforeEach(async () => {
     userRepository = new InMemoryUserRepository();
-    sut = new GetUserByEmailUseCase(userRepository);
+    sut = new GetUserByIdUseCase(userRepository);
   });
 
 
-  it("should be able get user with email", async () => {
+  it("should be able get user by id", async () => {
     const email = "teste@email.com";
     const name = "test";
     const password = "test";
     const phone = "99999999";
 
-    await userRepository.create({
+    const userCreated = await userRepository.create({
       email, name, password, phone
     })
 
-    const user = await sut.execute(email)
+    const user = await sut.execute(userCreated.id)
 
     expect(user).toMatchObject({
       user: {
@@ -36,13 +37,12 @@ describe("Get user by email", () => {
     });
   });
 
+  it("should not be able get user if not exist user with id", async () => {
+    const idNotExist = randomUUID()
 
-  it("should not be able to get user with email that does not exist", async () => {
     await expect(
-      sut.execute("emailNotExist@teste.com")
-    ).rejects.toBeInstanceOf(NotFoundError);
+      sut.execute(idNotExist)
+    ).rejects.toBeInstanceOf(NotFoundError)
   });
-    
-
 
 });
