@@ -29,8 +29,14 @@ export class InMemoryCompanyRepository implements CompanyRepository {
   update({ id, data }: { id: string; data: Prisma.CompanyUpdateInput; }): Promise<Company | null> {
     throw new Error("Method not implemented.");
   }
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<void> {
+    const index = this.company.findIndex((i) => i.id === id);
+    
+    if (index === -1) {
+      throw new Error("User not found");
+    }
+  
+    this.company.splice(index, 1);
   }
   list({ userId, limit, page }: { userId: string; page: number; limit: number; }): Promise<Company[]> {
     throw new Error("Method not implemented.");
