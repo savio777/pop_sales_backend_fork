@@ -28,7 +28,7 @@ describe("Delete company usecase", () => {
 
   })
 
-  it("should be able delete company", async () => {
+  it("should not be able delete company if id not exist", async () => {
    
     const companyId = randomUUID()
 

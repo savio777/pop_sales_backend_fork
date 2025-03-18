@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/error/notfound.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 
 export class FindCompanyByNameUseCase {
@@ -7,6 +8,10 @@ export class FindCompanyByNameUseCase {
 
   async execute(name: string){
     const company = await this.companyRepository.findByName(name)
+    if(!company){
+      throw new NotFoundError("company not exist with name")
+    }
+    
     return {company}
   }
 }
