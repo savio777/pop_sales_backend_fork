@@ -5,15 +5,19 @@ import { randomUUID } from "crypto";
 export class InMemoryCompanyRepository implements CompanyRepository {
   private company: Company[] = []
 
-  create(data: Prisma.CompanyCreateInput): Promise<Company> {
+  async create(data: Prisma.CompanyCreateInput): Promise<Company> {
     const company: Company = {
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
       name: data.name,
-      ownerId: data.
+      status: data.status ?? "ACTIVE",
     }
+    this.company.push(company)
+
+    return company
   }
+  
   getById(id: string): Promise<Company | null> {
     throw new Error("Method not implemented.");
   }
