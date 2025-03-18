@@ -24,6 +24,13 @@ export class CreateUserCompanyUseCase {
       throw new BadRequestError("company not exist")
     }
 
+    const userCompanyExist = await this.userCompanyRepository.getByUserIdAndCompanyId({
+      companyId, userId
+    })
+    if(userCompanyExist){
+      throw new BadRequestError("userCompany already exist")
+    }
+
     const userCompany = await this.userCompanyRepository.create({userId, companyId})
 
     return {userCompany}

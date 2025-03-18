@@ -6,6 +6,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
 
   private userCompany: UserCompany[] = []
 
+
   async create({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
     const userCompany: UserCompany = {
       companyId,
@@ -21,11 +22,19 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
   remove(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getByUserIdAndCompanyId({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany | null> {
-    throw new Error("Method not implemented.");
+  async getByUserIdAndCompanyId({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany | null> {
+    const userCompany = this.userCompany.find(i => i.companyId === companyId && i.userId === userId)
+    if(!userCompany){
+      return null
+    }
+    return userCompany
   }
-  getById(id: string): Promise<UserCompany | null> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<UserCompany | null> {
+    const userCompany = this.userCompany.find(i => i.id === id)
+    if(!userCompany){
+      return null
+    }
+    return userCompany
   }
 
 

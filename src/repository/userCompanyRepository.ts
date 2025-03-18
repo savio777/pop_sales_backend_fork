@@ -11,5 +11,6 @@ export interface UserCompanyRepository {
     {userId: string, companyId: string}
   ): Promise<UserCompany | null>
   getById(id: string): Promise<UserCompany | null>
+  getByUserIdAndCompanyId({companyId, userId}:{userId: string, companyId: string}): Promise<UserCompany | null>
 
 }
