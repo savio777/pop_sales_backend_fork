@@ -1,5 +1,4 @@
 import { randomUUID } from "crypto";
-import { db } from "../../../lib/prisma";
 import { PrismaCompanyRepository } from "../../../repository/prisma/prismaCompanyRepository";
 import { PrismaUserCompanyRepository } from "../../../repository/prisma/prismaUserCompanyRepository";
 import { PrismaUserRepository } from "../../../repository/prisma/prismaUserRepository";
@@ -7,6 +6,8 @@ import { CreateUserUseCase } from "../../../usecase/user/createUserUseCase";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BadRequestError } from "@/error/badRequest.error";
 import { ConflictError } from "@/error/conflict.error";
+import { execSync } from 'child_process';
+import { db } from "@/lib/prisma";
 
 describe("Create user use case", () => {
   let sut: CreateUserUseCase;
@@ -14,24 +15,21 @@ describe("Create user use case", () => {
   let companyRepository: PrismaCompanyRepository;
   let userCompanyRepository: PrismaUserCompanyRepository;
 
-beforeEach(async () => {
-  await db.$transaction([
-    db.userCompany.deleteMany(),
-    db.company.deleteMany(),
-    db.user.deleteMany(),
-  ]);
+  beforeEach(async () => {
+    userRepository = new PrismaUserRepository();
+    companyRepository = new PrismaCompanyRepository();
+    userCompanyRepository = new PrismaUserCompanyRepository();
 
-  userRepository = new PrismaUserRepository();
-  companyRepository = new PrismaCompanyRepository();
-  userCompanyRepository = new PrismaUserCompanyRepository();
+    sut = new CreateUserUseCase(
+      userRepository,
+      companyRepository,
+      userCompanyRepository
+    );
 
-  sut = new CreateUserUseCase(
-    userRepository,
-    companyRepository,
-    userCompanyRepository
-  );
-});
-
+    execSync('npx prisma migrate reset --force', { stdio: 'inherit' });
+    execSync('npx prisma migrate deploy', { stdio: 'inherit' });  
+    execSync('npx prisma db seed', { stdio: 'inherit' });  
+  });
 
   it("should be able to create a new user", async () => {
     const userOwner = await db.user.create({
@@ -49,10 +47,10 @@ beforeEach(async () => {
       },
     });
 
-    const email = "teste@email.com"
-    const name = "test"
-    const password = "test"
-    const phone = "99999999"
+    const email = "teste@email.com";
+    const name = "test";
+    const password = "test";
+    const phone = "99999999";
 
     const result = await sut.execute({
       companyId: company.id,
@@ -107,10 +105,10 @@ beforeEach(async () => {
       },
     });
 
-    const email = "teste@email.com"
-    const name = "test"
-    const password = "test"
-    const phone = "99999999"
+    const email = "teste@email.com";
+    const name = "test";
+    const password = "test";
+    const phone = "99999999";
 
     await sut.execute({
       companyId: company.id,
@@ -128,7 +126,6 @@ beforeEach(async () => {
         password,
         phone,
       })
-    ).rejects.toThrowError(ConflictError)
-  })
-  
+    ).rejects.toThrowError(ConflictError);
+  });
 });

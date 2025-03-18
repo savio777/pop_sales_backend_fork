@@ -1,7 +1,8 @@
-import { db } from "../../../lib/prisma";
 import { PrismaUserRepository } from "../../../repository/prisma/prismaUserRepository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { GetUserByEmailUseCase } from "@/usecase/user/getUserByEmailUseCase";
+import { execSync } from "child_process";
+import { db } from "@/lib/prisma";
 
 describe("Get user by email", () => {
   let sut: GetUserByEmailUseCase;
@@ -9,15 +10,15 @@ describe("Get user by email", () => {
 
 
   beforeEach(async () => {
-    await db.$transaction([
-      db.userCompany.deleteMany(),
-      db.company.deleteMany(),
-      db.user.deleteMany(),
-    ]);
-
     userRepository = new PrismaUserRepository();
     sut = new GetUserByEmailUseCase(userRepository);
+
+    execSync('npx prisma migrate reset --force', { stdio: 'inherit' });
+    execSync('npx prisma migrate deploy', { stdio: 'inherit' });  
+    execSync('npx prisma db seed', { stdio: 'inherit' });  
   });
+
+
 
   it("should be able get user with email", async () => {
     const email = "teste@email.com";
