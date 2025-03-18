@@ -1,22 +1,22 @@
 import { randomUUID } from "crypto";
-import { PrismaCompanyRepository } from "../../../repository/prisma/prismaCompanyRepository";
-import { PrismaUserCompanyRepository } from "../../../repository/prisma/prismaUserCompanyRepository";
-import { PrismaUserRepository } from "../../../repository/prisma/prismaUserRepository";
 import { CreateUserUseCase } from "../../../usecase/user/createUserUseCase";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BadRequestError } from "@/error/badRequest.error";
 import { ConflictError } from "@/error/conflict.error";
+import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserRepository";
+import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
+import { InMemoryUserCompanyRepository } from "@/repository/inMemory/inMemoryUserCompanyRepository";
 
 describe("Create user use case", () => {
   let sut: CreateUserUseCase;
-  let userRepository: PrismaUserRepository;
-  let companyRepository: PrismaCompanyRepository;
-  let userCompanyRepository: PrismaUserCompanyRepository;
+  let userRepository: InMemoryUserRepository;
+  let companyRepository: InMemoryCompanyRepository;
+  let userCompanyRepository: InMemoryUserCompanyRepository;
 
   beforeEach(async () => {
-    userRepository = new PrismaUserRepository();
-    companyRepository = new PrismaCompanyRepository();
-    userCompanyRepository = new PrismaUserCompanyRepository();
+    userRepository = new InMemoryUserRepository();
+    companyRepository = new InMemoryCompanyRepository();
+    userCompanyRepository = new InMemoryUserCompanyRepository();
 
     sut = new CreateUserUseCase(
       userRepository,
@@ -27,27 +27,16 @@ describe("Create user use case", () => {
 
 
   it("should be able to create a new user", async () => {
+    const company = await companyRepository.create({
+      name: "Company Test",
+      status: "ACTIVE"
+    });
+
     const email = "teste@email.com";
     const name = "test";
     const password = "test";
     const phone = "99999999";
 
-    const userOwner = await companyRepository.create({
-      name: "owner",
-      email: "owner@email.com",
-      password: "asdfghjklç",
-      
-    });
-
-    // Criação da empresa associando o dono
-    const company = await db.company.create({
-      data: {
-        name: "Company Test",
-        owner: { connect: { id: userOwner.id } }, // Conectando o dono corretamente
-      },
-    });
-
-    // Criando o novo usuário
     const result = await sut.execute({
       companyId: company.id,
       email,
@@ -71,7 +60,6 @@ describe("Create user use case", () => {
     const name = "test";
     const password = "test";
     const phone = "99999999";
-
     const companyIdNotExist = randomUUID();
 
     await expect(
@@ -86,19 +74,9 @@ describe("Create user use case", () => {
   });
 
   it("should not be able to create a new user with email already exist", async () => {
-    const userOwner = await db.user.create({
-      data: {
-        name: "teste",
-        email: "teste@gmail.com",
-        password: "12345",
-      },
-    });
-
-    const company = await db.company.create({
-      data: {
-        name: "Company Test",
-        owner: { connect: { id: userOwner.id } },
-      },
+    const company = await companyRepository.create({
+      name: "Company Test",
+      status: "ACTIVE"
     });
 
     const email = "teste@email.com";
@@ -106,7 +84,6 @@ describe("Create user use case", () => {
     const password = "test";
     const phone = "99999999";
 
-    // Criando o primeiro usuário
     await sut.execute({
       companyId: company.id,
       email,
@@ -115,7 +92,6 @@ describe("Create user use case", () => {
       phone,
     });
 
-    // Tentando criar o segundo usuário com o mesmo email
     await expect(
       sut.execute({
         companyId: company.id,
@@ -124,6 +100,6 @@ describe("Create user use case", () => {
         password,
         phone,
       })
-    ).rejects.toThrow(ConflictError); // Verificando se é o erro de conflito
+    ).rejects.toThrow(ConflictError); 
   });
 });
