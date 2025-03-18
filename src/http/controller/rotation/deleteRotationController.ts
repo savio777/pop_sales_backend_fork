@@ -1,6 +1,6 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
-import { PrismaRotationStopRepository } from "@/repository/prisma/prismaRotationStopRepository";
+import { PrismaRotationStopRepository } from "@/repository/prisma/prismaStopRepository";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { DeleteRotationUseCase } from "@/usecase/rotation/deleteRotationUseCase";

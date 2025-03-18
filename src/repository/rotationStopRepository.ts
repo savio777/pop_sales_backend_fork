@@ -1,9 +1,9 @@
-import { Prisma, RotationStop } from "@prisma/client";
+import { Prisma, Stop } from "@prisma/client";
 
 export interface RotationStopRepository {
-  create(data: Prisma.RotationStopCreateInput): Promise<RotationStop>
-  getById(id: string): Promise<RotationStop | null>
-  getByRotationId(id: string): Promise<RotationStop[] | null>
-  update({id, data}:{id: string, data: Prisma.RotationStopUpdateInput}): Promise<RotationStop>
+  create(data: Prisma.StopCreateInput): Promise<Stop>
+  getById(id: string): Promise<Stop | null>
+  getByRotationId(id: string): Promise<Stop[] | null>
+  update({id, data}:{id: string, data: Prisma.StopUpdateInput}): Promise<Stop>
   delete(id: string): Promise<void>
 }

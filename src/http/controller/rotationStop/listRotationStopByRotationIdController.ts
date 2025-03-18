@@ -1,4 +1,4 @@
-import { PrismaRotationStopRepository } from "@/repository/prisma/prismaRotationStopRepository";
+import { PrismaRotationStopRepository } from "@/repository/prisma/prismaStopRepository";
 import { ListRotationStopByRotationIdUseCase } from "@/usecase/rotationStop/listRotationStopByRotationIdUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
