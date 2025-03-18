@@ -4,20 +4,19 @@ interface ListUserCompany {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  user: {
-      id: string;
-      name: string;
-      phone: string | null;
-      email: string;
-      status: $Enums.StatusUser;
-  };
-  company: {
-      id: string;
-      name: string;
-      status: $Enums.StatusCompany;
-      ownerId: string;
-  };
-}[]
+  Company: {
+    id: string;
+    name: string;
+    status: $Enums.StatusCompany;
+  } | null;
+  User: {
+    id: string;
+    name: string;
+    phone: string | null;
+    email: string;
+    status: $Enums.StatusUser;
+  } | null;
+}
 
 export interface UserCompanyRepository {
   create(

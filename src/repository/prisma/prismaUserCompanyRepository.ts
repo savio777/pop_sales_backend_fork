@@ -6,30 +6,33 @@ interface ListUserCompany {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  user: {
-      id: string;
-      name: string;
-      phone: string | null;
-      email: string;
-      status: $Enums.StatusUser;
-  };
-  company: {
-      id: string;
-      name: string;
-      status: $Enums.StatusCompany;
-      ownerId: string;
-  };
-}[]
-
+  Company: {
+    id: string;
+    name: string;
+    status: $Enums.StatusCompany;
+  } | null;
+  User: {
+    id: string;
+    name: string;
+    phone: string | null;
+    email: string;
+    status: $Enums.StatusUser;
+  } | null;
+}
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
-  async list(
-    { companyId, limit, page }:
-    { companyId: string; page: number; limit: number; }
-  ): Promise<ListUserCompany[]> {
+  async list({
+    companyId,
+    limit,
+    page,
+  }: {
+    companyId: string;
+    page: number;
+    limit: number;
+  }): Promise<ListUserCompany[]> {
     const userCompanies = await db.userCompany.findMany({
       where: {
-        companyId
+        companyId,
       },
       take: limit,
       skip: (page - 1) * limit,
@@ -37,65 +40,73 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
         id: true,
         createdAt: true,
         updatedAt: true,
-        user: {
+        User: {
           select: {
             id: true,
             name: true,
             email: true,
             phone: true,
-            status: true
-          }
+            status: true,
+          },
         },
-        company: {
+        Company: {
           select: {
             id: true,
             name: true,
             status: true,
-            ownerId: true
-          }
-        }
-      }
-    })
-    return userCompanies
+          },
+        },
+      },
+    });
+
+    return userCompanies;
   }
-  
-  async getByUserIdAndCompanyId(
-    { userId, companyId }:
-    { userId: string; companyId: string; }
-  ): Promise<UserCompany | null> {
-   const userCompany = await db.userCompany.findFirst({
-    where: {
-      AND: {
-        userId,
-        companyId
-      }
-    }
-   })
-   return userCompany
+
+  async getByUserIdAndCompanyId({
+    userId,
+    companyId,
+  }: {
+    userId: string;
+    companyId: string;
+  }): Promise<UserCompany | null> {
+    const userCompany = await db.userCompany.findFirst({
+      where: {
+        AND: {
+          userId,
+          companyId,
+        },
+      },
+    });
+    return userCompany;
   }
   async getById(id: string): Promise<UserCompany | null> {
     const userCompany = await db.userCompany.findUnique({
       where: {
-        id
-      }
-    })
-    return userCompany
+        id,
+      },
+    });
+    return userCompany;
   }
-  async create({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
-   const userCompany = await db.userCompany.create({
-    data: {
-      userId,
-      companyId
-    }
-   })
-   return userCompany
+  async create({
+    userId,
+    companyId,
+  }: {
+    userId: string;
+    companyId: string;
+  }): Promise<UserCompany> {
+    const userCompany = await db.userCompany.create({
+      data: {
+        userId,
+        companyId,
+      },
+    });
+    return userCompany;
   }
   async remove(id: string): Promise<void> {
     await db.userCompany.delete({
       where: {
-       id
-      }
-     })
+        id,
+      },
+    });
   }
-  
 }
