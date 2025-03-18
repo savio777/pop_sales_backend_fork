@@ -6,8 +6,6 @@ import { CreateUserUseCase } from "../../../usecase/user/createUserUseCase";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BadRequestError } from "@/error/badRequest.error";
 import { ConflictError } from "@/error/conflict.error";
-import { execSync } from 'child_process';
-import { db } from "@/lib/prisma";
 
 describe("Create user use case", () => {
   let sut: CreateUserUseCase;
@@ -25,33 +23,31 @@ describe("Create user use case", () => {
       companyRepository,
       userCompanyRepository
     );
-
-    execSync('npx prisma migrate reset --force', { stdio: 'inherit' });
-    execSync('npx prisma migrate deploy', { stdio: 'inherit' });  
-    execSync('npx prisma db seed', { stdio: 'inherit' });  
   });
 
+
   it("should be able to create a new user", async () => {
-    const userOwner = await db.user.create({
-      data: {
-        name: "teste",
-        email: "teste@gmail.com",
-        password: "12345",
-      },
-    });
-
-    const company = await db.company.create({
-      data: {
-        name: "Company Test",
-        owner: { connect: { id: userOwner.id } },
-      },
-    });
-
     const email = "teste@email.com";
     const name = "test";
     const password = "test";
     const phone = "99999999";
 
+    const userOwner = await companyRepository.create({
+      name: "owner",
+      email: "owner@email.com",
+      password: "asdfghjklç",
+      
+    });
+
+    // Criação da empresa associando o dono
+    const company = await db.company.create({
+      data: {
+        name: "Company Test",
+        owner: { connect: { id: userOwner.id } }, // Conectando o dono corretamente
+      },
+    });
+
+    // Criando o novo usuário
     const result = await sut.execute({
       companyId: company.id,
       email,
@@ -65,7 +61,7 @@ describe("Create user use case", () => {
         id: expect.any(String),
         email,
         name,
-        phone
+        phone,
       },
     });
   });
@@ -75,9 +71,9 @@ describe("Create user use case", () => {
     const name = "test";
     const password = "test";
     const phone = "99999999";
-  
+
     const companyIdNotExist = randomUUID();
-  
+
     await expect(
       sut.execute({
         companyId: companyIdNotExist,
@@ -86,7 +82,7 @@ describe("Create user use case", () => {
         password,
         phone,
       })
-    ).rejects.toThrowError(BadRequestError);
+    ).rejects.toThrow(BadRequestError);
   });
 
   it("should not be able to create a new user with email already exist", async () => {
@@ -110,6 +106,7 @@ describe("Create user use case", () => {
     const password = "test";
     const phone = "99999999";
 
+    // Criando o primeiro usuário
     await sut.execute({
       companyId: company.id,
       email,
@@ -118,6 +115,7 @@ describe("Create user use case", () => {
       phone,
     });
 
+    // Tentando criar o segundo usuário com o mesmo email
     await expect(
       sut.execute({
         companyId: company.id,
@@ -126,6 +124,6 @@ describe("Create user use case", () => {
         password,
         phone,
       })
-    ).rejects.toThrowError(ConflictError);
+    ).rejects.toThrow(ConflictError); // Verificando se é o erro de conflito
   });
 });
