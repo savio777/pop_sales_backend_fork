@@ -1,8 +1,6 @@
 import { randomUUID } from "crypto";
-import { CreateUserUseCase } from "../../../usecase/user/createUserUseCase";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BadRequestError } from "@/error/badRequest.error";
-import { ConflictError } from "@/error/conflict.error";
 import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryUserCompanyRepository } from "@/repository/inMemory/inMemoryUserCompanyRepository";
@@ -111,5 +109,4 @@ describe("Create userCompany use case", () => {
       })
     ).rejects.instanceOf(BadRequestError)
   })
-
 });

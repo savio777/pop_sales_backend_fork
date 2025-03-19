@@ -9,7 +9,6 @@ describe("Update user use case", () => {
   let sut: UpdateUserUseCase
   let userRepository: InMemoryUserRepository;
   let companyRepository: InMemoryCompanyRepository;
-  
 
   beforeEach(async () => {
     userRepository = new InMemoryUserRepository();

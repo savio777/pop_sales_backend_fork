@@ -13,7 +13,6 @@ describe("Get user by email", () => {
     sut = new GetUserByEmailUseCase(userRepository);
   });
 
-
   it("should be able get user with email", async () => {
     const email = "teste@email.com";
     const name = "test";
@@ -36,13 +35,9 @@ describe("Get user by email", () => {
     });
   });
 
-
   it("should not be able to get user with email that does not exist", async () => {
     await expect(
       sut.execute("emailNotExist@teste.com")
     ).rejects.toBeInstanceOf(NotFoundError);
   });
-    
-
-
 });

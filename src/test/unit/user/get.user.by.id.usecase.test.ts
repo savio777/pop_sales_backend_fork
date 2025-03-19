@@ -8,12 +8,10 @@ describe("Get user by id", () => {
   let sut: GetUserByIdUseCase;
   let userRepository: InMemoryUserRepository;
 
-
   beforeEach(async () => {
     userRepository = new InMemoryUserRepository();
     sut = new GetUserByIdUseCase(userRepository);
   });
-
 
   it("should be able get user by id", async () => {
     const email = "teste@email.com";
@@ -44,5 +42,4 @@ describe("Get user by id", () => {
       sut.execute(idNotExist)
     ).rejects.toBeInstanceOf(NotFoundError)
   });
-
 });

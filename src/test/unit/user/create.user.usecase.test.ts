@@ -25,7 +25,6 @@ describe("Create user use case", () => {
     );
   });
 
-
   it("should be able to create a new user", async () => {
     const company = await companyRepository.create({
       name: "Company Test",

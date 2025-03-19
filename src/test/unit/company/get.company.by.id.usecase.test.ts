@@ -39,5 +39,4 @@ describe("Get company by id", () => {
       sut.execute(companyId)
     ).rejects.instanceOf(NotFoundError)
   })
-
 })

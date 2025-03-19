@@ -8,7 +8,6 @@ describe("Delete company usecase", () => {
   let sut: DeleteCompanyUdeCase
   let companyRepository: InMemoryCompanyRepository;
   
-
   beforeEach(async () => {
     companyRepository = new InMemoryCompanyRepository();
 
@@ -37,5 +36,4 @@ describe("Delete company usecase", () => {
     ).rejects.instanceOf(BadRequestError)
 
   })
-
 })
