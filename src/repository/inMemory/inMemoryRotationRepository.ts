@@ -16,14 +16,32 @@ export class InMemoryRotationRepository implements RotationRepository {
     this.rotation.push(rotation)
     return rotation
   }
-  getById(id: string): Promise<Rotation | null> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<Rotation | null> {
+    const rotation = this.rotation.find(i => i.id === id)
+    return rotation || null
   }
-  update({ id, data }: { id: string; data: Prisma.RotationUpdateInput; }): Promise<Rotation> {
-    throw new Error("Method not implemented.");
+  async update({ id, data }: { id: string; data: Prisma.RotationUpdateInput; }): Promise<Rotation> {
+    const index = this.rotation.findIndex(i => i.id === id);
+    if (index === -1) {
+      throw new Error("Rotation not found.");
+    }
+
+    this.rotation[index] = {
+      ...this.rotation[index],
+      ...data,
+      updatedAt: new Date()
+    } as Rotation;
+
+    return this.rotation[index];
   }
-  delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(id: string): Promise<void> {
+    const index = this.rotation.findIndex(i => i.id === id)
+
+    if (index === -1) {
+      throw new Error("Rotation not found.");
+    }
+
+    this.rotation.splice(index, 1); 
   }
 
 }

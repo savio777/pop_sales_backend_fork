@@ -11,7 +11,7 @@ export interface TaskRepository {
   delete(id: string): Promise<void>
   listByStopId(    
     {limit, page, stopId}:
-    {stopId: string, page: number, limit: number}
+    {stopId: string, page?: number, limit?: number}
   ): Promise<Task[] | null>
   getById(id: string): Promise<Task | null>
 }

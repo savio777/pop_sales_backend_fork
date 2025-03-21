@@ -23,7 +23,9 @@ export class DeleteRotationUseCase {
     const stops = await this.stopRepository.getByRotationId(rotation.id)
     if (stops?.length) {
       for (const stop of stops) {
-        const tasks = await this.taskRepository.listByStopId(stop.id);
+        const tasks = await this.taskRepository.listByStopId({
+          stopId: stop.id
+        });
         
         if (tasks?.length) {
           await Promise.all(tasks.map(task => this.taskRepository.delete(task.id)));
