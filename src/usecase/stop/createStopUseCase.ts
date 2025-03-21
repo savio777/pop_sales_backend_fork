@@ -14,7 +14,8 @@ export class CreateStopUseCase {
   ){}
 
   async execute(
-    {stop, rotationId}:{ stop: RotationsStops, rotationId: string}
+    {stop, rotationId}:
+    { stop: RotationsStops, rotationId: string}
   ){
 
     const rotation = await this.rotationRepository.getById(rotationId)
@@ -25,6 +26,7 @@ export class CreateStopUseCase {
     let stopCreateds = await this.stopRepository.create({
       address: stop.address,
       sequence: stop.sequence,
+      Rotation: {connect: {id: rotationId}}
     })
     
     return {stop: stopCreateds}
