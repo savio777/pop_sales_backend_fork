@@ -78,7 +78,7 @@
   - [ ] Deve ser possível importar produtos via Excel
 
 - [] **Entrega e identificação de pedido**
-  - [ ] deve ser possível identificar o pedido de entrega pelo numero pedido ou nota fiscal
+  - [ ] deve ser possível identificar o pedido de entrega pelo numero pedido ou nota fiscal, deve ser registrado pelo gestor na criação do pedido
 ---
 
 ## Requisitos Não Funcionais

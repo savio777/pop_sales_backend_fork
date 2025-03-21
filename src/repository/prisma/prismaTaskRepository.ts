@@ -4,11 +4,16 @@ import { db } from "@/lib/prisma";
 
 
 export class PrismaTaskRepository implements TaskRepository {
-  async listByStopId(stopId: string): Promise<Task[] | null> {
+  async listByStopId(
+    {limit, page, stopId}:
+    {stopId: string, page: number, limit: number}
+  ): Promise<Task[] | null> {
     const task = await db.task.findMany({
       where: {
         stopId
-      }
+      },
+      skip: (page - 1) * limit, 
+      take: limit
     })
     return task
   }
