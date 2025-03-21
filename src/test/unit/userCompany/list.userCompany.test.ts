@@ -3,6 +3,8 @@ import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserReposi
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryUserCompanyRepository } from "@/repository/inMemory/inMemoryUserCompanyRepository";
 import { ListUserCompanyUseCase } from "@/usecase/userCompany/listUserCompanyUseCase";
+import { randomUUID } from "crypto";
+import { NotFoundError } from "@/error/notfound.error";
 
 describe("List userCompany use case", () => {
   let sut: ListUserCompanyUseCase;
@@ -16,7 +18,8 @@ describe("List userCompany use case", () => {
     userCompanyRepository = new InMemoryUserCompanyRepository();
 
     sut = new ListUserCompanyUseCase(
-      userCompanyRepository
+      userCompanyRepository,
+      companyRepository
     );
   });
 
@@ -33,7 +36,7 @@ describe("List userCompany use case", () => {
       password: "asdfghj"
     })
 
-    const userCompany = await userCompanyRepository.create({
+    await userCompanyRepository.create({
       companyId: company.id,
       userId: user.id
     })
@@ -44,6 +47,28 @@ describe("List userCompany use case", () => {
       page: 1
     })
 
-    expect(result)
+    expect(result.userCompanies).toMatchObject([
+      {
+        id: expect.any(String),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+        companyId: expect.any(String),
+        userId: expect.any(String),
+      }
+    ])
+    
+  });
+
+  it("should not be able list user with company id not exist", async () => {
+    const companyIdNotExist = randomUUID()
+
+    await expect(
+      sut.execute({
+        companyId: companyIdNotExist,
+        limit: 200,
+        page: 1
+      })
+    ).rejects.instanceOf(NotFoundError)
+    
   });
 });
