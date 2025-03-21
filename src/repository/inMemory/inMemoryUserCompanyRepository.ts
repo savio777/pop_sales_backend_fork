@@ -3,10 +3,20 @@ import { UserCompanyRepository } from "../userCompanyRepository";
 import { randomUUID } from "crypto";
 
 export class InMemoryUserCompanyRepository implements UserCompanyRepository{
-
+  
   private userCompany: UserCompany[] = []
+  
+  async list(
+    { companyId, limit, page }:
+    { companyId: string; limit: number; page: number; }
+  ): Promise<UserCompany[]> {
+    const userCompanies = this.userCompany.filter(i => i.companyId === companyId);
 
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
 
+    return userCompanies.slice(startIndex, endIndex);
+  }
   async create({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
     const userCompany: UserCompany = {
       companyId,

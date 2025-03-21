@@ -21,47 +21,19 @@ interface ListUserCompany {
 }
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
-  async list({
-    companyId,
-    limit,
-    page,
-  }: {
-    companyId: string;
-    page: number;
-    limit: number;
-  }): Promise<ListUserCompany[]> {
+  async list(
+    { companyId, limit, page }: 
+    { companyId: string; limit: number; page: number; }
+  ): Promise<UserCompany[]> {
     const userCompanies = await db.userCompany.findMany({
-      where: {
-        companyId,
-      },
-      take: limit,
-      skip: (page - 1) * limit,
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        User: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            phone: true,
-            status: true,
-          },
-        },
-        Company: {
-          select: {
-            id: true,
-            name: true,
-            status: true,
-          },
-        },
-      },
+      where: { companyId },
+      skip: (page - 1) * limit, 
+      take: limit
     });
-
+  
     return userCompanies;
   }
-
+  
   async getByUserIdAndCompanyId({
     userId,
     companyId,
