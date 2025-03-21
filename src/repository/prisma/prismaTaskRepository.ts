@@ -4,6 +4,14 @@ import { db } from "@/lib/prisma";
 
 
 export class PrismaTaskRepository implements TaskRepository {
+  async listByStopId(stopId: string): Promise<Task[] | null> {
+    const task = await db.task.findMany({
+      where: {
+        stopId
+      }
+    })
+    return task
+  }
 
   async update(
     {id, data}:
@@ -40,14 +48,5 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
     
-  }
-
-  async listByCompany(companyId: string): Promise<Task[] | null> {
-    const tasks = await db.task.findMany({
-      where: {
-        companyId
-      }
-    });
-    return tasks
   }
 }
