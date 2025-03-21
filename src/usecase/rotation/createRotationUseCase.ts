@@ -18,9 +18,7 @@ export class CreateRotationUseCase {
       throw new BadRequestError("company does not exist")
     }
 
-    const rotation = await this.rotationRepository.create({
-      Company: {connect: {id: company.id}}
-    })
+    const rotation = await this.rotationRepository.create(company.id)
 
     return {rotation}
   }
