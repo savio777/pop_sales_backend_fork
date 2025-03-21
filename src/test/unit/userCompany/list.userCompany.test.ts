@@ -70,5 +70,5 @@ describe("List userCompany use case", () => {
       })
     ).rejects.instanceOf(NotFoundError)
     
-  });
+  })
 });

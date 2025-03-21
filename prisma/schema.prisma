@@ -60,9 +60,10 @@ model Company {
   updatedAt DateTime      @updatedAt
   status    StatusCompany @default(ACTIVE)
 
-  users    UserCompany[]
-  tasks    Task[]
-  products Product[]
+  users     UserCompany[]
+  tasks     Task[]
+  products  Product[]
+  rotations Rotation[]
 }
 
 model UserCompany {
@@ -84,8 +85,10 @@ model Rotation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  stops Stop[]
-  users UserRotation[]
+  stops     Stop[]
+  users     UserRotation[]
+  Company   Company?       @relation(fields: [companyId], references: [id])
+  companyId String?
 }
 
 model Stop {

@@ -1,5 +1,5 @@
 import { Prisma, Stop } from "@prisma/client";
-import { RotationStopRepository } from "../rotationStopRepository";
+import { RotationStopRepository } from "../stopRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaRotationStopRepository implements RotationStopRepository {

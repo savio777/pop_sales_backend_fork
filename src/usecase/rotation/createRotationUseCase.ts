@@ -1,30 +1,25 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { CompanyRepository } from "@/repository/companyRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
-import { UserRepository } from "@/repository/userRepository";
 
 export class CreateRotationUseCase {
   constructor(
     private readonly rotationRepository: RotationRepository,
-    private readonly userRepository: UserRepository,
+    private readonly companyRepository: CompanyRepository
   ){}
 
   async execute(
-    {assignedToId, createdById}:
-    {createdById: string, assignedToId: string}
+    {companyId}:
+    {companyId: string}
   ){
-    const userCreated = await this.userRepository.getById(createdById)
-    if(!userCreated){
-      throw new BadRequestError("user created does not exist")
-    }
 
-    const userAssigned = await this.userRepository.getById(assignedToId)
-    if(!userAssigned){
-      throw new BadRequestError("user assigned does not exist")
+    const company = await this.companyRepository.getById(companyId)
+    if(!company){
+      throw new BadRequestError("company does not exist")
     }
 
     const rotation = await this.rotationRepository.create({
-      createdBy: {connect: {id: createdById }},
-      assignedTo: {connect: {id: assignedToId }},
+      Company: {connect: {id: company.id}}
     })
 
     return {rotation}

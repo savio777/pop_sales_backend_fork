@@ -22,10 +22,12 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const company = this.company.find((i) => i.id === id);
     return company || null;
   }
+  
   async findByName(name: string): Promise<Company | null> {
     const company = this.company.find((i) => i.name === name);
     return company || null;
   }
+
   async update({
     id,
     data,
@@ -52,6 +54,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     this.company[index] = updatedCompany;
     return updatedCompany;
   }
+
   async delete(id: string): Promise<void> {
     const index = this.company.findIndex((i) => i.id === id);
 
@@ -61,6 +64,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
 
     this.company.splice(index, 1);
   }
+
   async list({
     userId,
     limit,

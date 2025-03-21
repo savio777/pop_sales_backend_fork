@@ -1,7 +1,7 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
 import { RotationRepository } from "@/repository/rotationRepository";
-import { RotationStopRepository } from "@/repository/rotationStopRepository";
+import { RotationStopRepository } from "@/repository/stopRepository";
 import { TaskRepository } from "@/repository/taskRepository";
 import { UserRepository } from "@/repository/userRepository";
 

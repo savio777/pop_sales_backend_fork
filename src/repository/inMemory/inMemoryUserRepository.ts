@@ -66,5 +66,4 @@ export class InMemoryUserRepository implements UserRepository {
   
     this.user.splice(index, 1);
   }
-  
 }

@@ -17,6 +17,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
 
     return userCompanies.slice(startIndex, endIndex);
   }
+  
   async create({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany> {
     const userCompany: UserCompany = {
       companyId,
@@ -29,6 +30,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
     this.userCompany.push(userCompany)
     return userCompany
   }
+
   async remove(id: string): Promise<void> {
     const index = this.userCompany.findIndex((i) => i.id === id);
     if (index === -1) {
@@ -36,6 +38,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
     }
     this.userCompany.splice(index, 1);
   }
+
   async getByUserIdAndCompanyId({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany | null> {
     const userCompany = this.userCompany.find(i => i.companyId === companyId && i.userId === userId)
     if(!userCompany){
@@ -43,6 +46,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
     }
     return userCompany
   }
+
   async getById(id: string): Promise<UserCompany | null> {
     const userCompany = this.userCompany.find(i => i.id === id)
     if(!userCompany){
@@ -50,6 +54,4 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
     }
     return userCompany
   }
-
-
 }

@@ -1,24 +1,6 @@
 import { db } from "@/lib/prisma";
 import { UserCompanyRepository } from "../userCompanyRepository";
-import { $Enums, UserCompany } from "@prisma/client";
-
-interface ListUserCompany {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  Company: {
-    id: string;
-    name: string;
-    status: $Enums.StatusCompany;
-  } | null;
-  User: {
-    id: string;
-    name: string;
-    phone: string | null;
-    email: string;
-    status: $Enums.StatusUser;
-  } | null;
-}
+import { UserCompany } from "@prisma/client";
 
 export class PrismaUserCompanyRepository implements UserCompanyRepository {
   async list(
@@ -51,6 +33,7 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
     });
     return userCompany;
   }
+
   async getById(id: string): Promise<UserCompany | null> {
     const userCompany = await db.userCompany.findUnique({
       where: {
@@ -59,6 +42,7 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
     });
     return userCompany;
   }
+
   async create({
     userId,
     companyId,
@@ -74,6 +58,7 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
     });
     return userCompany;
   }
+  
   async remove(id: string): Promise<void> {
     await db.userCompany.delete({
       where: {
