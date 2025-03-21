@@ -19,8 +19,12 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
     this.userCompany.push(userCompany)
     return userCompany
   }
-  remove(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async remove(id: string): Promise<void> {
+    const index = this.userCompany.findIndex((i) => i.id === id);
+    if (index === -1) {
+      throw new Error("User not found");
+    }
+    this.userCompany.splice(index, 1);
   }
   async getByUserIdAndCompanyId({ userId, companyId }: { userId: string; companyId: string; }): Promise<UserCompany | null> {
     const userCompany = this.userCompany.find(i => i.companyId === companyId && i.userId === userId)

@@ -61,7 +61,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
 
     this.company.splice(index, 1);
   }
-  list({
+  async list({
     userId,
     limit,
     page,
