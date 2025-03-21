@@ -1,8 +1,8 @@
-import { CompanyRepository } from "@/repository/companyRepository";
+import { BadRequestError } from "@/error/badRequest.error";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
-import { RotationRepository } from "@/repository/rotationRepository";
 import { CreateRotationUseCase } from "@/usecase/rotation/createRotationUseCase";
+import { randomUUID } from "crypto";
 import { beforeEach, describe, expect, it } from "vitest";
 
 describe("Create Rotation", async () => {
@@ -37,5 +37,15 @@ describe("Create Rotation", async () => {
         companyId: company.id
       }
     })
+  })
+
+  it("should not be able create company if company not exist", async () => {
+    const companyIdNotExist = randomUUID()
+
+    await expect(
+      sut.execute({
+        companyId: companyIdNotExist
+      })
+    ).rejects.instanceOf(BadRequestError)
   })
 })
