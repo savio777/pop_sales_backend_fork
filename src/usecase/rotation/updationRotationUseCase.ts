@@ -1,45 +1,50 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
+import { CompanyRepository } from "@/repository/companyRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { UserRepository } from "@/repository/userRepository";
+
+interface UpdateRotation {
+  userId?: string
+  companyId?: string
+}
 
 export class UpdateRotationUseCase {
   constructor(
     private readonly rotationRepository: RotationRepository,
     private readonly userRepository: UserRepository,
+    private readonly companyRepository: CompanyRepository
   ){}
 
   async execute(
-    {assignedToId, createdById, id}:
-    {createdById: string, assignedToId: string, id: string}
+    {id, data}:
+    {id: string, data: UpdateRotation}
   ){
-    const userCreated = await this.userRepository.getById(createdById)
-    if(!userCreated){
-      throw new BadRequestError("user created does not exist")
-    }
-
-    const userAssigned = await this.userRepository.getById(assignedToId)
-    if(!userAssigned){
-      throw new BadRequestError("user assigned does not exist")
-    }
 
     const rotation = await this.rotationRepository.getById(id)
     if(!rotation){
       throw new BadRequestError("rotation does not exist")
     }
 
-    if(rotation.createdById !== createdById){
-      throw new UnauthorizedError("you do not have permission to update this")
+    if(data.companyId){
+      const company = await this.companyRepository.getById(data.companyId)
+      if(!company){
+        throw new BadRequestError("company does not exist")
+      }
+    }
+
+    if(data.userId){
+      const user = await this.userRepository.getById(data.userId)
+      if(!user){
+        throw new BadRequestError("user does not exist")
+      }
     }
 
     const rotationUpdated = await this.rotationRepository.update({
-      id,
+      id, 
       data: {
-        assignedTo: {
-          connect: {
-            id: assignedToId
-          }
-        }
+        ...(data.companyId ? {Company: {connect: {id: data.companyId}} }: {}),
+        ...(data.userId ? {users: {connect: {id: data.userId}}}: {})
       }
     })
 
