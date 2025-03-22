@@ -5,12 +5,13 @@ import { randomUUID } from "crypto";
 export class InMemoryRotationRepository implements RotationRepository {
   private rotation: Rotation[] = []
 
-  async create(companyId: string): Promise<Rotation> {
+  async create({companyId, description}:{companyId: string, description?: string}): Promise<Rotation> {
     const rotation: Rotation = {
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      companyId
+      companyId, 
+      description: description ?? null
     }
 
     this.rotation.push(rotation)

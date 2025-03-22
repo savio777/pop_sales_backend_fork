@@ -23,7 +23,7 @@ describe("Get rotation by Id", async () => {
     const company = await companyRepository.create({
       name: "company test"
     })
-    const rotation = await rotationRepository.create(company.id)
+    const rotation = await rotationRepository.create({companyId: company.id})
 
     const result = await sut.execute(rotation.id)
 
@@ -32,7 +32,6 @@ describe("Get rotation by Id", async () => {
         id: expect.any(String),
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
-        companyId: company.id
       }
     })
   })

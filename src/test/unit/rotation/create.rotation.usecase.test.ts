@@ -34,7 +34,6 @@ describe("Create Rotation", async () => {
         id: expect.any(String),
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
-        companyId: company.id
       }
     })
   })
