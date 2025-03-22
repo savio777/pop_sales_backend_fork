@@ -1,13 +1,9 @@
 import { BadRequestError } from "@/error/badRequest.error";
-import { UnauthorizedError } from "@/error/unauthorized.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { UserRepository } from "@/repository/userRepository";
+import { Prisma } from "@prisma/client";
 
-interface UpdateRotation {
-  userId?: string
-  companyId?: string
-}
 
 export class UpdateRotationUseCase {
   constructor(
@@ -18,7 +14,7 @@ export class UpdateRotationUseCase {
 
   async execute(
     {id, data}:
-    {id: string, data: UpdateRotation}
+    {id: string, data: Prisma.RotationUpdateInput}
   ){
 
     const rotation = await this.rotationRepository.getById(id)
@@ -26,7 +22,7 @@ export class UpdateRotationUseCase {
       throw new BadRequestError("rotation does not exist")
     }
 
-    if(data.companyId){
+    if(data.Company){
       const company = await this.companyRepository.getById(data.companyId)
       if(!company){
         throw new BadRequestError("company does not exist")
@@ -42,11 +38,9 @@ export class UpdateRotationUseCase {
 
     const rotationUpdated = await this.rotationRepository.update({
       id, 
-      data: {
-        ...(data.companyId ? {Company: {connect: {id: data.companyId}} }: {}),
-        ...(data.userId ? {users: {connect: {id: data.userId}}}: {})
-      }
+      data
     })
+    
 
     return {rotation: rotationUpdated}
   }
