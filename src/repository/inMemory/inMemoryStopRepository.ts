@@ -10,6 +10,7 @@ export class InMemoryStopRepositoy implements StopRepository {
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
+      rotationId: (data as any).Rotation?.connect?.id || null,
       ...data
     } as Stop;
 
