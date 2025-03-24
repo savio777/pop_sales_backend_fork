@@ -30,7 +30,10 @@ describe("Delete rotation usecase", async () => {
       name: "company test"
     });
   
-    const rotation = await rotationRepository.create(company.id);
+    const rotation = await rotationRepository.create({
+      companyId: company.id,
+      description: "test"
+    });
   
     await sut.execute({ rotationId: rotation.id });
   
