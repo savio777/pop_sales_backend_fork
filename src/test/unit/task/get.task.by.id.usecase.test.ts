@@ -4,11 +4,12 @@ import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotati
 import { InMemoryStopRepositoy } from "@/repository/inMemory/inMemoryStopRepository";
 import { InMemroyTaskRepository } from "@/repository/inMemory/inMemoryTaskRepository";
 import { DeleteTaskUseCase } from "@/usecase/task/deleteTaskUseCase";
+import { GetTaskByIdUseCase } from "@/usecase/task/getTaskByIdUseCase";
 import { randomUUID } from "crypto";
 import { beforeEach, describe, expect, it } from "vitest";
 
-describe("Delete Task Usecase", async () => {
-  let sut: DeleteTaskUseCase;
+describe("Get task by Id usecase", async () => {
+  let sut: GetTaskByIdUseCase;
   let taskRepository: InMemroyTaskRepository;
   let stopRepository: InMemoryStopRepositoy;
   let rotationRepository: InMemoryRotationRepository;
@@ -19,10 +20,10 @@ describe("Delete Task Usecase", async () => {
     rotationRepository = new InMemoryRotationRepository();
     taskRepository = new InMemroyTaskRepository();
     stopRepository = new InMemoryStopRepositoy();
-    sut = new DeleteTaskUseCase(taskRepository);
+    sut = new GetTaskByIdUseCase(taskRepository);
   });
 
-  it("should be able delete task", async () => {
+  it("should be able get task by id", async () => {
     const company = await companyRepository.create({
       name: "test",
     });
@@ -50,11 +51,21 @@ describe("Delete Task Usecase", async () => {
 
     const result = await sut.execute(task.id);
 
-    expect(result).toBeUndefined();
-
+    expect(result).toMatchObject({
+      task: {
+        id: expect.any(String),
+        title: "test task",
+        description: "test",
+        finishedAt: null,
+        status: "PENDING",
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+        stopId: stop.id
+      }
+    })
   });
 
-  it("should not be able delete task if the id does not exist", async () => {
+  it("should not be able get task if the id does not exist", async () => {
     const taskIdNotExist = randomUUID()
     await expect(
       sut.execute(taskIdNotExist)
