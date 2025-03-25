@@ -2,7 +2,7 @@ import { Prisma, Stop } from "@prisma/client";
 import { StopRepository } from "../stopRepository";
 import { db } from "@/lib/prisma";
 
-export class PrismaRotationStopRepository implements StopRepository {
+export class PrismaStopRepository implements StopRepository {
   async getByRotationId(id: string): Promise<Stop[] | null> {
     const rotationStop = await db.stop.findMany({
       where: {
