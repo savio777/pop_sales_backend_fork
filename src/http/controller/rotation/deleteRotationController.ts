@@ -1,8 +1,6 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
-import { PrismaRotationStopRepository } from "@/repository/prisma/prismaStopRepository";
+import { PrismaStopRepository } from "@/repository/prisma/prismaStopRepository";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { DeleteRotationUseCase } from "@/usecase/rotation/deleteRotationUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -17,21 +15,16 @@ export class DeleteRotationController {
     const {rotationId} = deleteRotationRequestParams.parse(req.params)
 
     const rotationRepository = new PrismaRotationRepository()
-    const userRepository = new PrismaUserRepository()
-    const rotationStopRepository = new PrismaRotationStopRepository()
+    const stopRepository = new PrismaStopRepository()
     const taskRepository = new PrismaTaskRepository()
     
     const deleteRotationUseCase = new DeleteRotationUseCase(
       rotationRepository,
-      rotationStopRepository,
-      userRepository,
+      stopRepository,
       taskRepository
     )
 
-    await deleteRotationUseCase.execute({
-      rotationId,
-      userId
-    })
+    await deleteRotationUseCase.execute({rotationId})
 
     return res.status(200).send()
   }

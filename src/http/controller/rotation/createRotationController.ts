@@ -1,6 +1,6 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { CreateRotationUseCase } from "@/usecase/rotation/createRotationUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -8,26 +8,24 @@ import { z } from "zod";
 export class CreateRotationController {
   async handle(req: FastifyRequest, res: FastifyReply) {
     const assignedRequestBody = z.object({
-      assignedToId: z.string().uuid(),
+      companyId: z.string().uuid(),
     });
 
-    const { assignedToId } = assignedRequestBody.parse(req.body);
+    const { companyId } = assignedRequestBody.parse(req.body);
 
     const rotationRepository = new PrismaRotationRepository();
-    const userRepository = new PrismaUserRepository();
+    const companyRepository = new PrismaCompanyRepository()
     const createRotationUseCase = new CreateRotationUseCase(
       rotationRepository,
-      userRepository
+      companyRepository
     );
 
     if (!req.userAuth?.id) {
       throw new BadRequestError("userId not informed");
     }
-    const createdById = req.userAuth.id;
-
+    
     const rotation = await createRotationUseCase.execute({
-      assignedToId,
-      createdById,
+      companyId
     });
 
     return res.status(200).send(rotation);
