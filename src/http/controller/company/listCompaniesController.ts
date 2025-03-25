@@ -16,19 +16,13 @@ export class ListCompaniesController {
 
     const { limit, page } = listCompaniesSchema.parse(req.query);
 
-    const userRepository = new PrismaUserRepository();
     const companyRepository = new PrismaCompanyRepository();
 
     const listCompaniesUseCase = new ListCompaniesUseCase(
-      userRepository,
       companyRepository
     );
 
-    const companies = await listCompaniesUseCase.execute({
-      userId,
-      limit,
-      page,
-    });
+    const companies = await listCompaniesUseCase.execute();
 
     return res.status(200).send(companies);
   }
