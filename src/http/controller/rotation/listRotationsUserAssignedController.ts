@@ -1,18 +1,18 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
-import { ListByAssignedIdUseCase } from "@/usecase/rotation/listByAssignedIdUseCase";
+import { PrismaUserRotaionRepository } from "@/repository/prisma/prismaUserRotationRepository";
+import { ListRotationByUserIdUseCase } from "@/usecase/rotation/listRotationByUserIdUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export class ListRotationsUserAssignedController {
   async handle(req: FastifyRequest, res: FastifyReply){
     const userId = req.userAuth.id
 
-    const rotationRepository = new PrismaRotationRepository()
+    const userRotationRepository = new PrismaUserRotaionRepository()
     const userRepository = new PrismaUserRepository()
-    const listByAssignedIdUseCase = new ListByAssignedIdUseCase(
-      rotationRepository,
-      userRepository
+    const listByAssignedIdUseCase = new ListRotationByUserIdUseCase(
+      userRepository,
+      userRotationRepository,
     )
     const rotations = await listByAssignedIdUseCase.execute(userId)
 

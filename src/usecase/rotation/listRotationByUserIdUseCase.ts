@@ -1,11 +1,11 @@
 import { BadRequestError } from "@/error/badRequest.error";
-import { RotationRepository } from "@/repository/rotationRepository";
 import { UserRepository } from "@/repository/userRepository";
+import { UserRotationRepository } from "@/repository/userRotationRepository";
 
 export class ListRotationByUserIdUseCase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly rotationRepository: RotationRepository
+    private readonly userRotationRepository: UserRotationRepository
   ){}
 
   async execute(userId: string){
@@ -14,6 +14,7 @@ export class ListRotationByUserIdUseCase {
       throw new BadRequestError("user does not exist")
     }
 
-    const rotations = await this.rotationRepository.
+    const rotations = await this.userRotationRepository.getRotationByUserId(userId)
+    return {rotations}
   }
 }
