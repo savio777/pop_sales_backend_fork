@@ -2,13 +2,13 @@ import { FastifyInstance } from "fastify";
 import { CreateRotationController } from "../controller/rotation/createRotationController";
 import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
-import { ListRotationsUserAssignedController } from "../controller/rotation/listRotationsUserAssignedController";
+import { ListRotationsUserController } from "../controller/rotation/listRotationsUserAssignedController";
 import { ListRotationsUserCreatedController } from "../controller/rotation/listRotationsUserCreatedController";
 import { DeleteRotationController } from "../controller/rotation/deleteRotationController";
 import { UpdateRotationController } from "../controller/rotation/updateRotationController";
 
 const createRotationController = new CreateRotationController()
-const listRotationsUserAssignedController = new ListRotationsUserAssignedController()
+const listRotationsUserController = new ListRotationsUserController()
 const listRotationsUserCreatedController = new ListRotationsUserCreatedController()
 const deleteRotationController = new DeleteRotationController()
 const updateRotationController = new UpdateRotationController()
@@ -22,7 +22,7 @@ export function RotationRoutes(app: FastifyInstance){
   app.get(
     "/assigned-to-me",
     {preHandler: [Auth, RBAC(["list.rotations.assigned.to.me"])]},
-    listRotationsUserAssignedController.handle
+    listRotationsUserController.handle
   )
   app.get(
     "/created-by-me",

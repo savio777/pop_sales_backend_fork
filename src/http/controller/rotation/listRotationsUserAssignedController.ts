@@ -1,10 +1,9 @@
-import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { PrismaUserRotaionRepository } from "@/repository/prisma/prismaUserRotationRepository";
 import { ListRotationByUserIdUseCase } from "@/usecase/rotation/listRotationByUserIdUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export class ListRotationsUserAssignedController {
+export class ListRotationsUserController {
   async handle(req: FastifyRequest, res: FastifyReply){
     const userId = req.userAuth.id
 
