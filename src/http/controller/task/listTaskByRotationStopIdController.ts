@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ListTaskByRotationStopIdUseCase } from "@/usecase/task/listTaskByRotationStopIdUseCase";
+import { ListTaskByRotationStopIdUseCase } from "@/usecase/task/listTaskByStopIdUseCase";
 
 
 export class ListTaskByRotationStopIdController {

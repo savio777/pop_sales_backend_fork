@@ -1,3 +1,4 @@
+import { BadRequestError } from "@/error/badRequest.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 
 export class DeleteCompanyUdeCase {
@@ -6,6 +7,11 @@ export class DeleteCompanyUdeCase {
   ){}
 
   async execute(id: string){
+    const comapany = await this.companyRepositoy.getById(id)
+    if(!comapany){
+      throw new BadRequestError("company not exist")
+    }
+    
     await this.companyRepositoy.delete(id)
   }
 }

@@ -2,153 +2,20 @@ import { Prisma, Task } from "@prisma/client";
 import { TaskRepository } from "../taskRepository";
 import { db } from "@/lib/prisma";
 
-interface GetTaskById {
-  id: string;
-  title: string;
-  description: string | null;
-  finishedAt: Date | null;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-  company?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  assignedTo?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  createdBy?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  rotation?: {
-    id: string;
-    createdAt: Date;
-    stops: {
-      id: string;
-      address: string;
-      sequence: number;
-    }[];
-  };
-};
-
-interface listTask {
-  id: string;
-  title: string;
-  description: string | null;
-  finishedAt: Date | null;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-  company?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  assignedTo?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  createdBy?: {
-    id: string;
-    name: string;
-    status: string;
-  };
-  rotation?: {
-    id: string;
-    createdAt: Date;
-    stops: {
-      id: string;
-      address: string;
-      sequence: number;
-    }[];
-  };
-}
-
 
 export class PrismaTaskRepository implements TaskRepository {
-  async listByRotationStopId(rotationStopId: string): Promise<Task[] | null> {
+  async listByStopId(
+    { limit, page, stopId }: { stopId: string; page: number; limit: number }
+  ): Promise<Task[] | null> {
     const task = await db.task.findMany({
-      where: {
-        rotationStopId
-      }
-    })
-    return task
-  }
-  async listTask({
-    limit,
-    page,
-    companyId,
-    createdAt,
-    finishedAt,
-    status,
-    userAssignedId,
-    userCreatedId
-  }: {
-    limit: number;
-    page: number;
-    userCreatedId?: string;
-    userAssignedId?: string;
-    companyId?: string;
-    status?: "COMPLETED" | "PENDING";
-    createdAt?: Date;
-    finishedAt?: Date;
-  }): Promise<listTask[] | null> {
-    const filters: Prisma.TaskWhereInput = {};
-  
-    if (companyId) filters.companyId = companyId;
-    if (userCreatedId) filters.createdById = userCreatedId;
-    if (userAssignedId) filters.assignedToId = userAssignedId;
-    if (status) filters.status = status;
-    if (createdAt) filters.createdAt = { gte: createdAt };
-    if (finishedAt) filters.finishedAt = { lte: finishedAt };
-  
-    const tasks = await db.task.findMany({
-      where: filters,
-      take: limit,
-      skip: (page - 1) * limit,
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        finishedAt: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-        rotationStopId: true,
-        company: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        assignedTo: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        
-      }
+      where: { stopId },
+      skip: limit && page ? (page - 1) * limit : undefined,
+      take: limit || undefined,
     });
   
-    return tasks;
+    return task;
   }
-  
+
   async update(
     {id, data}:
     {id: string, data: Prisma.TaskUpdateInput}
@@ -161,46 +28,14 @@ export class PrismaTaskRepository implements TaskRepository {
     })
     return task
   }
-  async getById(id: string): Promise<GetTaskById | null> {
+
+  async getById(id: string): Promise<Task | null> {
     const task = await db.task.findUnique({
       where: { id },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        finishedAt: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-        rotationStopId: true,
-        company: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        assignedTo: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            status: true
-          }
-        },
-        
-      }
     });
   
     return task;
   }
-  
   
   async create(data: Prisma.TaskCreateInput): Promise<Task> {
     const task = await db.task.create({
@@ -208,6 +43,7 @@ export class PrismaTaskRepository implements TaskRepository {
     });
     return task
   }
+
   async delete(id: string): Promise<void> {
     await db.task.delete({
       where: {
@@ -215,29 +51,5 @@ export class PrismaTaskRepository implements TaskRepository {
       }
     });
     
-  }
-  async listByUserAssigned(userAssignedId: string): Promise<Task[] | null> {
-    const tasks = await db.task.findMany({
-      where: {
-        assignedToId: userAssignedId
-      }
-    });
-    return tasks
-  }
-  async listByCompany(companyId: string): Promise<Task[] | null> {
-    const tasks = await db.task.findMany({
-      where: {
-        companyId
-      }
-    });
-    return tasks
-  }
-  async listByUserCreated(userCreatedId: string): Promise<Task[] | null> {
-    const tasks = await db.task.findMany({
-      where: {
-        createdById: userCreatedId
-      }
-    });
-    return tasks
   }
 }

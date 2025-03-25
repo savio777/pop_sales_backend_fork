@@ -22,24 +22,29 @@ model User {
   updatedAt DateTime   @updatedAt
   status    StatusUser @default(ACTIVE)
 
-  Permission     Permission[]
-  ownedCompanies Company[]     @relation("Owner")
-  collaborations UserCompany[]
-
-  createdRotations  Rotation[] @relation("CreatedRotations")
-  assignedRotations Rotation[] @relation("AssignedRotations")
-
-  createdTasks  Task[] @relation("CreatedTasks")
-  assignedTasks Task[] @relation("AssignedTasks")
+  permissions UserPermission[]
+  companys    UserCompany[]
+  rotations   UserRotation[]
 }
 
 model Permission {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  permissions String[] @default([])
-  users       User[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String           @id @default(uuid())
+  name      String           @unique
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  users     UserPermission[]
+}
+
+model UserPermission {
+  id String @id @default(uuid())
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Permission   Permission? @relation(fields: [permissionId], references: [id])
+  permissionId String?
+
+  @@unique([userId, permissionId])
 }
 
 enum StatusCompany {
@@ -48,52 +53,66 @@ enum StatusCompany {
 }
 
 model Company {
-  id            String        @id @default(uuid())
-  name          String        @unique
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  owner         User          @relation("Owner", fields: [ownerId], references: [id])
-  ownerId       String
-  status        StatusCompany @default(ACTIVE)
-  collaborators UserCompany[]
+  id        String        @id @default(uuid())
+  name      String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  status    StatusCompany @default(ACTIVE)
 
-  Task Task[]
+  users     UserCompany[]
+  products  Product[]
+  rotations Rotation[]
 }
 
 model UserCompany {
-  id        String  @id @default(uuid())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String
-
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   @@unique([userId, companyId])
 }
 
 model Rotation {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  description String?
 
-  createdBy   User   @relation("CreatedRotations", fields: [createdById], references: [id])
-  createdById String // Usuário que criou
+  stops Stop[]
+  users UserRotation[]
 
-  assignedTo   User   @relation("AssignedRotations", fields: [assignedToId], references: [id])
-  assignedToId String // Usuário a quem foi atribuido a rotação
-
-  RotationStop RotationStop[] // Relação com os endereços da rotação
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 }
 
-model RotationStop {
-  id         String    @id @default(uuid())
-  address    String
-  sequence   Int // Define a ordem da parada
-  Task       Task[]
+model Stop {
+  id        String   @id @default(uuid())
+  address   String
+  sequence  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tasks     Task[]
+
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
   rotationId String?
+}
+
+model UserRotation {
+  id String @id @default(uuid())
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Rotation   Rotation? @relation(fields: [rotationId], references: [id])
+  rotationId String?
+
+  @@unique([userId, rotationId])
 }
 
 enum TaskStatus {
@@ -110,15 +129,16 @@ model Task {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  createdBy   User   @relation("CreatedTasks", fields: [createdById], references: [id])
-  createdById String // Usuário que criou a tarefa
+  Stop   Stop?   @relation(fields: [stopId], references: [id])
+  stopId String?
+}
 
-  assignedTo   User   @relation("AssignedTasks", fields: [assignedToId], references: [id])
-  assignedToId String // Usuário a quem foi designada a tarefa
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId String // Empresa à qual a tarefa pertence
-
-  RotationStop   RotationStop? @relation(fields: [rotationStopId], references: [id])
-  rotationStopId String?
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 }

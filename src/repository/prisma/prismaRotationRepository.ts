@@ -17,22 +17,6 @@ export class PrismaRotationRepository implements RotationRepository {
     })
     return rotation
   }
-  async listByCreatedById(createdById: string): Promise<Rotation[] | null> {
-    const rotations = await db.rotation.findMany({
-      where: {
-        createdById
-      }
-    })
-    return rotations
-  }
-  async listByAssignedToId(assignedToId: string): Promise<Rotation[] | null> {
-    const rotation = await db.rotation.findMany({
-      where: {
-        assignedToId
-      }
-    })
-    return rotation
-  }
   async update({id, data}:{id: string, data: Prisma.RotationUpdateInput}): Promise<Rotation> {
     const rotation = await db.rotation.update({
       where: {
