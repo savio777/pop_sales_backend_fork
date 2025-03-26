@@ -5,7 +5,7 @@ import { UserCompanyRoutes } from "./userCompanyRoutes";
 import { UserRoutes } from "./userRoutes";
 import { RotationRoutes } from "./rotatationRoutes";
 import { TaskRoutes } from "./taskRoutes";
-import { RotationStopRoutes } from "./rotationStopRoutes";
+import { RotationStopRoutes } from "./stopRoutes";
 
 export function AppRoutes(app: FastifyInstance){
   app.register(AuthRoutes, {prefix: "/auth"})
