@@ -1,16 +1,16 @@
 import { FastifyInstance } from "fastify";
-import { CreateRotationStopController } from "../controller/stop/createStopController";
+import { CreateStopController } from "../controller/stop/createStopController";
 import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
 import { ListStopByRotationIdController } from "../controller/stop/listStopByRotationIdController";
 
-const createRotationStopController = new CreateRotationStopController()
+const createStopController = new CreateStopController()
 const listStopByRotationIdController = new ListStopByRotationIdController()
-export function RotationStopRoutes(app: FastifyInstance){
+export function StopRoutes(app: FastifyInstance){
   app.post(
     "/",
     {preHandler:[Auth, RBAC(["create.rotation.stop"])]},
-    createRotationStopController.handle
+    createStopController.handle
   )
   app.get(
     "/:rotationId",

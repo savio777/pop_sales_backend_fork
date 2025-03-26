@@ -4,7 +4,7 @@ import { CreateStopUseCase } from "@/usecase/stop/createStopUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export class CreateRotationStopController {
+export class CreateStopController {
   async handle(req: FastifyRequest, res: FastifyReply) {
     const stopsRequestBody = z.object({
       rotationId: z.string().uuid(),
@@ -14,15 +14,15 @@ export class CreateRotationStopController {
     
     const {address, rotationId, sequence} = stopsRequestBody.parse(req.body)
 
-    const rotationStopRepository = new PrismaStopRepository()
+    const stopRepository = new PrismaStopRepository()
     const rotationRepository = new PrismaRotationRepository()
 
-    const createRotationStopUseCase = new CreateStopUseCase(
-      rotationStopRepository,
+    const createStopUseCase = new CreateStopUseCase(
+      stopRepository,
       rotationRepository
     )
 
-    const stop = await createRotationStopUseCase.execute({
+    const stop = await createStopUseCase.execute({
       rotationId, 
       stop: {
         address, sequence
