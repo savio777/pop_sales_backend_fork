@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
-import { CreateRotationStopController } from "../controller/rotationStop/createRotationStopController";
+import { CreateRotationStopController } from "../controller/stop/createStopController";
 import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
-import { ListRotationStopByRotationIdController } from "../controller/rotationStop/listRotationStopByRotationIdController";
+import { ListRotationStopByRotationIdController } from "../controller/stop/listStopByRotationIdController";
 
 const createRotationStopController = new CreateRotationStopController()
 const listRotationStopByRotationIdController = new ListRotationStopByRotationIdController()

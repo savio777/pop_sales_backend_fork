@@ -1,6 +1,6 @@
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
-import { PrismaRotationStopRepository } from "@/repository/prisma/prismaStopRepository";
-import { CreateRotationStopUseCase } from "@/usecase/stop/createStopUseCase";
+import { PrismaStopRepository } from "@/repository/prisma/prismaStopRepository";
+import { CreateStopUseCase } from "@/usecase/stop/createStopUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -14,9 +14,10 @@ export class CreateRotationStopController {
     
     const {address, rotationId, sequence} = stopsRequestBody.parse(req.body)
 
-    const rotationStopRepository = new PrismaRotationStopRepository()
+    const rotationStopRepository = new PrismaStopRepository()
     const rotationRepository = new PrismaRotationRepository()
-    const createRotationStopUseCase = new CreateRotationStopUseCase(
+
+    const createRotationStopUseCase = new CreateStopUseCase(
       rotationStopRepository,
       rotationRepository
     )
