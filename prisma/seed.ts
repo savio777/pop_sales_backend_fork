@@ -58,15 +58,25 @@ async function main() {
   let permissionAdminId: string
   
   for (const perm of permissions) {
-    const permission = await db.permission.create({
-      data: perm
+    const existingPermission = await db.permission.findUnique({
+      where: { name: perm.name },
     });
+  
+    if (!existingPermission) {
+      const permissionCreated = await db.permission.create({
+        data: {
+          name: perm.name,
+          permissions: perm.permissions,
+        },
+      });
 
-    if(perm.name === "Admin"){
-      permissionAdminId = permission.id
+      if(perm.name === "Admin"){
+        permissionAdminId = permissionCreated.id
+      }
     }
   }
-
+  //----------
+  // USER
   const USER_ROOT_PASSWORD = process.env.USER_ROOT_PASSWORD
   const USER_ROOT_NAME = process.env.USER_ROOT_NAME
   const USER_ROOT_EMAIL = process.env.USER_ROOT_EMAIL
@@ -78,7 +88,7 @@ async function main() {
   const saltRounds = 10; 
   const passwordHash = await bcrypt.hash(USER_ROOT_PASSWORD, saltRounds);
 
-  // USER
+ 
   const user = await db.user.create({
     data: {
       name: USER_ROOT_NAME,
@@ -86,18 +96,14 @@ async function main() {
       password: passwordHash,
     }
   })
+  
+  //----
 
   // USER PERMISSIONS
-  await db.user.update({
-    where: {
-      id: user.id
-    },
+  await db.userPermission.create({
     data: {
-      Permission: {
-        connect: {
-          id: permissionAdminId!
-        }
-      }
+      userId: user.id,
+      permissionId: permissionAdminId!
     }
   })
 
@@ -105,7 +111,6 @@ async function main() {
   const company = await db.company.create({
     data: {
       name: "POP SALES",
-      ownerId: user.id
     }
   })
 

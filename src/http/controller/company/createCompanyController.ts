@@ -1,6 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { CreateCompanyUseCase } from "@/usecase/company/createCompanyUseCase";
 import { FastifyRequest } from "fastify";
 import { FastifyReply } from "fastify/types/reply";
@@ -17,14 +15,12 @@ export class CreateCompanyController {
     const {name} = createCompanySchema.parse(req.body)
 
     const companyRepository = new PrismaCompanyRepository()
-    const userCompany = new PrismaUserRepository()
 
     const createCompanyUseCase = new CreateCompanyUseCase(
       companyRepository,
-      userCompany
     )
 
-    const compay = await createCompanyUseCase.execute({name, userId})
+    const compay = await createCompanyUseCase.execute({name})
 
     return res.status(200).send(compay)
   }

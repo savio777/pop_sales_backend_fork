@@ -1,6 +1,5 @@
-import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
+import { PrismaStopRepository } from "@/repository/prisma/prismaStopRepository";
 import { PrismaTaskRepository } from "@/repository/prisma/prismaTaskRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { CreateTaskUseCase } from "@/usecase/task/createTaskUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -13,23 +12,21 @@ export class CreateTaskController {
       companyId: z.string().uuid(),
       title: z.string(), 
       description: z.string().optional(), 
-      rotationStopId: z.string().uuid(), 
+      stopId: z.string().uuid(), 
       userAssignedId: z.string().uuid()
     })
     
     const data = createTaskRequestBody.parse(req.body)
 
     const taskRepository = new PrismaTaskRepository()
-    const companyRepository = new PrismaCompanyRepository()
-    const userRepository = new PrismaUserRepository()
+    const stopRepository = new PrismaStopRepository()
 
     const createTaskUseCase = new CreateTaskUseCase(
       taskRepository,
-      companyRepository,
-      userRepository
+      stopRepository,
     )
 
-    const task = await createTaskUseCase.execute({...data, userCreatedId})
+    const task = await createTaskUseCase.execute(data)
     return res.status(200).send(task)
   }
 }

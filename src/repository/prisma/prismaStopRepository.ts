@@ -2,37 +2,37 @@ import { Prisma, Stop } from "@prisma/client";
 import { StopRepository } from "../stopRepository";
 import { db } from "@/lib/prisma";
 
-export class PrismaRotationStopRepository implements StopRepository {
+export class PrismaStopRepository implements StopRepository {
   async getByRotationId(id: string): Promise<Stop[] | null> {
-    const rotationStop = await db.stop.findMany({
+    const stop = await db.stop.findMany({
       where: {
         rotationId: id
       }
     })
-    return rotationStop
+    return stop
   }
   async create(data: Prisma.StopCreateInput): Promise<Stop> {
-    const rotationStop = await db.stop.create({
+    const stop = await db.stop.create({
       data
     })
-    return rotationStop
+    return stop
   }
   async getById(id: string): Promise<Stop | null> {
-    const rotationStop = await db.stop.findUnique({
+    const stop = await db.stop.findUnique({
       where: {
         id
       }
     })
-    return rotationStop
+    return stop
   }
   async update({id, data}:{id: string, data: Prisma.StopUpdateInput}): Promise<Stop> {
-    const rotationStop = await db.stop.update({
+    const stop = await db.stop.update({
       where: {
         id
       },
       data
     })
-    return rotationStop
+    return stop
   }
   async delete(id: string): Promise<void> {
     await db.stop.delete({

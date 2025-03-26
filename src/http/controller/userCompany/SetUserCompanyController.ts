@@ -40,7 +40,9 @@ export class SetUserCompanyController {
 
     if(method === "REMOVE"){
       const removeUserCompanyUseCase = new RemoveUserCompanyUseCase(
-        userCompanyRepository
+        userCompanyRepository,
+        userRepository,
+        companyRepository
       )
 
       await removeUserCompanyUseCase.execute({

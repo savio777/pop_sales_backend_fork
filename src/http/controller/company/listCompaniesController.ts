@@ -1,6 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
-import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { ListCompaniesUseCase } from "@/usecase/company/listCompaniesUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
@@ -14,21 +12,16 @@ export class ListCompaniesController {
       page: z.coerce.number().default(1),
     });
 
-    const { limit, page } = listCompaniesSchema.parse(req.query);
+    // TODO: FIX ME - adicionar paginação
+    //  const { limit, page } = listCompaniesSchema.parse(req.query);
 
-    const userRepository = new PrismaUserRepository();
     const companyRepository = new PrismaCompanyRepository();
 
     const listCompaniesUseCase = new ListCompaniesUseCase(
-      userRepository,
       companyRepository
     );
 
-    const companies = await listCompaniesUseCase.execute({
-      userId,
-      limit,
-      page,
-    });
+    const companies = await listCompaniesUseCase.execute();
 
     return res.status(200).send(companies);
   }
