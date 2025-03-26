@@ -1,3 +1,4 @@
+import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaUserCompanyRepository } from "@/repository/prisma/prismaUserCompanyRepository";
 import { ListUserCompanyUseCase } from "@/usecase/userCompany/listUserCompanyUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -18,8 +19,11 @@ export class ListUserCompanyController {
     const {companyId} = listUserCompaniesParams.parse(req.params)
 
     const userCompanyRepository = new PrismaUserCompanyRepository()
+    const companyRepository = new PrismaCompanyRepository()
+    
     const lsitUserCompanyUseCase = new ListUserCompanyUseCase(
-      userCompanyRepository
+      userCompanyRepository,
+      companyRepository
     )
 
     const userCompanies = await lsitUserCompanyUseCase.execute({

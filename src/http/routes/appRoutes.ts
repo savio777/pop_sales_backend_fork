@@ -14,5 +14,5 @@ export function AppRoutes(app: FastifyInstance){
   app.register(UserCompanyRoutes, {prefix: "/user-company"})
   app.register(RotationRoutes, {prefix: "/rotation"})
   app.register(TaskRoutes, {prefix: "/task"})
-  app.register(StopRoutes, {prefix: "/rotation-stop"})
+  app.register(StopRoutes, {prefix: "/stop"})
 }

@@ -35,9 +35,8 @@ export function TaskRoutes(app: FastifyInstance){
     updateTaskController.handle
   )
   app.get(
-    "/",
+    "/stop/:stopId",
     {preHandler: [Auth, RBAC(["list.task"])]},
     listTaskByStopIdController.handle
   )
-
 }
