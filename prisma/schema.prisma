@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String           @id @default(uuid())
-  name        String
-  email       String           @unique
-  password    String
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  phone       String?          @unique
-  status      StatusUser       @default(ACTIVE)
-  companys    UserCompany[]
-  permissions UserPermission[]
-  rotations   UserRotation[]
+  id              String            @id @default(uuid())
+  name            String
+  email           String            @unique
+  password        String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  phone           String?           @unique
+  status          StatusUser        @default(ACTIVE)
+  companys        UserCompany[]
+  permissions     UserPermission[]
+  rotations       UserRotation[]
+  CheckinCheckout CheckinCheckout[]
 }
 
 model Permission {
@@ -49,6 +50,7 @@ model Company {
   products  Product[]
   rotations Rotation[]
   users     UserCompany[]
+  clients   Client[]
 }
 
 model UserCompany {
@@ -129,4 +131,33 @@ enum StatusCompany {
 enum TaskStatus {
   COMPLETED
   PENDING
+}
+
+model Client {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  name              String
+  zipCode           String?
+  responsiblePerson String?
+  phoneNumber       String?
+  email             String?
+  lon               String?
+  lat               String?
+
+  Company         Company?          @relation(fields: [companyId], references: [id])
+  companyId       String?
+  CheckinCheckout CheckinCheckout[]
+}
+
+model CheckinCheckout {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  finalizedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
 }
