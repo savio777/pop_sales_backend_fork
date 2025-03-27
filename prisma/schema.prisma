@@ -141,7 +141,7 @@ model Client {
   zipCode           String?
   responsiblePerson String?
   phoneNumber       String?
-  email             String?
+  email             String?  @unique
   lon               String?
   lat               String?
 
