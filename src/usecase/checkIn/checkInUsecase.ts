@@ -10,6 +10,9 @@ export class CheckInUseCase {
     private readonly clientRepository: ClientRepository
   ){}
 
+  // verficisar lat lon do usuario e client, medit distancia, verificar se esta no raio de 20m, verificar se client tem lon e lat registrado
+
+
   async execute(
     {userId, clientId}: {clientId: string, userId: string}
   ){

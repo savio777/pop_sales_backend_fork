@@ -8,6 +8,8 @@ export class CreateClientUseCase {
     private readonly companyRepository: CompanyRepository
   ){}
 
+  // verificar lon e lat automaticamente se não for informado
+
   async execute(
     {
       name,

@@ -14,6 +14,14 @@ const envSchema = z.object({
   POSTGRES_DB: z.string(),
   POSTGRES_PORT: z.string(),
   DATABASE_URL: z.string(),
+
+  // USER ROOT
+  USER_ROOT_NAME: z.string(),
+  USER_ROOT_EMAIL: z.string().email(),
+  USER_ROOT_PASSWORD: z.string(),
+
+  //GOOGLE API
+  GOOGLE_API_KEY: z.string()
 })
 
 const _env = envSchema.safeParse(process.env)
