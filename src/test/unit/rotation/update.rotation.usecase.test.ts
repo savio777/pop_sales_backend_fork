@@ -43,7 +43,7 @@ describe("Update rotation", async () => {
     });
   });
 
-  it("should not be able update rotation if rotation id not exist", async () => {
+  it("should not be able update rotation if rotation id does not exist", async () => {
     const rotationIdNotExist = randomUUID();
     await expect(
       sut.execute({

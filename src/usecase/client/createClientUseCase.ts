@@ -31,7 +31,7 @@ export class CreateClientUseCase {
   ){
     const company = await this.companyRepository.getById(companyId)
     if(!company){
-      throw new BadRequestError("company is not exist")
+      throw new BadRequestError("company does not exist")
     }
 
     if(email){

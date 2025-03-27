@@ -19,7 +19,7 @@ export class UpdateCompanyUseCase {
 
     const company = await this.companyRepository.getById(id)
     if (!company) {
-      throw new NotFoundError("company not exist")
+      throw new NotFoundError("company does not exist")
     }
 
     const companyUpdate = await this.companyRepository.update({

@@ -15,7 +15,7 @@ export class CheckInUseCase {
   ){
     const user = await this.userRepository.getById(userId)
     if(!user){
-      throw new BadRequestError("user does not exist")
+      throw new BadRequestError("user does user does not exist")
     }
 
     const client = await this.clientRepository.getById(clientId)

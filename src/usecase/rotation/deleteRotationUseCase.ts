@@ -16,7 +16,7 @@ export class DeleteRotationUseCase {
   ){
     const rotation = await this.rotationRepository.getById(rotationId)
     if(!rotation){
-      throw new BadRequestError("rotation not exist")
+      throw new BadRequestError("rotation does not exist")
     }
 
     // Deletat tasks

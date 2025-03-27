@@ -20,7 +20,7 @@ export class CreateStopUseCase {
 
     const rotation = await this.rotationRepository.getById(rotationId)
     if(!rotation){
-      throw new BadRequestError("rotation not exist")
+      throw new BadRequestError("rotation does not exist")
     }
 
     let stopCreateds = await this.stopRepository.create({

@@ -9,8 +9,8 @@ export class CreateRotationUseCase {
   ){}
 
   async execute(
-    {companyId}:
-    {companyId: string}
+    {companyId, description}:
+    {companyId: string, description?: string}
   ){
 
     const company = await this.companyRepository.getById(companyId)
@@ -18,7 +18,10 @@ export class CreateRotationUseCase {
       throw new BadRequestError("company does not exist")
     }
 
-    const rotation = await this.rotationRepository.create(company.id)
+    const rotation = await this.rotationRepository.create({
+      companyId: company.id,
+      description
+    })
 
     return {rotation}
   }

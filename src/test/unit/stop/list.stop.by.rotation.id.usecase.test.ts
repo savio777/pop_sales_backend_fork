@@ -58,7 +58,7 @@ describe("List stop usecase", async () => {
     
   })
 
-  it("should not be able list if id not exist", async () => {
+  it("should not be able list if id does not exist", async () => {
     const rotationNotExistId = randomUUID()
     await expect(
       sut.execute(rotationNotExistId)

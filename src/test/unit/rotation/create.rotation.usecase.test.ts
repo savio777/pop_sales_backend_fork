@@ -38,7 +38,7 @@ describe("Create Rotation", async () => {
     })
   })
 
-  it("should not be able create company if company not exist", async () => {
+  it("should not be able create company if company does not exist", async () => {
     const companyIdNotExist = randomUUID()
 
     await expect(

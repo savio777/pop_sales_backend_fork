@@ -54,7 +54,7 @@ describe("Create userCompany use case", () => {
     });
   });
 
-  it("should not be able crate userCompany not exist user id", async () => {
+  it("should not be able crate userCompany does not exist user id", async () => {
     const user = await userRepository.create({
       name: "teste",
       email: "test@email.com",

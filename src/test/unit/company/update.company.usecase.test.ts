@@ -38,7 +38,7 @@ describe("Update company", () => {
     })
   })
 
-  it("should be not able update if company not exist", async () => {
+  it("should be not able update if company does not exist", async () => {
     const companyNotExist = randomUUID()
  
     await expect(
