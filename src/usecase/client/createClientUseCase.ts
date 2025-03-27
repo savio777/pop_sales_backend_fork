@@ -51,17 +51,20 @@ export class CreateClientUseCase {
       throw new BadRequestError("client already created with name")
     }
 
-    if(address  && !lat || !lon){
-      const data = await GetLatLonByAddress("rua rosa de maio, 95 colonia santo antonio")
-      console.log(data)
-      return data
+    let latGoogle: string | undefined;
+    let lonGoogle: string | undefined;
+
+    if (address && (!lat || !lon)) {
+      const resultLatLon = await GetLatLonByAddress(address);
+      latGoogle = resultLatLon.lat;
+      lonGoogle = resultLatLon.lon;
     }
     
     const client = await this.clientRepository.create({
       name, 
       email, 
-      lon, 
-      lat, 
+      lon: lon ?? lonGoogle ?? null, 
+      lat: lat ?? latGoogle ?? null, 
       phoneNumber, 
       zipCode, 
       Company: {connect: {id: companyId}},
