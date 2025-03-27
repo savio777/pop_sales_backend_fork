@@ -1,6 +1,7 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { ClientRepository } from "@/repository/clientRepository";
 import { CompanyRepository } from "@/repository/companyRepository";
+import { GetLatLonByAddress } from "@/service/getLatLonByAddress";
 
 export class CreateClientUseCase {
   constructor(
@@ -19,6 +20,7 @@ export class CreateClientUseCase {
       phoneNumber,
       zipCode,
       responsiblePerson,
+      address,
       companyId
     }: {
       name: string,
@@ -28,7 +30,8 @@ export class CreateClientUseCase {
       phoneNumber?: string,
       zipCode?: string,
       responsiblePerson?: string,
-      companyId: string
+      companyId: string,
+      address?: string
     }
   ){
     const company = await this.companyRepository.getById(companyId)
@@ -46,6 +49,12 @@ export class CreateClientUseCase {
     const clientEmail = await this.clientRepository.getByName(name)
     if(clientEmail){
       throw new BadRequestError("client already created with name")
+    }
+
+    if(address  && !lat || !lon){
+      const data = await GetLatLonByAddress("rua rosa de maio, 95 colonia santo antonio")
+      console.log(data)
+      return data
     }
     
     const client = await this.clientRepository.create({

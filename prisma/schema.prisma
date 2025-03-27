@@ -142,6 +142,7 @@ model Client {
   responsiblePerson String?
   phoneNumber       String?  @unique
   email             String?  @unique
+  address           String?
   lon               String?
   lat               String?
 

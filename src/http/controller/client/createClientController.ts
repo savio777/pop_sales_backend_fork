@@ -13,6 +13,7 @@ export class CreateClientController {
       email: z.string().email(), 
       lat: z.string().optional(), 
       lon: z.string().optional(), 
+      address: z.string().optional(), 
       phoneNumber: z.string().optional(), 
       responsiblePerson: z.string().optional(), 
       zipCode: z.string().optional()
