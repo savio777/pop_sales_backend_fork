@@ -33,6 +33,18 @@ export class CreateClientUseCase {
     if(!company){
       throw new BadRequestError("company is not exist")
     }
+
+    if(email){
+      const clientEmail = await this.clientRepository.getByEmail(email)
+      if(clientEmail){
+        throw new BadRequestError("client already created with email")
+      }
+    }
+
+    const clientEmail = await this.clientRepository.getByName(name)
+    if(clientEmail){
+      throw new BadRequestError("client already created with name")
+    }
     
     const client = await this.clientRepository.create({
       name, 

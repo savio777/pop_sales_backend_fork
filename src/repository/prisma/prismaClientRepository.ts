@@ -3,6 +3,14 @@ import { ClientRepository } from "../clientRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaClientRepository implements ClientRepository {
+  async getById(id: string): Promise<Client | null> {
+    const client = await db.client.findUnique({
+      where: {
+        id
+      }
+    })
+    return client
+  }
   async getByName(name: string): Promise<Client | null> {
     const client = await db.client.findFirst({
       where: {
