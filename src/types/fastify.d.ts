@@ -2,6 +2,14 @@ import { Permission, User } from "@prisma/client";
 
 declare module "fastify" {
   interface FastifyRequest {
-    userAuth: (User & { Permission: Permission[] | null}) ;
+    userAuth?: {
+      id: string;
+      status: string;
+      permissions: {
+        Permission: {
+          permissions: string[]; 
+        } | null;
+      }[]; 
+    };
   }
 }
