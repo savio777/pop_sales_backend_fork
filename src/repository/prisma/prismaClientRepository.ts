@@ -9,5 +9,4 @@ export class PrismaClientRepository implements ClientRepository {
     })
     return client
   }
-  
 }
