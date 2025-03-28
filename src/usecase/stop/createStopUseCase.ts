@@ -1,21 +1,18 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { ClientRepository } from "@/repository/clientRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { StopRepository } from "@/repository/stopRepository";
-
-interface RotationsStops {
-  sequence: number
-  address: string
-}
 
 export class CreateStopUseCase {
   constructor(
     private readonly stopRepository: StopRepository,
-    private readonly rotationRepository: RotationRepository
+    private readonly rotationRepository: RotationRepository,
+    private readonly clientRepository: ClientRepository
   ){}
 
   async execute(
-    {stop, rotationId}:
-    { stop: RotationsStops, rotationId: string}
+    { rotationId, clientId, sequence}:
+    {rotationId: string, clientId: string, sequence: number}
   ){
 
     const rotation = await this.rotationRepository.getById(rotationId)
@@ -23,12 +20,17 @@ export class CreateStopUseCase {
       throw new BadRequestError("rotation does not exist")
     }
 
-    let stopCreateds = await this.stopRepository.create({
-      address: stop.address,
-      sequence: stop.sequence,
+    const client = await this.clientRepository.getById(clientId)
+    if(!client){
+      throw new BadRequestError("Cliente não existe")
+    }
+
+    let stop = await this.stopRepository.create({
+      client: {connect: {id: clientId}},
+      sequence,
       Rotation: {connect: {id: rotationId}}
     })
     
-    return {stop: stopCreateds}
+    return {stop}
   }
 }
