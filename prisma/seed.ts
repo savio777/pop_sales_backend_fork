@@ -27,7 +27,9 @@ async function main() {
         "update.rotation",
         "list.rotation.stop",
         "list.task.by.rotation.stop.id",
-        "create.client"
+        "create.client",
+        "create.check.in",
+        "get.client"
       ]
     },
     {
@@ -45,13 +47,15 @@ async function main() {
         "update.rotation",
         "list.rotation.stop",
         "list.task.by.rotation.stop.id",
-        "create.client"
+        "create.client",
+        "create.check.in"
       ]
     },
     {
       name: "Employee", // Empregado
       permissions: [
         "list.rotations.assigned.to.me",
+        "create.check.in"
       ]
     },
     

@@ -62,7 +62,7 @@ export class CheckInUseCase {
       }
     })
 
-    if(distance < 100){
+    if(distance > 100){
       throw new UnauthorizedError("You need to be at least 100m away from the client to check in")
     }
 

@@ -5,15 +5,16 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 export class ListRotationsByUserIdController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth.id
+    const userId = req.userAuth!.id
 
     const userRotationRepository = new PrismaUserRotaionRepository()
     const userRepository = new PrismaUserRepository()
-    const listByAssignedIdUseCase = new ListRotationByUserIdUseCase(
+
+    const listRotationByUserIdUseCase = new ListRotationByUserIdUseCase(
       userRepository,
       userRotationRepository,
     )
-    const rotations = await listByAssignedIdUseCase.execute(userId)
+    const rotations = await listRotationByUserIdUseCase.execute(userId)
 
     return res.status(200).send(rotations)
   }
