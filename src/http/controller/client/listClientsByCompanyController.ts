@@ -15,6 +15,6 @@ export class ListClientsByCompanyController {
       }
     })
 
-    return {clients}
+    return res.status(200).send({clients})
   }
 }
