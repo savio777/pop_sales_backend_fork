@@ -1,6 +1,6 @@
 import { getDistance as Getdistance } from 'geolib';
 
-function getDistance(
+export function getDistance(
   { address1, address2 }: {
     address1: { lat: string, lon: string };
     address2: { lat: string, lon: string };

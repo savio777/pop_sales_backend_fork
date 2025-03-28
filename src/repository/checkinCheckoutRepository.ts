@@ -13,4 +13,13 @@ export interface CheckInCheckOutRepository {
   }: {
     checkInChekcOutId: string;
   }): Promise<CheckinCheckout>;
+  getCheckInByDate({
+    userId,
+    clientId,
+    date
+  }: {
+    userId: string;
+    clientId: string;
+    date: Date
+  }): Promise<CheckinCheckout | null>
 }

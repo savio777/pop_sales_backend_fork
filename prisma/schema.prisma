@@ -79,6 +79,8 @@ model Rotation {
 model Stop {
   id         String    @id @default(uuid())
   address    String
+  lat        String?
+  lon        String?
   sequence   Int
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -89,6 +91,8 @@ model Stop {
 
 model UserRotation {
   id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   userId     String?
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
