@@ -77,16 +77,18 @@ model Rotation {
 }
 
 model Stop {
-  id         String    @id @default(uuid())
-  address    String
-  lat        String?
-  lon        String?
-  sequence   Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  sequence  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks    Task[]
+
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
-  tasks      Task[]
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
 }
 
 model UserRotation {
@@ -152,7 +154,10 @@ model Client {
 
   Company         Company?          @relation(fields: [companyId], references: [id])
   companyId       String?
+  
   CheckinCheckout CheckinCheckout[]
+
+  Stop Stop[]
 }
 
 model CheckinCheckout {

@@ -2,6 +2,7 @@ import { BadRequestError } from "@/error/badRequest.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
 import { CheckInCheckOutRepository } from "@/repository/checkinCheckoutRepository";
 import { ClientRepository } from "@/repository/clientRepository";
+import { StopRepository } from "@/repository/stopRepository";
 import { UserRepository } from "@/repository/userRepository";
 import { getDistance } from "@/service/getDistance";
 
@@ -10,11 +11,12 @@ export class CheckInUseCase {
     private readonly checkInCheckOutRepository: CheckInCheckOutRepository,
     private readonly userRepository: UserRepository,
     private readonly clientRepository: ClientRepository,
+    private readonly stopRepository: StopRepository
   ){}
 
   async execute(
-    {userId, clientId, lon, lat}: 
-    {clientId: string, userId: string, lon: string, lat: string}
+    {userId, clientId, lon, lat, stopId}: 
+    {clientId: string, userId: string, lon: string, lat: string, stopId: string}
   ){
     if (!lat || !lon) {
       throw new BadRequestError("Latitude and longitude must be provided for check-in");
@@ -38,6 +40,15 @@ export class CheckInUseCase {
     })
     if(alreadyCheckIn){
       throw new BadRequestError("Have you checked in at this company today?")
+    }
+
+    const stop = await this.stopRepository.getById(stopId)
+    if(!stop){
+      throw new BadRequestError("stop does not exist")
+    }
+
+    if(stop.clientId !== clientId){
+      throw new BadRequestError("You cannot check in this customer as they are not in your rotation.")
     }
 
     const distance = getDistance({
