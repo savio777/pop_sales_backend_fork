@@ -5,6 +5,7 @@ import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserReposi
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryUserCompanyRepository } from "@/repository/inMemory/inMemoryUserCompanyRepository";
 import { CreateUserCompanyUseCase } from "@/usecase/userCompany/createUserCompanyUseCase";
+import { NotFoundError } from "@/error/notfound.error";
 
 describe("Create userCompany use case", () => {
   let sut: CreateUserCompanyUseCase;
@@ -67,7 +68,7 @@ describe("Create userCompany use case", () => {
         companyId: notExistCompanyId,
         userId: user.id
       })
-    ).rejects.instanceOf(BadRequestError)
+    ).rejects.instanceOf(NotFoundError)
   })
 
   it("should not be able crate userCompany not exist company id", async () => {
@@ -82,7 +83,7 @@ describe("Create userCompany use case", () => {
         companyId: company.id,
         userId: notExistUserId
       })
-    ).rejects.instanceOf(BadRequestError)
+    ).rejects.instanceOf(NotFoundError)
   })
 
   it("should not be able crate userCompany already exist", async () => {

@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { InMemoryClientRepository } from "@/repository/inMemory/inMemoryClientRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
@@ -80,6 +81,6 @@ describe("Create task", async () => {
         stopId: stopNotExistId,
         title: "test"
       })
-    ).rejects.instanceOf(BadRequestError)
+    ).rejects.instanceOf(NotFoundError)
   })
 })

@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { InMemoryClientRepository } from "@/repository/inMemory/inMemoryClientRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
@@ -73,6 +74,6 @@ describe("Create stop usecase", async () => {
         clientId: client.id,
         sequence: 1
       })
-    ).rejects.instanceOf(BadRequestError)
+    ).rejects.instanceOf(NotFoundError)
   })
 })

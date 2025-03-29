@@ -6,6 +6,7 @@ import { ConflictError } from "@/error/conflict.error";
 import { InMemoryUserRepository } from "@/repository/inMemory/inMemoryUserRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryUserCompanyRepository } from "@/repository/inMemory/inMemoryUserCompanyRepository";
+import { NotFoundError } from "@/error/notfound.error";
 
 describe("Create user use case", () => {
   let sut: CreateUserUseCase;
@@ -69,7 +70,7 @@ describe("Create user use case", () => {
         password,
         phone,
       })
-    ).rejects.toThrow(BadRequestError);
+    ).rejects.toThrow(NotFoundError);
   });
 
   it("should not be able to create a new user with email already exist", async () => {
