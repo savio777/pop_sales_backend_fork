@@ -23,7 +23,8 @@ describe("Create Rotation", async () => {
     sut = new CreateRotationUseCase(
       rotationRepository,
       companyRepository,
-      userRotationRepository
+      userRotationRepository,
+      userRepository
     )
   })
 

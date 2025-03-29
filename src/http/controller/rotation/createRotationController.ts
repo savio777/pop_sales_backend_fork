@@ -1,6 +1,7 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
+import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { PrismaUserRotaionRepository } from "@/repository/prisma/prismaUserRotationRepository";
 import { CreateRotationUseCase } from "@/usecase/rotation/createRotationUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
@@ -18,11 +19,13 @@ export class CreateRotationController {
     const rotationRepository = new PrismaRotationRepository();
     const companyRepository = new PrismaCompanyRepository()
     const userRotationRepository = new PrismaUserRotaionRepository()
+    const userRepository = new PrismaUserRepository()
 
     const createRotationUseCase = new CreateRotationUseCase(
       rotationRepository,
       companyRepository,
-      userRotationRepository
+      userRotationRepository,
+      userRepository
     );
 
     if (!req.userAuth?.id) {
