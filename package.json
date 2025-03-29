@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "test": "vitest --run",
+    "test:integration": "vitest test/integration --run",
     "dev": "tsx watch src/server.ts",
     "build": "tsup src --out-dir dist"
   },
@@ -27,6 +28,7 @@
     "@fastify/jwt": "^9.0.4",
     "@types/axios": "0.9.36",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/supertest": "6.0.3",
     "axios": "1.8.4",
     "bcrypt": "^5.1.1",
     "date-fns": "4.1.0",
