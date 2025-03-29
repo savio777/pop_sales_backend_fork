@@ -11,6 +11,7 @@ describe("Create stop usecase", async () => {
   let stopRepository: InMemoryStopRepositoy
   let rotationRepository: InMemoryRotationRepository
   let companyRepository: InMemoryCompanyRepository
+  let clientRepository: ClientRepository
 
   beforeEach(async () => {
     stopRepository = new InMemoryStopRepositoy()
