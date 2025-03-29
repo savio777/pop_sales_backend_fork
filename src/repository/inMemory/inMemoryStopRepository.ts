@@ -8,10 +8,12 @@ export class InMemoryStopRepositoy implements StopRepository {
   async create(data: Prisma.StopCreateInput): Promise<Stop> {
     const stop: Stop = {
       id: randomUUID(),
+      sequence: data.sequence,
       createdAt: new Date(),
       updatedAt: new Date(),
+      status: "PENDING",
       rotationId: (data as any).Rotation?.connect?.id || null,
-      ...data
+      clientId: data.client
     } as Stop;
 
     this.stops.push(stop);
