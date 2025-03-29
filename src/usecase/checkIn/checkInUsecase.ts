@@ -35,17 +35,20 @@ export class CheckInUseCase {
       throw new BadRequestError("client does not lat and lon registred")
     }
 
-    const alreadyCheckIn = await this.checkInCheckOutRepository.getCheckInByDate({
-      clientId, userId, date: new Date()
-    })
-    if(alreadyCheckIn){
-      throw new BadRequestError("Have you checked in at this company today?")
-    }
-
     const stop = await this.stopRepository.getById(stopId)
     if(!stop){
       throw new BadRequestError("stop does not exist")
     }
+    if(stop.status === "COMPLETED"){
+      throw new BadRequestError("Have you checked in at this company today?")
+    }
+
+    await this.stopRepository.update({
+      id: stop.id,
+      data: {
+        status: "COMPLETED"
+      }
+    })
 
     if(stop.clientId !== clientId){
       throw new BadRequestError("You cannot check in this customer as they are not in your rotation.")

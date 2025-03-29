@@ -76,11 +76,17 @@ model Rotation {
   users       UserRotation[]
 }
 
+enum StatusStop {
+  PENDING   // O usuário ainda não visitou
+  COMPLETED // O usuário já visitou
+}
+
 model Stop {
   id        String   @id @default(uuid())
   sequence  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  status StatusStop @default(PENDING)
 
   tasks    Task[]
 
