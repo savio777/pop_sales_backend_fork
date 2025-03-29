@@ -52,8 +52,10 @@ describe("Create stop usecase", async () => {
         id: expect.any(String),
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
-        address: "address test",
         sequence: 1,
+        status: "PENDING",
+        clientId: client.id,
+        rotationId: rotation.id
       }
     })
   })

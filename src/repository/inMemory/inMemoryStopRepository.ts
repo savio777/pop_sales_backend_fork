@@ -13,7 +13,7 @@ export class InMemoryStopRepositoy implements StopRepository {
       updatedAt: new Date(),
       status: "PENDING",
       rotationId: (data as any).Rotation?.connect?.id || null,
-      clientId: data.client
+      clientId: (data as any).client?.connect?.id,
     } as Stop;
 
     this.stops.push(stop);
