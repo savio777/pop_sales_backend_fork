@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { InMemoryClientRepository } from "@/repository/inMemory/inMemoryClientRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
 import { InMemoryStopRepositoy } from "@/repository/inMemory/inMemoryStopRepository";
@@ -11,16 +12,18 @@ describe("Create stop usecase", async () => {
   let stopRepository: InMemoryStopRepositoy
   let rotationRepository: InMemoryRotationRepository
   let companyRepository: InMemoryCompanyRepository
-  let clientRepository: ClientRepository
+  let clientRepository: InMemoryClientRepository
 
   beforeEach(async () => {
     stopRepository = new InMemoryStopRepositoy()
     rotationRepository = new InMemoryRotationRepository()
     companyRepository = new InMemoryCompanyRepository()
+    clientRepository = new InMemoryClientRepository()
 
     sut = new CreateStopUseCase(
       stopRepository,
-      rotationRepository
+      rotationRepository,
+      clientRepository
     )
   })
 
@@ -28,17 +31,20 @@ describe("Create stop usecase", async () => {
     const company = await companyRepository.create({
       name: "company test"
     })
+
     const rotation = await rotationRepository.create({
       companyId: company.id,
       description: "rotation test"
     })
 
+    const client = await clientRepository.create({
+      name: "client test",
+    })
+
     const result = await sut.execute({
       rotationId: rotation.id,
-      stop: {
-        address: "address test",
-        sequence: 1
-      }
+      clientId: client.id,
+      sequence: 1
     })
 
     expect(result).toMatchObject({
@@ -54,13 +60,16 @@ describe("Create stop usecase", async () => {
 
   it("should not be able create stop with rotation not fould", async () => {
     const rotationIdNotFould = randomUUID()
+
+    const client = await clientRepository.create({
+      name: "client test",
+    })
+
     await expect(
       sut.execute({
         rotationId: rotationIdNotFould,
-        stop: {
-          address: "address test",
-          sequence: 1
-        }
+        clientId: client.id,
+        sequence: 1
       })
     ).rejects.instanceOf(BadRequestError)
   })
