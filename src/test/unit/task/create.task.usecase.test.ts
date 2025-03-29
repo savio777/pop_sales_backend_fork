@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { InMemoryClientRepository } from "@/repository/inMemory/inMemoryClientRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
 import { InMemoryStopRepositoy } from "@/repository/inMemory/inMemoryStopRepository";
@@ -13,12 +14,15 @@ describe("Create task", async () => {
   let stopRepository: InMemoryStopRepositoy
   let rotationRepository: InMemoryRotationRepository
   let companyRepository: InMemoryCompanyRepository
+  let clientRepository: InMemoryClientRepository
 
   beforeEach(() => {
     companyRepository = new InMemoryCompanyRepository()
     rotationRepository = new InMemoryRotationRepository
     taskRepository = new InMemroyTaskRepository()
     stopRepository = new InMemoryStopRepositoy()
+    clientRepository = new InMemoryClientRepository()
+
     sut = new CreateTaskUseCase(
       taskRepository,
       stopRepository
@@ -35,8 +39,12 @@ describe("Create task", async () => {
       companyId: company.id
     })
 
+    const client = await clientRepository.create({
+      name: "client test"
+    })
+
     const stop = await stopRepository.create({
-      address: "test",
+      client: {connect: {id: client.id}},
       sequence: 1,
       Rotation: {
         connect: {
