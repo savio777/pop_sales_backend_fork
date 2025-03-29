@@ -1,4 +1,3 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaRotationRepository } from "@/repository/prisma/prismaRotationRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
@@ -27,10 +26,6 @@ export class CreateRotationController {
       userRotationRepository,
       userRepository
     );
-
-    if (!req.userAuth?.id) {
-      throw new BadRequestError("userId not informed");
-    }
     
     const rotation = await createRotationUseCase.execute({
       companyId, userId

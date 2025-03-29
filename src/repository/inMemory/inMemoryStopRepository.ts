@@ -32,7 +32,7 @@ export class InMemoryStopRepositoy implements StopRepository {
   async update({ id, data }: { id: string; data: Prisma.StopUpdateInput; }): Promise<Stop> {
     const index = this.stops.findIndex(stop => stop.id === id);
     if (index === -1) {
-      throw new Error("Stop not found.");
+      throw new Error("Parada não encontrada.");
     }
 
     this.stops[index] = {

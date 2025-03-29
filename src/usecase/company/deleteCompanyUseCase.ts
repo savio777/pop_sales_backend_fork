@@ -9,7 +9,7 @@ export class DeleteCompanyUdeCase {
   async execute(id: string){
     const comapany = await this.companyRepositoy.getById(id)
     if(!comapany){
-      throw new BadRequestError("company does not exist")
+      throw new BadRequestError("Empresa não existe.")
     }
     
     await this.companyRepositoy.delete(id)

@@ -36,19 +36,19 @@ export class CreateClientUseCase {
   ){
     const company = await this.companyRepository.getById(companyId)
     if(!company){
-      throw new BadRequestError("company does not exist")
+      throw new BadRequestError("Empresa não existe.")
     }
 
     if(email){
       const clientEmail = await this.clientRepository.getByEmail(email)
       if(clientEmail){
-        throw new BadRequestError("client already created with email")
+        throw new BadRequestError("Já existe um cliente cadastrado com este e-mail.")
       }
     }
 
-    const clientEmail = await this.clientRepository.getByName(name)
-    if(clientEmail){
-      throw new BadRequestError("client already created with name")
+    const clientName = await this.clientRepository.getByName(name)
+    if(clientName){
+      throw new BadRequestError("Já existe um cliente cadastrado com este nome.")
     }
 
     let latGoogle: string | undefined;

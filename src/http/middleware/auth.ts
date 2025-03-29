@@ -41,6 +41,6 @@ export async function Auth(req: FastifyRequest, _res: FastifyReply) {
   req.userAuth = user;
 
   if (!req.userAuth?.id) {
-    throw new BadRequestError("userId not informed");
+    throw new BadRequestError("userId não foi informado");
   }
 }

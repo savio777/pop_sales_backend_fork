@@ -19,28 +19,28 @@ export class CheckInUseCase {
     {clientId: string, userId: string, lon: string, lat: string, stopId: string}
   ){
     if (!lat || !lon) {
-      throw new BadRequestError("Latitude and longitude must be provided for check-in");
+      throw new BadRequestError("Latitude e longitude devem ser fornecidas para o check-in");
     }
 
     const user = await this.userRepository.getById(userId)
     if(!user){
-      throw new BadRequestError("user does user does not exist")
+      throw new BadRequestError("Usuário não existe")
     }
 
     const client = await this.clientRepository.getById(clientId)
     if(!client){
-      throw new BadRequestError("client does not exist")
+      throw new BadRequestError("Cliente não existe")
     }
     if(!client.lat || !client.lon){
-      throw new BadRequestError("client does not lat and lon registred")
+      throw new BadRequestError("Cliente não tem longitude e Latitude registrada")
     }
 
     const stop = await this.stopRepository.getById(stopId)
     if(!stop){
-      throw new BadRequestError("stop does not exist")
+      throw new BadRequestError("Parada não existe")
     }
     if(stop.status === "COMPLETED"){
-      throw new BadRequestError("Have you checked in at this company today?")
+      throw new BadRequestError("Você já fez check-in nesta empresa hoje")
     }
 
     await this.stopRepository.update({
@@ -51,7 +51,7 @@ export class CheckInUseCase {
     })
 
     if(stop.clientId !== clientId){
-      throw new BadRequestError("You cannot check in this customer as they are not in your rotation.")
+      throw new BadRequestError("Você não pode fazer o check-in deste cliente, pois ele não está na sua rotação.")
     }
 
     const distance = getDistance({
@@ -66,7 +66,7 @@ export class CheckInUseCase {
     })
 
     if(distance > 100){
-      throw new UnauthorizedError("You need to be at least 100m away from the client to check in")
+      throw new UnauthorizedError("Você precisa estar a pelo menos 100m de distância do cliente para fazer o check-in")
     }
 
     const checkIn = await this.checkInCheckOutRepository.checkIn({

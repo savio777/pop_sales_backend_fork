@@ -1,4 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { ClientRepository } from "@/repository/clientRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { StopRepository } from "@/repository/stopRepository";
@@ -17,12 +17,12 @@ export class CreateStopUseCase {
 
     const rotation = await this.rotationRepository.getById(rotationId)
     if(!rotation){
-      throw new BadRequestError("rotation does not exist")
+      throw new NotFoundError("Rotação não encontrada.")
     }
 
     const client = await this.clientRepository.getById(clientId)
     if(!client){
-      throw new BadRequestError("Cliente não existe")
+      throw new NotFoundError("Cliente não encontrado.")
     }
 
     let stop = await this.stopRepository.create({

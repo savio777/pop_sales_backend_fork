@@ -14,7 +14,7 @@ export class UpdateTaskUseCase {
   async execute({ taskId, data }: { taskId: string; data: UpdateTask }) {
     const task = await this.taskRepository.getById(taskId);
     if (!task) {
-      throw new NotFoundError("task not found");
+      throw new NotFoundError("Tarefa não encontrada.");
     }
 
     const taskUpdated = await this.taskRepository.update({

@@ -64,7 +64,7 @@ describe("Remove userCompany use case", () => {
         companyId: companyIdNotExist,
         userId: user.id,
       })
-    ).rejects.toThrowError(new BadRequestError("company does not exist"));
+    ).rejects.toThrowError(new BadRequestError("empresa não existe"));
   });
 
   it("should not be able to remove if the user does not exist", async () => {
@@ -80,7 +80,7 @@ describe("Remove userCompany use case", () => {
         companyId: company.id,
         userId: userIdNotExist,
       })
-    ).rejects.toThrowError(new BadRequestError("user does not exist"));
+    ).rejects.toThrowError(new BadRequestError("usuário não existe"));
   });
 
   it("should not be able to remove if the user-company relationship does not exist", async () => {

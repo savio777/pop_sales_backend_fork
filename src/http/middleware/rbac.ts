@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 export function RBAC(roles: string[]) {
   return async (req: FastifyRequest, _res: FastifyReply) => {
     if (!req.userAuth?.permissions || !Array.isArray(req.userAuth.permissions)) {
-      throw new ForbiddenError("You do not have permission to access this endpoint.");
+      throw new ForbiddenError("Você não tem permissão para acessar este isto.");
     }
 
     const allPermissions = req.userAuth.permissions.flatMap(perm => perm.Permission?.permissions || []);
@@ -14,7 +14,7 @@ export function RBAC(roles: string[]) {
     );
 
     if (!hasPermission) {
-      throw new ForbiddenError("Access denied. Insufficient permission.");
+      throw new ForbiddenError("Acesso negado. Permissão insuficiente.");
     }
   };
 }

@@ -10,7 +10,7 @@ export class GetUserByEmailUseCase {
     const user = await this.userRepository.getByEmail(email)
 
     if (!user) {
-      throw new NotFoundError("User not found");
+      throw new NotFoundError("Usuário não encontrado.");
     }
     
     return {user}

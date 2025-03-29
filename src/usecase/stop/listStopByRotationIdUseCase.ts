@@ -9,7 +9,7 @@ export class ListStopByRotationIdUseCase {
   async execute(rotationId: string){
     const stops = await this.stopRepository.getByRotationId(rotationId)
     if(!stops){
-      throw new NotFoundError("rotation not found")
+      throw new NotFoundError("Rotação não encontrada.")
     }
     return {stops}
   }

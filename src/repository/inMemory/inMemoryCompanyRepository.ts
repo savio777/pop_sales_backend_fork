@@ -62,7 +62,7 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const index = this.company.findIndex((i) => i.id === id);
 
     if (index === -1) {
-      throw new Error("User not found");
+      throw new Error("Usuário não encontrado.");
     }
 
     this.company.splice(index, 1);

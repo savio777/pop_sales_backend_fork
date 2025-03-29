@@ -11,7 +11,7 @@ export class ListRotationByUserIdUseCase {
   async execute(userId: string){
     const user = await this.userRepository.getById(userId)
     if(!user){
-      throw new BadRequestError("user does not exist")
+      throw new BadRequestError("Usuário não existe.")
     }
 
     const rotations = await this.userRotationRepository.getRotationByUserId(userId)

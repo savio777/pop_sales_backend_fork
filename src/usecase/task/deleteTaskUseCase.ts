@@ -9,7 +9,7 @@ export class DeleteTaskUseCase {
   async execute(taskId: string){
     const task = await this.taskRepository.getById(taskId)
     if(!task){
-      throw new NotFoundError("task not found")
+      throw new NotFoundError("Tarefa não encontrada.")
     }
     await this.taskRepository.delete(taskId)
   }

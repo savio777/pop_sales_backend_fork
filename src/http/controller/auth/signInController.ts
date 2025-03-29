@@ -22,7 +22,7 @@ export class SignInController {
 
     const isPasswordCorrect = await bcrypt.compare(data.password, user.password);
     if (!isPasswordCorrect) {
-      throw new UnauthorizedError("e-mail or password are not correct")
+      throw new UnauthorizedError("E-mail ou senha estão incorretas")
     }
 
     const payload = {

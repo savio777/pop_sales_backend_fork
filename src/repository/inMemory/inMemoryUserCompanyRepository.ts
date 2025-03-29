@@ -34,7 +34,7 @@ export class InMemoryUserCompanyRepository implements UserCompanyRepository{
   async remove(id: string): Promise<void> {
     const index = this.userCompany.findIndex((i) => i.id === id);
     if (index === -1) {
-      throw new Error("User not found");
+      throw new Error("Usuário não encontrado.");
     }
     this.userCompany.splice(index, 1);
   }

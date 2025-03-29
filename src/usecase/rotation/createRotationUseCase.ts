@@ -19,7 +19,7 @@ export class CreateRotationUseCase {
 
     const company = await this.companyRepository.getById(companyId)
     if(!company){
-      throw new BadRequestError("company does not exist")
+      throw new BadRequestError("Empresa não existe.")
     }
 
     const user = await this.userRepository.getById(userId)
