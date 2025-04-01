@@ -34,6 +34,8 @@ export class CreateUserUseCase {
       );
     }
 
+    //TODO: verificar usuario com mesmo nome, email e phone
+
     const user = await this.userRepository.create({
       name: data.name,
       email: data.email,
