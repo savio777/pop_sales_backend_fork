@@ -21,5 +21,6 @@ export interface CheckInCheckOutRepository {
     userId: string;
     clientId: string;
     date: Date
-  }): Promise<CheckinCheckout | null>
+  }): Promise<CheckinCheckout | null>,
+  getById(id: string): Promise<CheckinCheckout | null>
 }

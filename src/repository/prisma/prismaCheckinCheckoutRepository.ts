@@ -4,6 +4,14 @@ import { db } from "@/lib/prisma";
 import { startOfDay, endOfDay } from "date-fns";
 
 export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepository {
+ async getById(id: string): Promise<CheckinCheckout | null> {
+    const checkInCheckout = await db.checkinCheckout.findUnique({
+      where: {
+        id
+      }
+    })
+    return checkInCheckout
+  }
   async getCheckInByDate({
     userId,
     clientId,
