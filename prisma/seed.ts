@@ -29,7 +29,8 @@ async function main() {
         "list.task.by.rotation.stop.id",
         "create.client",
         "create.check.in",
-        "get.client"
+        "get.client",
+        "create.check.out"
       ]
     },
     {
@@ -48,14 +49,16 @@ async function main() {
         "list.rotation.stop",
         "list.task.by.rotation.stop.id",
         "create.client",
-        "create.check.in"
+        "create.check.in",
+        "create.check.out"
       ]
     },
     {
       name: "Employee", // Empregado
       permissions: [
         "list.rotations.assigned.to.me",
-        "create.check.in"
+        "create.check.in",
+        "create.check.out"
       ]
     },
     

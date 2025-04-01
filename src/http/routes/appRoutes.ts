@@ -8,6 +8,7 @@ import { TaskRoutes } from "./taskRoutes";
 import { StopRoutes } from "./stopRoutes";
 import { ClientRoutes } from "./clientRoutes";
 import { CheckInRoutes } from "./checkInRoutes";
+import { CheckOutRoutes } from "./checkOutRoutes";
 
 export function AppRoutes(app: FastifyInstance){
   app.register(AuthRoutes, {prefix: "/auth"})
@@ -19,4 +20,5 @@ export function AppRoutes(app: FastifyInstance){
   app.register(StopRoutes, {prefix: "/stop"})
   app.register(ClientRoutes, {prefix: "/client"})
   app.register(CheckInRoutes, {prefix: "/check-in"})
+  app.register(CheckOutRoutes, {prefix: "/check-out"})
 }
