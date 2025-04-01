@@ -10,7 +10,6 @@ describe("Auth sign in", () => {
     await db.userCompany.deleteMany()
     await db.user.deleteMany()
     await db.company.deleteMany()
-
   });
 
   it("should be able to authenticate user", async () => {
