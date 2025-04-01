@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export class ListCompaniesController {
   async handle(req: FastifyRequest, res: FastifyReply) {
-    const userId = req.userAuth.id;
+    const userId = req.userAuth!.id;
 
     const listCompaniesSchema = z.object({
       limit: z.coerce.number().default(200),

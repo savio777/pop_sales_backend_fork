@@ -5,7 +5,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 export class GetMyUserController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth.id
+    const userId = req.userAuth!.id
 
     const userRepository = new PrismaUserRepository()
     const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)

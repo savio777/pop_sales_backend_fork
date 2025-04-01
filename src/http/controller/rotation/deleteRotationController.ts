@@ -7,7 +7,7 @@ import { z } from "zod";
 
 export class DeleteRotationController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth.id
+    const userId = req.userAuth!.id
 
     const deleteRotationRequestParams = z.object({
       rotationId: z.string().uuid()

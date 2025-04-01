@@ -7,7 +7,9 @@ import { randomUUID } from "crypto";
 describe("Auth sign in", () => {
   beforeEach(async () => {
     await app.ready();
-    await db.$executeRaw`TRUNCATE TABLE "UserCompany", "User", "Company" RESTART IDENTITY CASCADE;`;
+    await db.userCompany.deleteMany()
+    await db.user.deleteMany()
+    await db.company.deleteMany()
 
   });
 
@@ -20,14 +22,14 @@ describe("Auth sign in", () => {
 
     await request(app.server).post("/auth/sign-up").send({
       name: "user test",
-      email: "userTest@email.com",
+      email: `userTest@email.com`,
       password: "qwertyuio",
       phone: "9999999999",
       companyId: company.id,
     });
 
     const response = await request(app.server).post("/auth/sign-in").send({
-      email: "userTest@email.com",
+      email: `userTest@email.com`,
       password: "qwertyuio",
     });
 

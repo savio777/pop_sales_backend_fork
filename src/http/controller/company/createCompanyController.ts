@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export class CreateCompanyController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth.id
+    const userId = req.userAuth!.id
     
     const createCompanySchema = z.object({
       name: z.string()

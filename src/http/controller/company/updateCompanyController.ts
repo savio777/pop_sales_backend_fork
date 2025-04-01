@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export class UpdateCompanyController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth.id
+    const userId = req.userAuth!.id
 
     const updateCompanyParams = z.object({
       companyId: z.string(),
