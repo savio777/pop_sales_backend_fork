@@ -16,10 +16,19 @@ describe("Create Company", () => {
     const response = await request(app.server)
       .post("/company")
       .send({
-        name: `company test ${randomUUID()}`, 
+        name: "company test created" + randomUUID(), 
       })
       .set('Authorization', `Bearer ${token}`);
+
+    await db.company.deleteMany({where: {id: response.body.id}})
     
     expect(response.status).toBe(200);
+    expect(response.body.company).toMatchObject({
+      id: expect.any(String),
+      name: response.body.company.name,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      status: 'ACTIVE'
+    })
   });
 });

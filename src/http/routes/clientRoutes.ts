@@ -2,11 +2,11 @@ import { FastifyInstance } from "fastify";
 import { CreateClientController } from "../controller/client/createClientController";
 import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
-import { GetClientController } from "../controller/client/getClientByIdController";
+import { GetClientByIdController } from "../controller/client/getClientByIdController";
 import { ListClientsByCompanyController } from "../controller/client/listClientsByCompanyController";
 
 const createClientController = new CreateClientController()
-const getClientController = new GetClientController()
+const getClientByIdController = new GetClientByIdController()
 const listClientsByCompanyController = new ListClientsByCompanyController()
 
 export function ClientRoutes(app: FastifyInstance) {
@@ -23,6 +23,6 @@ export function ClientRoutes(app: FastifyInstance) {
   app.get(
     "/:clientId", 
     {preHandler: [Auth, RBAC(["get.client"])]},
-    getClientController.handle
+    getClientByIdController.handle
   )
 }

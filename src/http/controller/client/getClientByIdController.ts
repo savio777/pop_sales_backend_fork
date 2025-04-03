@@ -2,7 +2,7 @@ import { db } from "@/lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export class GetClientController {
+export class GetClientByIdController {
   async handle(req: FastifyRequest, res: FastifyReply){
     const getClientRequestParams = z.object({
       clientId: z.string().uuid()
