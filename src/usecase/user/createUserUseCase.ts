@@ -41,8 +41,10 @@ export class CreateUserUseCase {
       email: data.email,
       password: data.password,
       phone: data.phone,
+      status: "ACTIVE"
     });
 
+    //TODO: REMOVER ISTO E POR EM UM ENDPOINT ESPECIFICO
     await this.userCompanyRepository.create({
       companyId: data.companyId,
       userId: user.id,

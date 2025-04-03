@@ -5,9 +5,7 @@ import { FastifyReply } from "fastify/types/reply";
 import { z } from "zod";
 
 export class CreateCompanyController {
-  async handle(req: FastifyRequest, res: FastifyReply){
-    const userId = req.userAuth!.id
-    
+  async handle(req: FastifyRequest, res: FastifyReply){    
     const createCompanySchema = z.object({
       name: z.string()
     })

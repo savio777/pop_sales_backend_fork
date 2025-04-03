@@ -1,35 +1,48 @@
 import request from "supertest";
-import { beforeEach, describe, expect, it } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+} from "vitest";
 import { app } from "@/app";
-import { db } from "../../setup";
 import { randomUUID } from "crypto";
+import { db } from "@/test/setup";
+import { generateEmail } from "@/test/lib/generateEmail";
+import { generatePhoneNumber } from "@/test/lib/generatePhoneNumber";
+import { generatePassword } from "@/test/lib/generatePassword";
 
 describe("Auth sign in", () => {
   beforeEach(async () => {
-    await app.ready();
-    await db.userCompany.deleteMany()
-    await db.user.deleteMany()
-    await db.company.deleteMany()
+    await db.userCompany.deleteMany();
+    await db.userPermission.deleteMany();
+    await db.user.deleteMany();
+    await db.company.deleteMany();
   });
 
   it("should be able to authenticate user", async () => {
     const company = await db.company.create({
-      data: { 
-        name: `company test - ${randomUUID()}`
+      data: {
+        name: `company test - ${randomUUID()}`,
       },
     });
 
-    await request(app.server).post("/auth/sign-up").send({
-      name: "user test",
-      email: `userTest@email.com`,
-      password: "qwertyuio",
-      phone: "9999999999",
+    const user = {
+      name: `user test ${new Date().getTime()}`,
+      email: generateEmail(),
+      password: generatePassword(),
+      phone: generatePhoneNumber(),
       companyId: company.id,
-    });
+    };
+
+    await request(app.server).post("/auth/sign-up").send(user);
 
     const response = await request(app.server).post("/auth/sign-in").send({
-      email: `userTest@email.com`,
-      password: "qwertyuio",
+      email: user.email,
+      password: user.password,
     });
 
     expect(response.status).toBe(200);

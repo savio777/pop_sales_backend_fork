@@ -1,16 +1,17 @@
-import { beforeAll, afterAll } from "vitest";
-import { PrismaClient } from "@prisma/client";
 import { app } from "@/app";
+import { PrismaClient } from "@prisma/client";
+import { beforeEach , afterEach, beforeAll} from "vitest";
 
-const db = new PrismaClient();
+const db = new PrismaClient()
 
-beforeAll(async () => {
-  await db.$connect();
-  await app.ready();
-});
+beforeEach(async () => {
+  await app.ready()
+  await db.$connect()
+})
 
-afterAll(async () => {
-  await db.$disconnect();
-});
+afterEach(async () => {
+  await db.$disconnect()
+  await app.close()
+})
 
-export { db };
+export {db}

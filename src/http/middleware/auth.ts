@@ -34,6 +34,7 @@ export async function Auth(req: FastifyRequest, _res: FastifyReply) {
     }
   });
 
+
   if (user?.status !== "ACTIVE") {
     throw new UnauthorizedError("Você não tem permissão de acesso");
   }

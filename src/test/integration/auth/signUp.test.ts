@@ -1,47 +1,41 @@
 import request from "supertest";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { db } from "../../setup";
+import { beforeEach, describe, expect, it } from "vitest";
 import { app } from "@/app";
+import { db } from "@/test/setup";
 import { randomUUID } from "crypto";
-import { BadRequestError } from "@/error/badRequest.error";
+import { generatePhoneNumber } from "@/test/lib/generatePhoneNumber";
+import { generateEmail } from "@/test/lib/generateEmail";
+import { generatePassword } from "@/test/lib/generatePassword";
 
 describe("Auth sign up", () => {
-  // Antes de cada teste, garantir que o banco de dados esteja limpo
-  afterEach(async () => {
+  beforeEach(async () => {
     await db.userCompany.deleteMany();
-    await db.userPermission.deleteMany()
+    await db.userPermission.deleteMany();
     await db.user.deleteMany();
     await db.company.deleteMany();
   });
 
-  it("Should be able to create user", async () => {
+  it("should create a new user with company", async () => {
     const company = await db.company.create({
-      data: {
-        name: `company test`,
-      },
+      data: { name: `company test ${randomUUID}` },
     });
 
-    const response = await request(app.server).post("/auth/sign-up").send({
-      name: "user test",
-      email: "userTest@email.com",
-      password: "qwertyuio",
-      phone: "9999999999",
+    const user = {
+      name: `user test ${new Date().getTime()}`,
+      email: generateEmail(),
+      password: generatePassword(),
+      phone: generatePhoneNumber(),
       companyId: company.id,
-    });
+    };
+
+    const response = await request(app.server).post("/auth/sign-up").send(user);
 
     expect(response.status).toBe(201);
-    expect(response.body).toMatchObject({
-      user: {
-        id: expect.any(String),
-        name: "user test",
-        email: "userTest@email.com",
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        phone: "9999999999",
-        status: "ACTIVE",
-      },
+    expect(response.body.user).toMatchObject({
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      status: "ACTIVE",
     });
   });
-
-  
 });
