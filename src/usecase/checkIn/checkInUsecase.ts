@@ -69,7 +69,7 @@ export class CheckInUseCase {
       throw new UnauthorizedError("Você precisa estar a pelo menos 100m de distância do cliente para fazer o check-in")
     }
 
-    const checkIn = await this.checkInCheckOutRepository.checkIn({
+    const checkIn = await this.checkInCheckOutRepository.create({
       clientId,
       userId
     })
