@@ -34,7 +34,9 @@ export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepositor
 
     return checkInCheckout;
   }
-  async checkIn({
+
+
+  async create({
     userId,
     clientId,
   }: {
@@ -49,18 +51,15 @@ export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepositor
     });
     return checkInChekcOut;
   }
-  async checkOut({
-    checkInChekcOutId,
-  }: {
-    checkInChekcOutId: string;
-  }): Promise<CheckinCheckout> {
+  async update(
+    {id, data}:
+    { id: string, data: Prisma.CheckinCheckoutUpdateInput}
+  ): Promise<CheckinCheckout | null> {
     const checkInChekcOut = await db.checkinCheckout.update({
       where: {
-        id: checkInChekcOutId,
+        id,
       },
-      data: {
-        finalizedAt: new Date(),
-      },
+      data
     });
     return checkInChekcOut;
   }

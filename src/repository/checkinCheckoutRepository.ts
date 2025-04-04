@@ -1,18 +1,17 @@
-import { CheckinCheckout } from "@prisma/client";
+import { CheckinCheckout, Prisma } from "@prisma/client";
 
 export interface CheckInCheckOutRepository {
-  checkIn({
+  create({
     userId,
     clientId,
   }: {
     userId: string;
     clientId: string;
   }): Promise<CheckinCheckout>;
-  checkOut({
-    checkInChekcOutId,
-  }: {
-    checkInChekcOutId: string;
-  }): Promise<CheckinCheckout>;
+  update(    
+    {id, data}:
+    { id: string, data: Prisma.CheckinCheckoutUpdateInput}
+  ): Promise<CheckinCheckout>;
   getCheckInByDate({
     userId,
     clientId,
