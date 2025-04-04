@@ -11,7 +11,7 @@ export interface CheckInCheckOutRepository {
   update(    
     {id, data}:
     { id: string, data: Prisma.CheckinCheckoutUpdateInput}
-  ): Promise<CheckinCheckout>;
+  ): Promise<CheckinCheckout | null>;
   getCheckInByDate({
     userId,
     clientId,

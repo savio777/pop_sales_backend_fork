@@ -4,14 +4,15 @@ import { db } from "@/lib/prisma";
 import { startOfDay, endOfDay } from "date-fns";
 
 export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepository {
- async getById(id: string): Promise<CheckinCheckout | null> {
+  async getById(id: string): Promise<CheckinCheckout | null> {
     const checkInCheckout = await db.checkinCheckout.findUnique({
       where: {
-        id
-      }
-    })
-    return checkInCheckout
+        id,
+      },
+    });
+    return checkInCheckout;
   }
+
   async getCheckInByDate({
     userId,
     clientId,
@@ -26,15 +27,14 @@ export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepositor
         userId,
         clientId,
         createdAt: {
-          gte: startOfDay(date), 
-          lt: endOfDay(date), 
+          gte: startOfDay(date),
+          lt: endOfDay(date),
         },
       },
     });
 
     return checkInCheckout;
   }
-
 
   async create({
     userId,
@@ -51,15 +51,19 @@ export class PrismaCheckInCheckOutRepository implements CheckInCheckOutRepositor
     });
     return checkInChekcOut;
   }
-  async update(
-    {id, data}:
-    { id: string, data: Prisma.CheckinCheckoutUpdateInput}
-  ): Promise<CheckinCheckout | null> {
+
+  async update({
+    id,
+    data,
+  }: {
+    id: string;
+    data: Prisma.CheckinCheckoutUpdateInput;
+  }): Promise<CheckinCheckout | null> {
     const checkInChekcOut = await db.checkinCheckout.update({
       where: {
         id,
       },
-      data
+      data,
     });
     return checkInChekcOut;
   }
