@@ -80,8 +80,14 @@ export class CheckOutUseCase {
       throw new BadRequestError("checkIn não encontrado")
     }
 
-    const checkOut = await this.checkInCheckOutRepository.checkOut({
-      checkInChekcOutId
+    const finalizedAt = new Date()
+    const duration = checkIn.createdAt finalizedAt
+
+    const checkOut = await this.checkInCheckOutRepository.update({
+      id: checkInChekcOutId,
+      data: {
+        finalizedAt: new Date()
+      }
     })
 
     return {checkOut}
