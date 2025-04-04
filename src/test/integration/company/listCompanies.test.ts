@@ -1,10 +1,18 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "@/app";
 import { db } from "@/test/setup";
 import { getToken } from "@/test/lib/getToken";
 
 describe("List Companies", () => {
+  beforeEach(async () => {
+    await app.ready();
+  });
+  
+  afterEach(async () => {
+    await app.close();
+  });
+
   it("should be able to create company", async () => {
     const token = await getToken();
 
@@ -18,7 +26,11 @@ describe("List Companies", () => {
       .get("/company")
       .set("Authorization", `Bearer ${token}`);
 
-    await db.company.deleteMany({where: {id: company.id}})
+    await db.company.delete({
+      where: {
+        id: company.id
+      }}
+    )
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "@/app";
 import { randomUUID } from "crypto";
@@ -7,9 +7,13 @@ import { getToken } from "@/test/lib/getToken";
 
 describe("Create Company", () => {
   beforeEach(async () => {
-    await db.company.deleteMany();
+    await app.ready();
   });
-  
+
+  afterEach(async () => {
+    await app.close();
+  });
+
   it("should be able to create company", async () => {
     const token = await getToken(); 
 
@@ -20,7 +24,11 @@ describe("Create Company", () => {
       })
       .set('Authorization', `Bearer ${token}`);
 
-    await db.company.deleteMany({where: {id: response.body.id}})
+    await db.company.delete({
+      where: {
+        id: response.body.company.id
+      }
+    })
     
     expect(response.status).toBe(200);
     expect(response.body.company).toMatchObject({

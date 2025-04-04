@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest"
 import { app } from "@/app";
 import { getToken } from "@/test/lib/getToken";
@@ -7,7 +7,15 @@ import { generateEmail } from "@/test/lib/generateEmail";
 import { randomUUID } from "crypto";
 
 describe("Create Client", async () => {
-  it("should be able create clinet", async () => {
+  beforeEach(async () => {
+    await app.ready();
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it("should be able create client", async () => {
     const token = await getToken()
 
     const company = await db.company.create({
@@ -33,6 +41,18 @@ describe("Create Client", async () => {
       .send(client)
       .set('Authorization', `Bearer ${token}`)
 
+      await db.client.delete({
+        where: {
+          id: response.body.client.id
+        }
+      })
+  
+      await db.company.delete({
+        where: {
+          id: company.id
+        }
+      })
+
     expect(response.status).toBe(201)
     expect(response.body.client).toMatchObject({
       id: expect.any(String),
@@ -49,8 +69,5 @@ describe("Create Client", async () => {
       companyId: company.id
     });
     
-
-    await db.client.delete({where: {id: response.body.client.id}})
-    await db.company.delete({where: {id: company.id}})
   })
 })

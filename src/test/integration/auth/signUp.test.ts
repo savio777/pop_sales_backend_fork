@@ -1,5 +1,5 @@
 import request from "supertest";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { app } from "@/app";
 import { db } from "@/test/setup";
 import { randomUUID } from "crypto";
@@ -8,6 +8,14 @@ import { generateEmail } from "@/test/lib/generateEmail";
 import { generatePassword } from "@/test/lib/generatePassword";
 
 describe("Auth sign up", () => {
+  beforeEach(async () => {
+    await app.ready();
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
   it("should create a new user with company", async () => {
     const company = await db.company.create({
       data: { name: `company test ${randomUUID()}` },

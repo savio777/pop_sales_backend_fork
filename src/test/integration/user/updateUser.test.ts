@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from  "supertest"
 import { app } from "@/app";
 import { beforeEach } from "node:test";
@@ -9,10 +9,13 @@ import { getToken } from "@/test/lib/getToken";
 import { randomUUID } from "crypto";
 
 describe("Update user", async () => {
+  beforeAll(async () => {
+    await app.ready();
+  });
 
-  beforeEach(async () => {
-    app.ready()
-  })
+  afterAll(async () => {
+    await app.close();
+  });
 
   it("should be able update user", async () => {
     const token = await getToken()

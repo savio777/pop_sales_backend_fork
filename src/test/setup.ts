@@ -5,12 +5,12 @@ import { beforeEach , afterEach, beforeAll} from "vitest";
 const db = new PrismaClient()
 
 beforeEach(async () => {
-  await app.ready()
+  // await app.ready()
   await db.$connect()
 })
 
 afterEach(async () => {
-  await db.$disconnect()
+  // await db.$disconnect()
   await app.close()
 })
 

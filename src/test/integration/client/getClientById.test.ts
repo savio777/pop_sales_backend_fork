@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest"
 import { app } from "@/app";
 import { getToken } from "@/test/lib/getToken";
@@ -7,6 +7,14 @@ import { randomUUID } from "crypto";
 import { generateEmail } from "@/test/lib/generateEmail";
 
 describe("Get client by id", async () => {
+  beforeEach(async () => {
+    await app.ready();
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
+
   it("should be able to get client by id", async () => {
     const token = await getToken()
 

@@ -1,5 +1,7 @@
 import request from "supertest";
 import {
+  afterEach,
+  beforeEach,
   describe,
   expect,
   it,
@@ -12,6 +14,13 @@ import { generatePhoneNumber } from "@/test/lib/generatePhoneNumber";
 import { generatePassword } from "@/test/lib/generatePassword";
 
 describe("Auth sign in", () => {
+  beforeEach(async () => {
+    await app.ready();
+  });
+
+  afterEach(async () => {
+    await app.close();
+  });
 
   it("should be able to authenticate user", async () => {
     const company = await db.company.create({
