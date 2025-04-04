@@ -170,7 +170,7 @@ model CheckinCheckout {
   id          String    @id @default(uuid())
   createdAt   DateTime  @default(now())
   finalizedAt DateTime?
-  serviceDuration DateTime?
+  serviceDuration Int?
 
   userId String
   user   User   @relation(fields: [userId], references: [id])

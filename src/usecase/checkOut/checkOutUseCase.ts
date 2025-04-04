@@ -5,6 +5,7 @@ import { ClientRepository } from "@/repository/clientRepository";
 import { StopRepository } from "@/repository/stopRepository";
 import { UserRepository } from "@/repository/userRepository";
 import { getDistance } from "@/service/getDistance";
+import { differenceInMinutes } from "date-fns";
 
 export class CheckOutUseCase {
   constructor(
@@ -81,12 +82,13 @@ export class CheckOutUseCase {
     }
 
     const finalizedAt = new Date()
-    const duration = checkIn.createdAt finalizedAt
+    const minutes = differenceInMinutes(finalizedAt, checkIn.createdAt)
 
     const checkOut = await this.checkInCheckOutRepository.update({
       id: checkInChekcOutId,
       data: {
-        finalizedAt: new Date()
+        finalizedAt: new Date(),
+        serviceDuration: minutes
       }
     })
 
