@@ -3,18 +3,19 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export class ListClientsByCompanyController {
-  async handle(req: FastifyRequest, res: FastifyReply){
+  async handle(req: FastifyRequest, res: FastifyReply) {
     const listClientsByCompanyRequestParams = z.object({
-      companyId: z.string().uuid()
-    })
-    const {companyId} = listClientsByCompanyRequestParams.parse(req.params)
+      companyId: z.string().uuid(),
+    });
+    
+    const { companyId } = listClientsByCompanyRequestParams.parse(req.params);
 
     const clients = await db.client.findMany({
       where: {
-        companyId
-      }
-    })
+        companyId,
+      },
+    });
 
-    return res.status(200).send({clients})
+    return res.status(200).send({ clients });
   }
 }

@@ -24,7 +24,6 @@ describe("List Clients by Company Id", async () => {
       },
     });
 
-
     const client = await request(app.server)
       .post("/client")
       .send({
