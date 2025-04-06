@@ -5,24 +5,30 @@ import { RBAC } from "../middleware/rbac";
 import { GetClientByIdController } from "../controller/client/getClientByIdController";
 import { ListClientsByCompanyController } from "../controller/client/listClientsByCompanyController";
 
-const createClientController = new CreateClientController()
-const getClientByIdController = new GetClientByIdController()
-const listClientsByCompanyController = new ListClientsByCompanyController()
+const createClientController = new CreateClientController();
+const getClientByIdController = new GetClientByIdController();
+const listClientsByCompanyController = new ListClientsByCompanyController();
+const listClientServiceController = new ListClientsByCompanyController();
 
 export function ClientRoutes(app: FastifyInstance) {
   app.post(
-    "/", 
-    {preHandler: [Auth, RBAC(["create.client"])]},
+    "/",
+    { preHandler: [Auth, RBAC(["create.client"])] },
     createClientController.handle
-  )
+  );
   app.get(
-    "/company/:companyId", 
-    {preHandler: [Auth, RBAC(["get.client"])]},
+    "/company/:companyId",
+    { preHandler: [Auth, RBAC(["get.client"])] },
     listClientsByCompanyController.handle
-  )
+  );
   app.get(
-    "/:clientId", 
-    {preHandler: [Auth, RBAC(["get.client"])]},
+    "/company-service/:companyId",
+    { preHandler: [Auth, RBAC(["list.client.service"])] },
+    listClientServiceController.handle
+  );
+  app.get(
+    "/:clientId",
+    { preHandler: [Auth, RBAC(["get.client"])] },
     getClientByIdController.handle
-  )
+  );
 }
