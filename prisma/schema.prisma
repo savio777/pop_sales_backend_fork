@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String            @unique
-  email           String            @unique
-  password        String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  phone           String?           @unique
-  status          StatusUser        @default(ACTIVE)
-  companys        UserCompany[]
-  permissions     UserPermission[]
-  rotations       UserRotation[]
-  CheckinCheckout CheckinCheckout[]
+  id                String              @id @default(uuid())
+  name              String              @unique
+  email             String              @unique
+  password          String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  phone             String?             @unique
+  status            StatusUser          @default(ACTIVE)
+  companys          UserCompany[]
+  permissions       UserPermission[]
+  rotations         UserRotation[]
+  CheckinCheckout   CheckinCheckout[]
+  ServiceAssessment ServiceAssessment[]
 }
 
 model Permission {
@@ -42,15 +43,16 @@ model UserPermission {
 }
 
 model Company {
-  id        String        @id @default(uuid())
-  name      String        @unique
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  status    StatusCompany @default(ACTIVE)
-  products  Product[]
-  rotations Rotation[]
-  users     UserCompany[]
-  clients   Client[]
+  id                String              @id @default(uuid())
+  name              String              @unique
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  status            StatusCompany       @default(ACTIVE)
+  products          Product[]
+  rotations         Rotation[]
+  users             UserCompany[]
+  clients           Client[]
+  ServiceAssessment ServiceAssessment[]
 }
 
 model UserCompany {
@@ -77,19 +79,19 @@ model Rotation {
 }
 
 enum StatusStop {
-  PENDING   // O usuário ainda não visitou
+  PENDING // O usuário ainda não visitou
   COMPLETED // O usuário já visitou
 }
 
 model Stop {
-  id        String   @id @default(uuid())
-  sequence  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String     @id @default(uuid())
+  sequence    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   finalizedAt DateTime?
-  status StatusStop @default(PENDING)
+  status      StatusStop @default(PENDING)
 
-  tasks    Task[]
+  tasks Task[]
 
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
@@ -159,18 +161,20 @@ model Client {
   lon               String?
   lat               String?
 
-  Company         Company?          @relation(fields: [companyId], references: [id])
-  companyId       String?
-  
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
   CheckinCheckout CheckinCheckout[]
+
+  ServiceAssessment ServiceAssessment[]
 
   Stop Stop[]
 }
 
 model CheckinCheckout {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  finalizedAt DateTime?
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  finalizedAt     DateTime?
   serviceDuration Int?
 
   userId String
@@ -178,4 +182,21 @@ model CheckinCheckout {
 
   clientId String
   client   Client @relation(fields: [clientId], references: [id])
+}
+
+model ServiceAssessment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  description String?
+  ratingStars Int?
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  User     User?   @relation(fields: [userId], references: [id])
+  userId   String?
+  
+  Client   Client? @relation(fields: [clientId], references: [id])
+  clientId String?
 }
