@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "@/app";
 import { db } from "@/test/setup";
-import { getToken } from "@/test/lib/getToken";
+import { getToken } from "@/test/utils/signInUserAdmin";
 
 describe("List Companies", () => {
   beforeEach(async () => {

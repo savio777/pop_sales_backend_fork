@@ -15,7 +15,8 @@ export class CheckOutController {
       lat: z.string(),
       lon: z.string(),
       stopId: z.string().uuid(),
-      checkInChekcOutId: z.string().uuid()
+      checkInChekcOutId: z.string().uuid(),
+      rotationId: z.string().uuid()
     })
 
     const data = checkOutRequestBody.parse(req.body)

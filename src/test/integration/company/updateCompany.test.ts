@@ -3,7 +3,7 @@ import request from "supertest";
 import { app } from "@/app";
 import { randomUUID } from "crypto";
 import { db } from "@/test/setup";
-import { getToken } from "@/test/lib/getToken";
+import { getToken } from "@/test/utils/signInUserAdmin";
 
 describe("Update Company", () => {
   beforeEach(async () => {

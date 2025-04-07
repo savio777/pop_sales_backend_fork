@@ -3,9 +3,9 @@ import request from  "supertest"
 import { app } from "@/app";
 import { beforeEach } from "node:test";
 import { db } from "@/test/setup";
-import { generateEmail } from "@/test/lib/generateEmail";
-import { generatePassword } from "@/test/lib/generatePassword";
-import { getToken } from "@/test/lib/getToken";
+import { generateEmail } from "@/test/utils/generateEmail";
+import { generatePassword } from "@/test/utils/generatePassword";
+import { getToken } from "@/test/utils/signInUserAdmin";
 import { randomUUID } from "crypto";
 
 describe("Update user", async () => {

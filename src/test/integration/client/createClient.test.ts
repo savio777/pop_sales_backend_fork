@@ -1,10 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import request from "supertest"
 import { app } from "@/app";
-import { getToken } from "@/test/lib/getToken";
 import { db } from "@/test/setup";
-import { generateEmail } from "@/test/lib/generateEmail";
-import { randomUUID } from "crypto";
+import { createCompany } from "@/test/utils/createCompany";
+import { createClient } from "@/test/utils/createClient";
 
 describe("Create Client", async () => {
   beforeEach(async () => {
@@ -16,57 +14,35 @@ describe("Create Client", async () => {
   });
 
   it("should be able create client", async () => {
-    const token = await getToken()
+    const company = await createCompany()
+    const client = await createClient(company.response.body.company.id)
 
-    const company = await db.company.create({
-      data: {
-        name: "company test create client" + randomUUID()
+    await db.client.delete({
+      where: {
+        id: client.response.body.client.id
       }
     })
 
-    const client = {
-      name: "client test" + randomUUID(), 
-      companyId: company.id, 
-      email: generateEmail(), 
-      lat: undefined, 
-      lon: undefined, 
-      address: "bar do caldeira, centro manaus am",
-      phoneNumber: undefined, 
-      responsiblePerson: undefined, 
-      zipCode: undefined
-    }
+    await db.company.delete({
+      where: {
+        id: company.response.body.company.id
+      }
+    })
 
-    const response = await request(app.server)
-      .post("/client")
-      .send(client)
-      .set('Authorization', `Bearer ${token}`)
-
-      await db.client.delete({
-        where: {
-          id: response.body.client.id
-        }
-      })
-  
-      await db.company.delete({
-        where: {
-          id: company.id
-        }
-      })
-
-    expect(response.status).toBe(201)
-    expect(response.body.client).toMatchObject({
+    expect(client.response.status).toBe(201)
+    expect(client.response.body.client).toMatchObject({
       id: expect.any(String),
       createdAt: expect.any(String), 
       updatedAt: expect.any(String),
-      name: client.name,
-      zipCode: null,
-      responsiblePerson: null,
-      phoneNumber: null,
-      email: client.email,
+      name: client.response.body.client.name,
+      zipCode: expect.any(String),
+      responsiblePerson: expect.any(String),
+      phoneNumber: expect.any(String),
+      email: client.response.body.client.email,
       address: null,
       lon: expect.any(String),
       lat: expect.any(String),
-      companyId: company.id
+      companyId: company.response.body.company.id
     });
     
   })

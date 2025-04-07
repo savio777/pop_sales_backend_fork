@@ -2,39 +2,42 @@ import { Prisma, Client } from "@prisma/client";
 import { ClientRepository } from "../clientRepository";
 import { db } from "@/lib/prisma";
 
+interface listClientServiceResponse {
+  client: {
+      name: string;
+      id: string;
+      createdAt: Date;
+      updatedAt: Date;
+      zipCode: string | null;
+      responsiblePerson: string | null;
+      phoneNumber: string | null;
+      email: string | null;
+      address: string | null;
+      lon: string | null;
+      lat: string | null;
+      companyId: string | null;
+  };
+  createdAt: Date;
+  finalizedAt: Date | null;
+}
+
 export class PrismaClientRepository implements ClientRepository {
-  async listClientService(companyId: string): Promise<Client[] | null> {
+  async listClientService(companyId: string): Promise<listClientServiceResponse[]> {
     const clientService = await db.checkinCheckout.findMany({
       where: {
-        finalizedAt: null,
         client: {
           companyId,
         },
       },
       select: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            companyId: true,
-            createdAt: true,
-            updatedAt: true,
-          },
-        },
-      },
+        createdAt: true,
+        finalizedAt: true,
+        client: true
+      }
+      
     });
 
-    const client = clientService.map((service) => service.client) || null;
-    return client.map((c) => ({
-      ...c,
-      zipCode: null,
-      responsiblePerson: null,
-      phoneNumber: null,
-      address: null,
-      lon: null,
-      lat: null,
-    }));
+    return clientService;
   }
 
   async update({ id, data }: { id: string; data: Client }): Promise<Client> {

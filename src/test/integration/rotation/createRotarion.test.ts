@@ -1,7 +1,7 @@
 import {expect, describe, it, beforeEach, afterEach} from "vitest"
 import request from "supertest"
 import { db } from "@/test/setup"
-import { getToken } from "@/test/lib/getToken"
+import { getToken } from "@/test/utils/signInUserAdmin"
 import { app } from "@/app"
 
 describe("Create Rotarion", () => {

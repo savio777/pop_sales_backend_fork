@@ -30,7 +30,8 @@ async function main() {
         "create.client",
         "create.check.in",
         "get.client",
-        "create.check.out"
+        "create.check.out",
+        "list.client.service"
       ]
     },
     {

@@ -1,5 +1,6 @@
 import { BadRequestError } from "@/error/badRequest.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
+import { db } from "@/lib/prisma";
 import { CheckInCheckOutRepository } from "@/repository/checkinCheckoutRepository";
 import { ClientRepository } from "@/repository/clientRepository";
 import { StopRepository } from "@/repository/stopRepository";
@@ -21,14 +22,16 @@ export class CheckOutUseCase {
     lon,
     lat,
     stopId,
-    checkInChekcOutId
+    checkInChekcOutId,
+    rotationId
   }: {
     clientId: string;
     userId: string;
     lon: string;
     lat: string;
     stopId: string;
-    checkInChekcOutId: string
+    checkInChekcOutId: string;
+    rotationId: string;
   }) {
     if (!lat || !lon) {
       throw new BadRequestError(
@@ -56,7 +59,17 @@ export class CheckOutUseCase {
       throw new BadRequestError("Parada não existe");
     }
     if (stop.status === "COMPLETED") {
-      throw new BadRequestError("Você já fez check-in nesta empresa hoje");
+      throw new BadRequestError("Você já fez check-out nesta empresa hoje");
+    }
+
+    const rotation = await db.rotation.findUnique({
+      where: {
+        id: rotationId,
+      }
+    });
+
+    if(!rotation){
+      throw new BadRequestError("Rotação não existe");
     }
 
     const distance = getDistance({
@@ -76,22 +89,45 @@ export class CheckOutUseCase {
       );
     }
 
-    const checkIn = await this.checkInCheckOutRepository.getById(checkInChekcOutId)
-    if(!checkIn){
-      throw new BadRequestError("checkIn não encontrado")
+    const checkIn = await this.checkInCheckOutRepository.getById(
+      checkInChekcOutId
+    );
+    if (!checkIn) {
+      throw new BadRequestError("checkIn não encontrado");
     }
 
-    const finalizedAt = new Date()
-    const minutes = differenceInMinutes(finalizedAt, checkIn.createdAt)
+    const finalizedAt = new Date();
+    const minutes = differenceInMinutes(finalizedAt, checkIn.createdAt);
 
-    const checkOut = await this.checkInCheckOutRepository.update({
-      id: checkInChekcOutId,
+    await this.stopRepository.update({
+      id: stop.id,
       data: {
-        finalizedAt: new Date(),
-        serviceDuration: minutes
-      }
-    })
+        status: "COMPLETED",
+      },
+    });
 
-    return {checkOut}
+    const isStopsFinalized = await db.stop.findMany({
+      where: {
+        rotationId,
+        status: "PENDING",
+      },
+    });
+
+    console.log(isStopsFinalized)
+
+    if(isStopsFinalized.length === 0){
+      await this.checkInCheckOutRepository.update({
+        id: checkInChekcOutId,
+        data: {
+          finalizedAt: new Date(), 
+          serviceDuration: minutes,
+        },
+      });
+
+      return { mensage: "Todas as paradas foram finalizadas, rotação concluida!"}
+    }
+
+
+    return { mensage: `Parada foi concluida!, mas ainda faltam ${isStopsFinalized.length} paradas para finalizar a rotação.`};
   }
 }

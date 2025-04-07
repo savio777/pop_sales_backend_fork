@@ -6,14 +6,10 @@ import { z } from "zod";
 
 export class CreateTaskController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const userCreatedId = req.userAuth!.id
-
     const createTaskRequestBody = z.object({
-      companyId: z.string().uuid(),
       title: z.string(), 
       description: z.string().optional(), 
       stopId: z.string().uuid(), 
-      userAssignedId: z.string().uuid()
     })
     
     const data = createTaskRequestBody.parse(req.body)

@@ -1,5 +1,4 @@
 import { NotFoundError } from "@/error/notfound.error";
-import { db } from "@/lib/prisma";
 import { ClientRepository } from "@/repository/clientRepository";
 import { CompanyRepository } from "@/repository/companyRepository";
 
@@ -20,23 +19,11 @@ export class ListClientServiceUseCase {
       throw new NotFoundError("Empresa não encontrado")
     }
 
-    const clientService =  await this.clientRepository.listClientService(companyId)
+    const clientService = await this.clientRepository.listClientService(companyId)
+
     if(!clientService){
       throw new NotFoundError("Nenhum cliente em atendimento")
     }
-
-    //TODO: apagar, removido para implementar o novo metodo list client service
-    // const clientService = await db.checkinCheckout.findMany({
-    //   where: {
-    //     finalizedAt: null,
-    //     client: {
-    //       companyId: company.id
-    //     }
-    //   },
-    //   select: {
-    //     client: true
-    //   }
-    // })
 
     return {clientService}
   }

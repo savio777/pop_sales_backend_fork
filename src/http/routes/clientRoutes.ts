@@ -4,11 +4,12 @@ import { Auth } from "../middleware/auth";
 import { RBAC } from "../middleware/rbac";
 import { GetClientByIdController } from "../controller/client/getClientByIdController";
 import { ListClientsByCompanyController } from "../controller/client/listClientsByCompanyController";
+import { ListClientServiceController } from "../controller/client/listClientServiceController";
 
 const createClientController = new CreateClientController();
 const getClientByIdController = new GetClientByIdController();
 const listClientsByCompanyController = new ListClientsByCompanyController();
-const listClientServiceController = new ListClientsByCompanyController();
+const listClientServiceController = new ListClientServiceController();
 
 export function ClientRoutes(app: FastifyInstance) {
   app.post(

@@ -18,7 +18,7 @@ export function RotationRoutes(app: FastifyInstance){
     createRotationController.handle
   )
   app.get(
-    "/",
+    "/user/:userId",
     {preHandler: [Auth, RBAC(["list.rotations.assigned.to.me"])]},
     listRotationsByUserIdController.handle
   )

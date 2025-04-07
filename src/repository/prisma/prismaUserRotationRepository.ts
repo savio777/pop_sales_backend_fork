@@ -15,7 +15,15 @@ export class PrismaUserRotaionRepository implements UserRotationRepository {
         userId
       },
       include: {
-        Rotation: true
+        Rotation: {
+          include: {
+            stops: {
+              include: {
+                client: true
+              }
+            }
+          }
+        }
       },
       orderBy: {
         createdAt: "asc"

@@ -1,7 +1,7 @@
 import { beforeAll, afterAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import { app } from "@/app";
-import { getToken } from "@/test/lib/getToken";
+import { getToken } from "@/test/utils/signInUserAdmin";
 
 describe("Get My User", () => {
   beforeAll(async () => {

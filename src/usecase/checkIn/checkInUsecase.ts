@@ -43,13 +43,6 @@ export class CheckInUseCase {
       throw new BadRequestError("Você já fez check-in nesta empresa hoje")
     }
 
-    await this.stopRepository.update({
-      id: stop.id,
-      data: {
-        status: "COMPLETED"
-      }
-    })
-
     if(stop.clientId !== clientId){
       throw new BadRequestError("Você não pode fazer o check-in deste cliente, pois ele não está na sua rotação.")
     }

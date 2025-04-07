@@ -1,10 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import request from "supertest";
 import { db } from "@/test/setup";
-import { randomUUID } from "crypto";
 import { app } from "@/app";
-import { generateEmail } from "@/test/lib/generateEmail";
-import { getToken } from "@/test/lib/getToken";
+import { createCompany } from "@/test/utils/createCompany";
+import { createClient } from "@/test/utils/createClient";
+import { listClientByCompayId } from "@/test/utils/listClientByCompayId";
 
 describe("List Clients by Company Id", async () => {
   beforeEach(async () => {
@@ -16,59 +15,37 @@ describe("List Clients by Company Id", async () => {
   });
 
   it("should be able list clients by company id", async () => {
-    const token = await getToken();
-
-    const company = await db.company.create({
-      data: {
-        name: "company test list client by companyId" + randomUUID(),
-      },
-    });
-
-    const client = await request(app.server)
-      .post("/client")
-      .send({
-        name: "client test" + randomUUID(),
-        companyId: company.id,
-        email: generateEmail(),
-        lat: undefined,
-        lon: undefined,
-        address: "bar do caldeira, centro manaus am",
-        phoneNumber: undefined,
-        responsiblePerson: undefined,
-        zipCode: undefined,
-      })
-      .set("Authorization", `Bearer ${token}`);
-
-    const response = await request(app.server)
-      .get(`/client/${client.body.client.id}`)
-      .set("Authorization", `Bearer ${token}`);
-
-    expect(response.status).toBe(200);
-    expect(response.body.client).toMatchObject({
-      id: client.body.client.id,
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
-      name: client.body.client.name,
-      zipCode: client.body.client.zipCode,
-      responsiblePerson: client.body.client.responsiblePerson,
-      phoneNumber: null,
-      email: client.body.client.email,
-      address: client.body.client.address,
-      lon: client.body.client.lon,
-      lat: client.body.client.lat,
-      companyId: company.id,
-    });
+    const company = await createCompany()
+    const client = await createClient(company.response.body.company.id)
+    const response = await listClientByCompayId(company.response.body.company.id)
 
     await db.client.delete({
       where: {
-        id: client.body.client.id,
+        id: client.response.body.client.id,
       },
     });
 
     await db.company.delete({
       where: {
-        id: company.id,
+        id: company.response.body.company.id,
       },
     });
+
+    expect(response.response.status).toBe(200);
+    expect(response.response.body.clients).toEqual([{
+      id: client.response.body.client.id,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      name: client.response.body.client.name,
+      zipCode: client.response.body.client.zipCode,
+      responsiblePerson: client.response.body.client.responsiblePerson,
+      phoneNumber: client.response.body.client.phoneNumber,
+      email: client.response.body.client.email,
+      address: client.response.body.client.address,
+      lon: client.response.body.client.lon,
+      lat: client.response.body.client.lat,
+      companyId: company.response.body.company.id,
+    }]);
+
   });
 });
