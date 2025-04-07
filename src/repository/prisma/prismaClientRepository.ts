@@ -23,18 +23,22 @@ interface listClientServiceResponse {
 
 export class PrismaClientRepository implements ClientRepository {
   async listClientService(companyId: string): Promise<listClientServiceResponse[]> {
-    const clientService = await db.checkinCheckout.findMany({
+    const clientService = await db.stop.findMany({
       where: {
         client: {
           companyId,
         },
+        status: "PENDING",
+        finalizedAt: null
       },
       select: {
         createdAt: true,
         finalizedAt: true,
         client: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
-      
     });
 
     return clientService;
