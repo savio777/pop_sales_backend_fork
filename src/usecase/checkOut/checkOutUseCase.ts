@@ -103,7 +103,7 @@ export class CheckOutUseCase {
       id: stop.id,
       data: {
         status: "COMPLETED",
-      },
+        finalizedAt: new Date(),      },
     });
 
     const isStopsFinalized = await db.stop.findMany({

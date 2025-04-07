@@ -86,6 +86,7 @@ model Stop {
   sequence  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  finalizedAt DateTime?
   status StatusStop @default(PENDING)
 
   tasks    Task[]
