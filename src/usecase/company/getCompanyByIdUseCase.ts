@@ -9,7 +9,7 @@ export class GetCompanyByIdUseCase {
   async execute(id: string){
     const company = await this.companyRepository.getById(id)
     if(!company){
-      throw new NotFoundError("company not exist")
+      throw new NotFoundError("Empresa não existe.")
     }
     return {company}
   }

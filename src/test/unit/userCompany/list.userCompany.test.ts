@@ -59,7 +59,7 @@ describe("List userCompany use case", () => {
     
   });
 
-  it("should not be able list user with company id not exist", async () => {
+  it("should not be able list user with company id does not exist", async () => {
     const companyIdNotExist = randomUUID()
 
     await expect(

@@ -14,7 +14,7 @@ export class ListUserCompanyUseCase {
   ){
     const company = await this.companyRepository.getById(data.companyId)
     if(!company){
-      throw new NotFoundError("company does not exist")
+      throw new NotFoundError("Empresa não encontrada.")
     }
     const userCompanies = await this.userCompanyRepository.list(data)
     return {userCompanies}

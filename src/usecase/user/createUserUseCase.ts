@@ -1,5 +1,5 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { ConflictError } from "@/error/conflict.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { UserCompanyRepository } from "@/repository/userCompanyRepository";
 import { UserRepository } from "@/repository/userRepository";
@@ -22,7 +22,7 @@ export class CreateUserUseCase {
   async execute(data: SignUpInputs) {
     const company = await this.companyRepository.getById(data.companyId);
     if (!company) {
-      throw new BadRequestError("company does not exist");
+      throw new NotFoundError("Empresa não encontrada.");
     }
 
     const userWithEmailAlredyExist = await this.userRepository.getByEmail(
@@ -30,17 +30,21 @@ export class CreateUserUseCase {
     );
     if (userWithEmailAlredyExist) {
       throw new ConflictError(
-        "There is already a user registered with this email"
+        "Já existe um usuário cadastrado com este email."
       );
     }
+
+    //TODO: verificar usuario com mesmo nome, email e phone
 
     const user = await this.userRepository.create({
       name: data.name,
       email: data.email,
       password: data.password,
       phone: data.phone,
+      status: "ACTIVE"
     });
 
+    //TODO: REMOVER ISTO E POR EM UM ENDPOINT ESPECIFICO
     await this.userCompanyRepository.create({
       companyId: data.companyId,
       userId: user.id,

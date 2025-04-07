@@ -33,7 +33,7 @@ describe("Get company by id", () => {
     })
   })
 
-  it("should not be able get user with id not exist", async () => {
+  it("should not be able get user with id does not exist", async () => {
     const companyId = randomUUID()
     await expect(
       sut.execute(companyId)

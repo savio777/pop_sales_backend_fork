@@ -3,6 +3,9 @@ import { CompanyRepository } from "../companyRepository";
 import { randomUUID } from "crypto";
 
 export class InMemoryCompanyRepository implements CompanyRepository {
+  list(): Promise<Company[]> {
+    throw new Error("Method not implemented.");
+  }
   private company: Company[] = [];
 
   async create(data: Prisma.CompanyCreateInput): Promise<Company> {
@@ -59,21 +62,11 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     const index = this.company.findIndex((i) => i.id === id);
 
     if (index === -1) {
-      throw new Error("User not found");
+      throw new Error("Usuário não encontrado.");
     }
 
     this.company.splice(index, 1);
   }
 
-  async list({
-    userId,
-    limit,
-    page,
-  }: {
-    userId: string;
-    page: number;
-    limit: number;
-  }): Promise<Company[]> {
-    throw new Error("Method not implemented.");
-  }
+  
 }

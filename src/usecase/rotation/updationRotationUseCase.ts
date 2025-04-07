@@ -1,4 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { RotationRepository } from "@/repository/rotationRepository";
 
 interface UpdateRotation {
@@ -16,7 +16,7 @@ export class UpdateRotationUseCase {
   ){
     const rotation = await this.rotationRepository.getById(id)
     if(!rotation){
-      throw new BadRequestError("rotation does not exist")
+      throw new NotFoundError("Rotação não encontrada.")
     }
     
     const rotationUpdated = await this.rotationRepository.update({

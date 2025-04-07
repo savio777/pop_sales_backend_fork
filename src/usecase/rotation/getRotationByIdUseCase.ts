@@ -10,7 +10,7 @@ export class GetRotationByIdUseCase {
 
     const rotation = await this.rotationRepository.getById(rotationId)
     if(!rotation){
-      throw new NotFoundError("rotation not found")
+      throw new NotFoundError("Rotação não encontrada.")
     }
 
     return {rotation}

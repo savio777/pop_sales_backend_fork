@@ -58,7 +58,7 @@ describe("Update user use case", () => {
     })
   })
 
-  it("should not be able update if user with id not exist", async () => {
+  it("should not be able update if user with id does not exist", async () => {
 
     const idNotExist = randomUUID()
     await expect(

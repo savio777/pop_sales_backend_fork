@@ -24,7 +24,7 @@ export class InMemoryRotationRepository implements RotationRepository {
   async update({ id, data }: { id: string; data: Prisma.RotationUpdateInput; }): Promise<Rotation> {
     const index = this.rotation.findIndex(i => i.id === id);
     if (index === -1) {
-      throw new Error("Rotation not found.");
+      throw new Error("Rotation não encontrada.");
     }
 
     this.rotation[index] = {
@@ -39,7 +39,7 @@ export class InMemoryRotationRepository implements RotationRepository {
     const index = this.rotation.findIndex(i => i.id === id)
 
     if (index === -1) {
-      throw new Error("Rotation not found.");
+      throw new Error("Rotação não encontrada.");
     }
 
     this.rotation.splice(index, 1); 

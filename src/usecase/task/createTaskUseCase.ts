@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { StopRepository } from "@/repository/stopRepository";
 import { TaskRepository } from "@/repository/taskRepository";
 
@@ -19,7 +20,11 @@ export class CreateTaskUseCase {
   ){    
     const stop = await this.stopRepository.getById(stopId)
     if(!stop){
-      throw new BadRequestError("stop not fould")
+      throw new NotFoundError("Parada não encontrada.")
+    }
+
+    if(stop.status === "COMPLETED"){
+      throw new BadRequestError("Esta parada já foi concluída, não foi possivel atribuir uma nova tarefa.")
     }
 
     const task = await this.taskRepository.create({

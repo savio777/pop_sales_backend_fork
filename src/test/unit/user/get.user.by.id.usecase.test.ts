@@ -35,7 +35,7 @@ describe("Get user by id", () => {
     });
   });
 
-  it("should not be able get user if not exist user with id", async () => {
+  it("should not be able get user if does not exist user with id", async () => {
     const idNotExist = randomUUID()
 
     await expect(

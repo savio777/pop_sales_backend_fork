@@ -9,7 +9,7 @@ export class InMemroyTaskRepository implements TaskRepository {
     const index = this.task.findIndex(e => e.id === id);
     
     if (index === -1) {
-      throw new Error("Task not found.");
+      throw new Error("Tarefa não encontrada.");
     }
   
     const updatedTask: Task = {
@@ -44,7 +44,7 @@ export class InMemroyTaskRepository implements TaskRepository {
   async delete(id: string): Promise<void> {
     const index = this.task.findIndex(e => e.id === id)
     if(index === -1){
-      throw new Error("task not found")
+      throw new Error("Tarefa não encontrada.")
     }
     this.task.slice(index, 1)
   }

@@ -1,4 +1,5 @@
 import { NotFoundError } from "@/error/notfound.error";
+import { InMemoryClientRepository } from "@/repository/inMemory/inMemoryClientRepository";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
 import { InMemoryStopRepositoy } from "@/repository/inMemory/inMemoryStopRepository";
@@ -13,15 +14,16 @@ describe("Update task usecase", async () => {
   let stopRepository: InMemoryStopRepositoy;
   let rotationRepository: InMemoryRotationRepository;
   let companyRepository: InMemoryCompanyRepository;
+  let clientRepository: InMemoryClientRepository;
 
   beforeEach(() => {
     companyRepository = new InMemoryCompanyRepository();
     rotationRepository = new InMemoryRotationRepository();
     taskRepository = new InMemroyTaskRepository();
     stopRepository = new InMemoryStopRepositoy();
-    sut = new UpdateTaskUseCase(
-      taskRepository, 
-    );
+    clientRepository = new InMemoryClientRepository()
+
+    sut = new UpdateTaskUseCase(taskRepository);
   });
 
   it("should be able update task", async () => {
@@ -34,8 +36,12 @@ describe("Update task usecase", async () => {
       companyId: company.id,
     });
 
+    const client = await clientRepository.create({
+      name: "client test"
+    })
+
     const stop = await stopRepository.create({
-      address: "test",
+      client: {connect: {id: client.id}},
       sequence: 1,
       Rotation: {
         connect: {
@@ -56,26 +62,26 @@ describe("Update task usecase", async () => {
         title: "title updated",
         description: "description updated",
         finishedAt: new Date(),
-        status: "COMPLETED"
-      }
+        status: "COMPLETED",
+      },
     });
 
     expect(result).toMatchObject({
       task: {
         id: expect.any(String),
         createdAt: expect.any(Date),
-        updatedAt:  expect.any(Date),
+        updatedAt: expect.any(Date),
         status: "COMPLETED",
         description: "description updated",
         title: "title updated",
         finishedAt: expect.any(Date),
-        stopId: stop.id
-      }
-    })
+        stopId: stop.id,
+      },
+    });
   });
 
   it("should not be able update task if the taskId does not exist", async () => {
-    const taskIdNotExist = randomUUID()
+    const taskIdNotExist = randomUUID();
     await expect(
       sut.execute({
         taskId: taskIdNotExist,
@@ -84,7 +90,6 @@ describe("Update task usecase", async () => {
           description: "test",
         },
       })
-    ).rejects.instanceOf(NotFoundError)
-  })
-
+    ).rejects.instanceOf(NotFoundError);
+  });
 });

@@ -4,12 +4,12 @@ import { db } from "@/lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 interface UserRequest {
-  userId: string
+  userId: string;
 }
 
 export async function Auth(req: FastifyRequest, _res: FastifyReply) {
   if (!req.headers.authorization) {
-    throw new UnauthorizedError("Token not provided")
+    throw new UnauthorizedError("Token not provided");
   }
   await req.jwtVerify();
 
@@ -17,20 +17,31 @@ export async function Auth(req: FastifyRequest, _res: FastifyReply) {
   
   const user = await db.user.findUnique({
     where: {
-      id: userPayload.userId
+      id: userPayload.userId,
     },
-    include: {
-      Permission: true
+    select: {
+      id: true,
+      status: true,
+      permissions: {
+        select: {
+          Permission: {
+            select: {
+              permissions: true,
+            }
+          }
+        }
+      }
     }
-  })
+  });
 
-  if(user?.status !== "ACTIVE"){
-    throw new UnauthorizedError("Você não tem permissão de acesso")
+
+  if (user?.status !== "ACTIVE") {
+    throw new UnauthorizedError("Você não tem permissão de acesso");
   }
 
-  req.userAuth = user
+  req.userAuth = user;
 
   if (!req.userAuth?.id) {
-    throw new BadRequestError("userId not informed");
+    throw new BadRequestError("userId não foi informado");
   }
 }

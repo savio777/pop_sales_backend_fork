@@ -8,10 +8,12 @@ export class InMemoryStopRepositoy implements StopRepository {
   async create(data: Prisma.StopCreateInput): Promise<Stop> {
     const stop: Stop = {
       id: randomUUID(),
+      sequence: data.sequence,
       createdAt: new Date(),
       updatedAt: new Date(),
+      status: "PENDING",
       rotationId: (data as any).Rotation?.connect?.id || null,
-      ...data
+      clientId: (data as any).client?.connect?.id,
     } as Stop;
 
     this.stops.push(stop);
@@ -30,7 +32,7 @@ export class InMemoryStopRepositoy implements StopRepository {
   async update({ id, data }: { id: string; data: Prisma.StopUpdateInput; }): Promise<Stop> {
     const index = this.stops.findIndex(stop => stop.id === id);
     if (index === -1) {
-      throw new Error("Stop not found.");
+      throw new Error("Parada não encontrada.");
     }
 
     this.stops[index] = {

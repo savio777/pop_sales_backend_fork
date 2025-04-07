@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { InMemoryCompanyRepository } from "@/repository/inMemory/inMemoryCompanyRepository";
 import { InMemoryRotationRepository } from "@/repository/inMemory/inMemoryRotationRepository";
 import { UpdateRotationUseCase } from "@/usecase/rotation/updationRotationUseCase";
@@ -43,7 +44,7 @@ describe("Update rotation", async () => {
     });
   });
 
-  it("should not be able update rotation if rotation id not exist", async () => {
+  it("should not be able update rotation if rotation id does not exist", async () => {
     const rotationIdNotExist = randomUUID();
     await expect(
       sut.execute({
@@ -52,6 +53,6 @@ describe("Update rotation", async () => {
           description: "1234",
         },
       })
-    ).rejects.instanceOf(BadRequestError);
+    ).rejects.instanceOf(NotFoundError);
   });
 });

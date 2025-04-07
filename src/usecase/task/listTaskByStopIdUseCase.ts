@@ -1,4 +1,4 @@
-import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { StopRepository } from "@/repository/stopRepository";
 import { TaskRepository } from "@/repository/taskRepository";
 
@@ -14,7 +14,7 @@ export class ListTaskByStopIdUseCase {
   ) {
     const stop = await this.stopRepository.getById(data.stopId)
     if(!stop){
-      throw new BadRequestError("stop does not exist")
+      throw new NotFoundError("Parada não encontrada.")
     }
     const tasks = await this.taskRepository.listByStopId(data);
     return { tasks };

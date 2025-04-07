@@ -36,7 +36,7 @@ describe("Get rotation by Id", async () => {
     })
   })
 
-  it("should not be able get rotation with id not exist", async () => {
+  it("should not be able get rotation with id does not exist", async () => {
     const rotationIdNOtExist = randomUUID()
 
     await expect(

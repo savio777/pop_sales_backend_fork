@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id          String           @id @default(uuid())
-  name        String
-  email       String           @unique
-  password    String
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  phone       String?          @unique
-  status      StatusUser       @default(ACTIVE)
-  companys    UserCompany[]
-  permissions UserPermission[]
-  rotations   UserRotation[]
+  id              String            @id @default(uuid())
+  name            String            @unique
+  email           String            @unique
+  password        String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  phone           String?           @unique
+  status          StatusUser        @default(ACTIVE)
+  companys        UserCompany[]
+  permissions     UserPermission[]
+  rotations       UserRotation[]
+  CheckinCheckout CheckinCheckout[]
 }
 
 model Permission {
@@ -49,6 +50,7 @@ model Company {
   products  Product[]
   rotations Rotation[]
   users     UserCompany[]
+  clients   Client[]
 }
 
 model UserCompany {
@@ -74,19 +76,32 @@ model Rotation {
   users       UserRotation[]
 }
 
+enum StatusStop {
+  PENDING   // O usuário ainda não visitou
+  COMPLETED // O usuário já visitou
+}
+
 model Stop {
-  id         String    @id @default(uuid())
-  address    String
-  sequence   Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  sequence  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  finalizedAt DateTime?
+  status StatusStop @default(PENDING)
+
+  tasks    Task[]
+
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
-  tasks      Task[]
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
 }
 
 model UserRotation {
   id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   userId     String?
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
@@ -129,4 +144,38 @@ enum StatusCompany {
 enum TaskStatus {
   COMPLETED
   PENDING
+}
+
+model Client {
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  name              String   @unique
+  zipCode           String?
+  responsiblePerson String?
+  phoneNumber       String?  @unique
+  email             String?  @unique
+  address           String?
+  lon               String?
+  lat               String?
+
+  Company         Company?          @relation(fields: [companyId], references: [id])
+  companyId       String?
+  
+  CheckinCheckout CheckinCheckout[]
+
+  Stop Stop[]
+}
+
+model CheckinCheckout {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  finalizedAt DateTime?
+  serviceDuration Int?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
 }

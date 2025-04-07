@@ -32,7 +32,7 @@ describe("Find company by name", () => {
     })
   })
 
-  it("should not be able find company with name not exist", async () => {
+  it("should not be able find company with name does not exist", async () => {
     await expect(
       sut.execute("company not exist")
     ).rejects.instanceOf(NotFoundError)

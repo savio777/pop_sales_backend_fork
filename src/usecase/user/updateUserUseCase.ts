@@ -22,7 +22,7 @@ export class UpdateUserUseCase {
     })
 
     if(!user){
-      throw new NotFoundError("não foi possivel atualizar os dados do usuário")
+      throw new NotFoundError("Usuário não encontrado.")
     }
   
     const { password, ...userWithoutPassword } = user!

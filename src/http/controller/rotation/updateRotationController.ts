@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export class UpdateRotationController {
   async handle(req: FastifyRequest, res: FastifyReply){
-    const createdById = req.userAuth.id
+    const createdById = req.userAuth!.id
 
     const updateRotationRequestBody = z.object({
       rotationId: z.string().uuid(),

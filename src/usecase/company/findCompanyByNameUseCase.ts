@@ -9,7 +9,7 @@ export class FindCompanyByNameUseCase {
   async execute(name: string){
     const company = await this.companyRepository.findByName(name)
     if(!company){
-      throw new NotFoundError("company not exist with name")
+      throw new NotFoundError("Não existe empresa cadastrada com este nome.")
     }
     
     return {company}
