@@ -3,7 +3,7 @@ import { ServiceAssessmentRepository } from "../serviceAssessmentRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaServiceAssessmentRepository implements ServiceAssessmentRepository {
-  async listById(id: string): Promise<ServiceAssessment | null> {
+  async getById(id: string): Promise<ServiceAssessment | null> {
     const assessment = await db.serviceAssessment.findUnique({
       where: {
         id

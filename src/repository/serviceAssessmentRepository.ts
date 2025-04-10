@@ -5,5 +5,5 @@ export interface ServiceAssessmentRepository {
   listByCompany(companyId: string): Promise<ServiceAssessment[]>
   listByUser(userId: string): Promise<ServiceAssessment[]>
   listByClient(clientId: string): Promise<ServiceAssessment[]>
-  listById(id: string): Promise<ServiceAssessment | null>
+  getById(id: string): Promise<ServiceAssessment | null>
 }
