@@ -1,4 +1,3 @@
-import { BadRequestError } from "@/error/badRequest.error";
 import { NotFoundError } from "@/error/notfound.error";
 import { ClientRepository } from "@/repository/clientRepository";
 import { ServiceAssessmentRepository } from "@/repository/serviceAssessmentRepository";
