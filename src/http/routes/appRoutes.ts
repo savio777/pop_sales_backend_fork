@@ -11,6 +11,7 @@ import { CheckInRoutes } from "./checkInRoutes";
 import { CheckOutRoutes } from "./checkOutRoutes";
 import { UserRotationRoutes } from "./userRotationRoutes";
 import { MetricsRoutes } from "./metricsRoutes";
+import { ServiceAssessmentRoutes } from "./serviceAssessmentRoutes";
 
 export function AppRoutes(app: FastifyInstance){
   app.register(AuthRoutes, {prefix: "/auth"})
@@ -25,4 +26,5 @@ export function AppRoutes(app: FastifyInstance){
   app.register(CheckOutRoutes, {prefix: "/check-out"})
   app.register(UserRotationRoutes, {prefix: "/user-rotation"})
   app.register(MetricsRoutes, {prefix: "/metrics"})
+  app.register(ServiceAssessmentRoutes, {prefix: "/service-assessment"})
 }

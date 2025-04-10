@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String            @unique
-  email           String            @unique
-  password        String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  phone           String?           @unique
-  status          StatusUser        @default(ACTIVE)
-  companys        UserCompany[]
-  permissions     UserPermission[]
-  rotations       UserRotation[]
-  CheckinCheckout CheckinCheckout[]
+  id                String              @id @default(uuid())
+  name              String              @unique
+  email             String              @unique
+  password          String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  phone             String?             @unique
+  status            StatusUser          @default(ACTIVE)
+  companys          UserCompany[]
+  permissions       UserPermission[]
+  rotations         UserRotation[]
+  CheckinCheckout   CheckinCheckout[]
+  ServiceAssessment ServiceAssessment[]
+  Forms             FormEntry[]
 }
 
 model Permission {
@@ -42,15 +44,18 @@ model UserPermission {
 }
 
 model Company {
-  id        String        @id @default(uuid())
-  name      String        @unique
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  status    StatusCompany @default(ACTIVE)
-  products  Product[]
-  rotations Rotation[]
-  users     UserCompany[]
-  clients   Client[]
+  id                String              @id @default(uuid())
+  name              String              @unique
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  status            StatusCompany       @default(ACTIVE)
+  products          Product[]
+  rotations         Rotation[]
+  users             UserCompany[]
+  clients           Client[]
+  ServiceAssessment ServiceAssessment[]
+  forms             FormEntry[]
+  FormTemplate      FormTemplate[]
 }
 
 model UserCompany {
@@ -77,19 +82,19 @@ model Rotation {
 }
 
 enum StatusStop {
-  PENDING   // O usuário ainda não visitou
+  PENDING // O usuário ainda não visitou
   COMPLETED // O usuário já visitou
 }
 
 model Stop {
-  id        String   @id @default(uuid())
-  sequence  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String     @id @default(uuid())
+  sequence    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   finalizedAt DateTime?
-  status StatusStop @default(PENDING)
+  status      StatusStop @default(PENDING)
 
-  tasks    Task[]
+  tasks Task[]
 
   rotationId String?
   Rotation   Rotation? @relation(fields: [rotationId], references: [id])
@@ -111,15 +116,16 @@ model UserRotation {
 }
 
 model Task {
-  id          String     @id @default(uuid())
+  id          String      @id @default(uuid())
   title       String
   description String?
   finishedAt  DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  status      TaskStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  status      TaskStatus  @default(PENDING)
   stopId      String?
-  Stop        Stop?      @relation(fields: [stopId], references: [id])
+  Stop        Stop?       @relation(fields: [stopId], references: [id])
+  forms       FormEntry[]
 }
 
 model Product {
@@ -159,18 +165,20 @@ model Client {
   lon               String?
   lat               String?
 
-  Company         Company?          @relation(fields: [companyId], references: [id])
-  companyId       String?
-  
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
   CheckinCheckout CheckinCheckout[]
+
+  ServiceAssessment ServiceAssessment[]
 
   Stop Stop[]
 }
 
 model CheckinCheckout {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  finalizedAt DateTime?
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  finalizedAt     DateTime?
   serviceDuration Int?
 
   userId String
@@ -179,3 +187,101 @@ model CheckinCheckout {
   clientId String
   client   Client @relation(fields: [clientId], references: [id])
 }
+
+model ServiceAssessment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  description String?
+  ratingStars Int?
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Client   Client? @relation(fields: [clientId], references: [id])
+  clientId String?
+}
+
+enum FormType {
+  CLIENT // cliente
+  PROMOTER // promotor
+  SELLER // vendedor
+  DELIVERER // entregador
+}
+
+enum QuestionType {
+  TEXT
+  YES_NO
+  MULTIPLE_CHOICE
+  IMAGE
+}
+
+// FORMULÁRIO MODELO
+model FormTemplate {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  formType  FormType
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  questions   Question[]
+  formEntries FormEntry[]
+}
+
+// PERGUNTAS DO FORMULÁRIO
+model Question {
+  id       String       @id @default(uuid())
+  text     String
+  required Boolean      @default(false)
+  type     QuestionType
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers Answer[]
+}
+
+// PREENCHIMENTO DO FORMULÁRIO POR USUÁRIO
+model FormEntry {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  taskId String?
+  task   Task?   @relation(fields: [taskId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers   Answer[]
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+// RESPOSTAS ÀS PERGUNTAS
+model Answer {
+  id        String   @id @default(uuid())
+  text      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  formEntryId String
+  formEntry   FormEntry @relation(fields: [formEntryId], references: [id])
+}
+
+/**
+ * - Uma empresa cria um único FormTemplate por tipo (formType): ✔️
+ * - Vários usuários podem preencher (FormEntry) esse mesmo FormTemplate sem duplicá-lo: ✔️
+ * - Cada FormEntry está atrelado a um user e pode estar vinculado a uma task: ✔️
+ * - As respostas (Answer) são associadas tanto à pergunta (Question) quanto à entrada (FormEntry): ✔️
+ * - As Questions pertencem ao FormTemplate e não diretamente a uma empresa ou task: ✔️
+ */
