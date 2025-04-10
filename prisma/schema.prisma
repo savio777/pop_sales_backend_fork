@@ -21,6 +21,7 @@ model User {
   rotations         UserRotation[]
   CheckinCheckout   CheckinCheckout[]
   ServiceAssessment ServiceAssessment[]
+  Forms             FormEntry[]
 }
 
 model Permission {
@@ -53,6 +54,8 @@ model Company {
   users             UserCompany[]
   clients           Client[]
   ServiceAssessment ServiceAssessment[]
+  forms             FormEntry[]
+  FormTemplate      FormTemplate[]
 }
 
 model UserCompany {
@@ -113,15 +116,16 @@ model UserRotation {
 }
 
 model Task {
-  id          String     @id @default(uuid())
+  id          String      @id @default(uuid())
   title       String
   description String?
   finishedAt  DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  status      TaskStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  status      TaskStatus  @default(PENDING)
   stopId      String?
-  Stop        Stop?      @relation(fields: [stopId], references: [id])
+  Stop        Stop?       @relation(fields: [stopId], references: [id])
+  forms       FormEntry[]
 }
 
 model Product {
@@ -194,9 +198,90 @@ model ServiceAssessment {
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId String?
 
-  User     User?   @relation(fields: [userId], references: [id])
-  userId   String?
-  
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
   Client   Client? @relation(fields: [clientId], references: [id])
   clientId String?
 }
+
+enum FormType {
+  CLIENT // cliente
+  PROMOTER // promotor
+  SELLER // vendedor
+  DELIVERER // entregador
+}
+
+enum QuestionType {
+  TEXT
+  YES_NO
+  MULTIPLE_CHOICE
+  IMAGE
+}
+
+// FORMULÁRIO MODELO
+model FormTemplate {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  formType  FormType
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  questions   Question[]
+  formEntries FormEntry[]
+}
+
+// PERGUNTAS DO FORMULÁRIO
+model Question {
+  id       String       @id @default(uuid())
+  text     String
+  required Boolean      @default(false)
+  type     QuestionType
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers Answer[]
+}
+
+// PREENCHIMENTO DO FORMULÁRIO POR USUÁRIO
+model FormEntry {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  taskId String?
+  task   Task?   @relation(fields: [taskId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers   Answer[]
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+// RESPOSTAS ÀS PERGUNTAS
+model Answer {
+  id        String   @id @default(uuid())
+  text      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  formEntryId String
+  formEntry   FormEntry @relation(fields: [formEntryId], references: [id])
+}
+
+/**
+ * - Uma empresa cria um único FormTemplate por tipo (formType): ✔️
+ * - Vários usuários podem preencher (FormEntry) esse mesmo FormTemplate sem duplicá-lo: ✔️
+ * - Cada FormEntry está atrelado a um user e pode estar vinculado a uma task: ✔️
+ * - As respostas (Answer) são associadas tanto à pergunta (Question) quanto à entrada (FormEntry): ✔️
+ * - As Questions pertencem ao FormTemplate e não diretamente a uma empresa ou task: ✔️
+ */
