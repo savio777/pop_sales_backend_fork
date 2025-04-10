@@ -13,11 +13,11 @@ export class GetByIdServiceAssessmentController {
 
     const serviceAssessmentRepository = new PrismaServiceAssessmentRepository()
 
-    const createServiceAssessmentUseCase = new GetByIdServiceAssessmentUseCase(
+    const getByIdServiceAssessmentUseCase = new GetByIdServiceAssessmentUseCase(
       serviceAssessmentRepository,
     )
 
-    const serviceAssessment = await createServiceAssessmentUseCase.execute(assessmentId)
+    const serviceAssessment = await getByIdServiceAssessmentUseCase.execute(assessmentId)
 
     return res.send(serviceAssessment)
   }
