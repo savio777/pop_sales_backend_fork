@@ -29,7 +29,7 @@ export interface FormRepository {
 
   delete(id: string): Promise<void>;
 
-  response(
+  createFormEntry(
     { formTemplateId, answers, userId, companyId, taskId}:
     { formTemplateId: string; answers: Answer[]; userId: string, companyId: string, taskId: string }
   ): Promise<FormEntry | null>;

@@ -28,7 +28,7 @@ export class CreateFormUseCase {
     if(!company){
       throw new NotFoundError("Empresa não encontrada")
     }
-    
+
     const form = await this.formRepository.create({
       form: {
         formType,
@@ -37,6 +37,6 @@ export class CreateFormUseCase {
       questions
     })
 
-    return form 
+    return {form} 
   }
 }

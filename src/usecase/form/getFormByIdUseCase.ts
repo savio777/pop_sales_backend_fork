@@ -5,6 +5,7 @@ export class GetFormByIdUseCase {
     private prismaFormRepository: FormRepository
   ){}
   async execute(id: string) {
-    return await this.prismaFormRepository.getById(id)
+    const form = await this.prismaFormRepository.getById(id)
+    return {form}
   }
 }
