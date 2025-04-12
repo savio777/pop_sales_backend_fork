@@ -27,7 +27,7 @@ export interface FormRepository {
 
   listByCompanyId(companyId: string): Promise<FormTemplate[]>;
 
-  delete(id: string): Promise<FormTemplate>;
+  delete(id: string): Promise<void>;
 
   response(
     { formTemplateId, answers, userId, companyId, taskId}:

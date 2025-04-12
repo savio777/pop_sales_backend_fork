@@ -60,8 +60,8 @@ export class PrismaFormRepository implements FormRepository {
     })
   }
 
-  async delete(id: string): Promise<FormTemplate> {
-    return await db.formTemplate.delete({
+  async delete(id: string): Promise<void> {
+    await db.formTemplate.delete({
       where: {
         id: id
       }
@@ -146,5 +146,5 @@ export class PrismaFormRepository implements FormRepository {
           }
         }
       });
-    }
+  }
 }
