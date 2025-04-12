@@ -1,4 +1,4 @@
-import { FormTemplate, FormType, QuestionType } from "@prisma/client";
+import { FormEntry, FormTemplate, FormType, QuestionType } from "@prisma/client";
 import { FormRepository } from "../formRepository";
 import { db } from "@/lib/prisma";
 
@@ -13,7 +13,61 @@ interface CreateQuestion {
   type: QuestionType; 
 }
 
+interface Answer {
+  questionId: string;
+  text: string;
+  imageUrl?: string;
+}
+
 export class PrismaFormRepository implements FormRepository {
+
+  async response(
+    { formTemplateId, answers, userId, companyId, taskId}:
+    { formTemplateId: string; answers: Answer[]; userId: string, companyId: string, taskId: string }
+  ): Promise<FormEntry | null> {
+    return await db.formEntry.create({
+      data: {
+        formTemplateId: formTemplateId,
+        taskId,
+        userId,
+        companyId,
+        answers: {
+          createMany: {
+            data: answers.map((answer) => ({
+              questionId: answer.questionId,
+              imageUrl: answer.imageUrl ?? null,
+              text: answer.text
+            }))
+          }
+        }
+      } 
+    })
+  }
+
+  async getResponseById(id: string): Promise<FormEntry | null> {
+    return await db.formEntry.findUnique({
+      where: {
+        id: id
+      }, 
+      include: {
+        answers: true,
+        formTemplate: {
+          include: {
+            questions: true
+          }
+        }
+      }
+    })
+  }
+
+  async delete(id: string): Promise<FormTemplate> {
+    return await db.formTemplate.delete({
+      where: {
+        id: id
+      }
+    });
+  }
+  
   async listByCompanyId(companyId: string): Promise<FormTemplate[]> {
     return await db.formTemplate.findMany({
       where: {
@@ -58,4 +112,39 @@ export class PrismaFormRepository implements FormRepository {
     });
     
   }
+
+  async getFormEntryDetails({
+      companyId,
+      taskId,
+      userId
+    }: {
+      companyId: string;
+      taskId: string;
+      userId: string;
+    }): Promise<FormEntry | null> {
+      return await db.formEntry.findFirst({
+        where: {
+          companyId,
+          taskId,
+          userId
+        },
+        include: {
+          formTemplate: {
+            include: {
+              questions: {
+                include: {
+                  answers: true
+                },
+              }
+            }
+          },
+          user: {
+            select: {
+              name: true,
+              email: true
+            }
+          }
+        }
+      });
+    }
 }

@@ -260,6 +260,7 @@ model FormEntry {
   formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
 
   answers   Answer[]
+  
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId String?
 }
