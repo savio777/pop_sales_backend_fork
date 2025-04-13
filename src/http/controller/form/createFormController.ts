@@ -8,7 +8,7 @@ export class CreateFormController {
   async handle(req: FastifyRequest, res: FastifyReply){
 
     const createFormRequestBody = z.object({
-      companyId: z.string(),
+      companyId: z.string().uuid(),
       formType: z.enum(["CLIENT", "PROMOTER", "SELLER","DELIVERER"]),
       questions: z.array(
         z.object({
