@@ -23,18 +23,16 @@ export interface FormRepository {
     {form: CreateForm, questions: CreateQuestion[]}
   ): Promise<FormTemplate>;
 
-  getById(id: string): Promise<FormTemplate | null>;
-
-  listByCompanyId(companyId: string): Promise<FormTemplate[]>;
-
-  delete(id: string): Promise<void>;
-
   createFormEntry(
     { formTemplateId, answers, userId, companyId, taskId}:
     { formTemplateId: string; answers: Answer[]; userId: string, companyId: string, taskId: string }
   ): Promise<FormEntry | null>;
 
-  getResponseById(id: string): Promise<FormEntry | null>;
+  getById(id: string): Promise<FormTemplate | null>;
+
+  delete(id: string): Promise<void>;
+
+  listByCompanyId(companyId: string): Promise<FormTemplate[]>;
 
   getFormEntryDetails({
     companyId,
@@ -45,4 +43,7 @@ export interface FormRepository {
     taskId: string;
     userId: string;
   }): Promise<FormEntry | null>
+
+  getResponseById(id: string): Promise<FormEntry | null>;
+
 }
