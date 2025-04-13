@@ -13,7 +13,6 @@ export class GetFormByIdController {
     const formRepository = new PrismaFormRepository()
     const getFormByIdUseCase = new GetFormByIdUseCase(formRepository)
 
-
     const form = await getFormByIdUseCase.execute(formId)
 
     return res.status(200).send(form)
