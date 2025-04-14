@@ -26,7 +26,7 @@ export class CreateFormEntryUseCase {
   }: {
     formId: string;
     answers: Answer[];
-    userId: string;
+    userId?: string;
     companyId: string;
     taskId?: string;
   }) {
@@ -35,9 +35,11 @@ export class CreateFormEntryUseCase {
       throw new NotFoundError("Empresa não encontrada");
     }
 
-    const user = await this.userRepository.getById(userId)
-    if(!user){
-      throw new NotFoundError("Usuário não encontrado")
+    if(userId){
+      const user = await this.userRepository.getById(userId)
+      if(!user){
+        throw new NotFoundError("Usuário não encontrado")
+      }
     }
 
     const formTemplate = await this.formRepository.getById(formId)

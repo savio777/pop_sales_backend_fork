@@ -25,7 +25,7 @@ export interface FormRepository {
 
   createFormEntry(
     { formId, answers, userId, companyId, taskId}:
-    { formId: string; answers: Answer[]; userId: string, companyId: string, taskId?: string }
+    { formId: string; answers: Answer[]; userId?: string, companyId: string, taskId?: string }
   ): Promise<FormEntry | null>;
 
   getById(id: string): Promise<FormTemplate | null>;

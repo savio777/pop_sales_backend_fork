@@ -12,7 +12,7 @@ export class CreateFormEntryController {
       companyId: z.string().uuid(),
       formId: z.string().uuid(),
       taskId: z.string().uuid().optional(),
-      userId: z.string().uuid(),
+      userId: z.string().uuid().optional(),
       answers: z.array(
         z.object({
           questionId: z.string().uuid(),
