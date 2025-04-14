@@ -11,7 +11,7 @@ interface FormEntryResponse {
   id: string;
   userId: string;
   taskId: string;
-  formId: string;
+  // formTemplateId: string;
   companyId: string;
   createdAt: Date;
   form: FormResponse[];
@@ -53,7 +53,7 @@ export class GetFormEntryByIdUseCase {
       id: data.id,
       userId: data.userId,
       taskId: data.taskId ?? "",
-      formId: data.formTemplateId,
+      // formTemplateId: data.formTemplateId,
       companyId: data.companyId ?? "",
       createdAt: data.createdAt,
       form,
