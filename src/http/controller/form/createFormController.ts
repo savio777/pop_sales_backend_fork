@@ -14,7 +14,7 @@ export class CreateFormController {
         z.object({
           text: z.string(),
           type: z.enum(["TEXT", "YES_NO", "MULTIPLE_CHOICE", "IMAGE"]),
-          required: z.boolean(),
+          required: z.coerce.boolean(),
         })
       )
     })

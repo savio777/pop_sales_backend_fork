@@ -28,7 +28,7 @@ export class CreateFormEntryUseCase {
     answers: Answer[];
     userId: string;
     companyId: string;
-    taskId: string;
+    taskId?: string;
   }) {
     const company = await this.companyRepository.getById(companyId);
     if (!company) {

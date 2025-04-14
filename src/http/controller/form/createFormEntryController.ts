@@ -11,7 +11,7 @@ export class CreateFormEntryController {
     const createFormEntryRequestBody = z.object({
       companyId: z.string().uuid(),
       formTemplateId: z.string().uuid(),
-      taskId: z.string().uuid(),
+      taskId: z.string().uuid().optional(),
       userId: z.string().uuid(),
       answers: z.array(
         z.object({

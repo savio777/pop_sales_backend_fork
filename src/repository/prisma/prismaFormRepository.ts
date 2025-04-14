@@ -23,7 +23,7 @@ export class PrismaFormRepository implements FormRepository {
 
   async createFormEntry(
     { formTemplateId, answers, userId, companyId, taskId}:
-    { formTemplateId: string; answers: Answer[]; userId: string, companyId: string, taskId: string }
+    { formTemplateId: string; answers: Answer[]; userId: string, companyId: string, taskId?: string }
   ): Promise<FormEntry | null> {
     return await db.formEntry.create({
       data: {
