@@ -74,7 +74,14 @@ export class PrismaFormRepository implements FormRepository {
         companyId: companyId
       },
       include: {
-        questions: true
+        questions: {
+          select: {
+            id: true,
+            text: true,
+            required: true,
+            type: true,
+          }
+        }
       }
     });
   }
