@@ -44,7 +44,7 @@ export class PrismaFormRepository implements FormRepository {
     })
   }
 
-  async getResponseById(id: string): Promise<FormEntry | null> {
+  async getEntryById(id: string): Promise<FormEntry | null> {
     return await db.formEntry.findUnique({
       where: {
         id: id

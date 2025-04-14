@@ -44,6 +44,6 @@ export interface FormRepository {
     userId: string;
   }): Promise<FormEntry | null>
 
-  getResponseById(id: string): Promise<FormEntry | null>;
+  getEntryById(id: string): Promise<FormEntry | null>;
 
 }

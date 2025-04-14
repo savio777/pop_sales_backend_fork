@@ -1,9 +1,9 @@
 import { PrismaFormRepository } from "@/repository/prisma/prismaFormRepository";
-import { GetFormResponseByIdUseCase } from "@/usecase/form/getFormResponseByIdUseCase";
+import { GetFormEntryByIdUseCase } from "@/usecase/form/getFormEntryByIdUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export class GetFormEntryByIdController { //TODO: trocar este nome para GetFormEntryByIdController
+export class GetFormEntryByIdController {
   async handle(req: FastifyRequest, res: FastifyReply) {
     const getFormResponseByIdRequestParams = z.object({
       entryId: z.string().uuid(),
@@ -11,10 +11,10 @@ export class GetFormEntryByIdController { //TODO: trocar este nome para GetFormE
     const { entryId } = getFormResponseByIdRequestParams.parse(req.params)
 
     const formRepository = new PrismaFormRepository()
-    const getFormResponseByIdUseCase = new GetFormResponseByIdUseCase(formRepository)
+    const getFormEntryByIdUseCase = new GetFormEntryByIdUseCase(formRepository)
 
-    const formResponse = await getFormResponseByIdUseCase.execute(entryId)
+    const formEntry = await getFormEntryByIdUseCase.execute(entryId)
 
-    return res.status(200).send(formResponse)
+    return res.status(200).send(formEntry)
   }
 }
