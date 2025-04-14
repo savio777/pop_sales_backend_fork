@@ -3,7 +3,7 @@ import { CreateFormController } from "../controller/form/createFormController"
 import { CreateFormEntryController } from "../controller/form/createFormEntryController"
 import { DeleteFormController } from "../controller/form/deleteFormController"
 import { GetFormByIdController } from "../controller/form/getFormByIdController"
-import { GetFormResponseBtIdController } from "../controller/form/getFormResponseByIdController"
+import { GetFormEntryByIdController } from "../controller/form/getFormEntryByIdController"
 import { Auth } from "../middleware/auth"
 import { RBAC } from "../middleware/rbac"
 
@@ -11,31 +11,40 @@ const createFormController = new CreateFormController()
 const createFormEntryController = new CreateFormEntryController()
 const deleteFormController = new DeleteFormController()
 const getFormByIdController = new GetFormByIdController()
-const getFormResponseBtIdController = new GetFormResponseBtIdController()
+const getFormEntryByIdController = new GetFormEntryByIdController()
 
 export function FormRoutes(app: FastifyInstance) {
-  app.post(
+  //cria formulário
+  app.post( 
     '/', 
     {preHandler: [Auth, RBAC(["create.form"])]},
     createFormController.handle
   );
-  app.post(
+
+  //cria resposta ao formulário
+  app.post( 
     '/entry', 
     {preHandler: [Auth, RBAC(["create.form.entry"])]},
     createFormEntryController.handle
   );
-  app.delete(
-    '/:formId', 
-    {preHandler: [Auth, RBAC(["delete.form"])]},
-    deleteFormController.handle
-  );
+
+  // pega formulário
   app.get('/:formId', 
     {preHandler: [Auth, RBAC(["get.form"])]},
     getFormByIdController.handle
   );
+
+  //pega resposta ao formulário completa (perguntas e respostas)
   app.get(
-    '/response/:formResponseId', 
+    '/entry/:entryId', 
     {preHandler: [Auth, RBAC(["get.form.response"])]},
-    getFormResponseBtIdController.handle
+    getFormEntryByIdController.handle
+  );
+
+  //deleta formulário
+  app.delete(
+    '/:formId', 
+    {preHandler: [Auth, RBAC(["delete.form"])]},
+    deleteFormController.handle
   );
 }
