@@ -1,4 +1,4 @@
-import { FormEntry, FormTemplate, FormType, QuestionType } from "@prisma/client";
+import { FormEntry, FormTemplate, FormType, Prisma, QuestionType } from "@prisma/client";
 
 interface CreateForm {
   formType: FormType;
@@ -16,6 +16,21 @@ interface Answer {
   text: string;
   imageUrl?: string;
 }
+
+type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
+  include: {
+    formEntries: {
+      include: {
+        answers: true;
+        formTemplate: {
+          include: {
+            questions: true;
+          }
+        }
+      }
+    }
+  }
+}>;
 
 export interface FormRepository {
   create(
@@ -45,5 +60,5 @@ export interface FormRepository {
   }): Promise<FormEntry | null>
 
   getEntryById(id: string): Promise<FormEntry | null>;
-  listEntryByFormId(id: string): Promise<FormEntry[] | null>;
+  listEntryByFormId(id: string): Promise<FormTemplateWithEntries | null>;
 }

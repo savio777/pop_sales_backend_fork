@@ -1,4 +1,4 @@
-import { FormEntry, FormTemplate, FormType, QuestionType } from "@prisma/client";
+import { FormEntry, FormTemplate, FormType, QuestionType, Prisma } from "@prisma/client";
 import { FormRepository } from "../formRepository";
 import { db } from "@/lib/prisma";
 
@@ -18,6 +18,21 @@ interface Answer {
   text: string;
   imageUrl?: string;
 }
+
+type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
+  include: {
+    formEntries: {
+      include: {
+        answers: true;
+        formTemplate: {
+          include: {
+            questions: true;
+          }
+        }
+      }
+    }
+  }
+}>;
 
 export class PrismaFormRepository implements FormRepository {
 
@@ -60,20 +75,24 @@ export class PrismaFormRepository implements FormRepository {
     })
   }
 
-  async listEntryByFormId(formId: string): Promise<FormEntry[] | null> {
-    return await db.formEntry.findMany({
+  async listEntryByFormId(formId: string): Promise<FormTemplateWithEntries | null> {
+    return await db.formTemplate.findUnique({
       where: {
-        formTemplateId: formId
+        id: formId
       }, 
       include: {
-        answers: true,
-        formTemplate: {
+        formEntries: {
           include: {
-            questions: true
+            answers: true,
+            formTemplate: {
+              include: {
+                questions: true
+              }
+            }
           }
         }
       }
-    })
+    });
   }
 
   async delete(id: string): Promise<void> {
