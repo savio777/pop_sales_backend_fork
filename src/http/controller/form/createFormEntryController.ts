@@ -10,7 +10,7 @@ export class CreateFormEntryController {
 
     const createFormEntryRequestBody = z.object({
       companyId: z.string().uuid(),
-      formTemplateId: z.string().uuid(),
+      formId: z.string().uuid(),
       taskId: z.string().uuid().optional(),
       userId: z.string().uuid(),
       answers: z.array(
@@ -22,7 +22,7 @@ export class CreateFormEntryController {
       )
     })
 
-    const { companyId, formTemplateId, userId, answers, taskId} = createFormEntryRequestBody.parse(req.body)
+    const { companyId, formId, userId, answers, taskId} = createFormEntryRequestBody.parse(req.body)
 
     const formRepository = new PrismaFormRepository() 
     const companyRepository = new PrismaCompanyRepository()
@@ -35,7 +35,7 @@ export class CreateFormEntryController {
     );
 
     const formEntry = await createFormEntry.execute({
-      userId, answers, companyId, formTemplateId, taskId
+      userId, answers, companyId, formId, taskId
     })
 
     return res.status(201).send(formEntry)

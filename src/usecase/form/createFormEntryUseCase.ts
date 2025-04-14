@@ -18,13 +18,13 @@ export class CreateFormEntryUseCase {
   ) {}
 
   async execute({
-    formTemplateId,
+    formId,
     answers,
     userId,
     companyId,
     taskId,
   }: {
-    formTemplateId: string;
+    formId: string;
     answers: Answer[];
     userId: string;
     companyId: string;
@@ -40,7 +40,7 @@ export class CreateFormEntryUseCase {
       throw new NotFoundError("Usuário não encontrado")
     }
 
-    const formTemplate = await this.formRepository.getById(formTemplateId)
+    const formTemplate = await this.formRepository.getById(formId)
     if(!formTemplate){
       throw new NotFoundError("Formulário não encontrado")
     }
@@ -49,7 +49,7 @@ export class CreateFormEntryUseCase {
       userId,
       answers,
       companyId,
-      formTemplateId,
+      formId,
       taskId,
     });
 
