@@ -60,6 +60,22 @@ export class PrismaFormRepository implements FormRepository {
     })
   }
 
+  async listEntryByFormId(formId: string): Promise<FormEntry[] | null> {
+    return await db.formEntry.findMany({
+      where: {
+        formTemplateId: formId
+      }, 
+      include: {
+        answers: true,
+        formTemplate: {
+          include: {
+            questions: true
+          }
+        }
+      }
+    })
+  }
+
   async delete(id: string): Promise<void> {
     await db.formTemplate.delete({
       where: {

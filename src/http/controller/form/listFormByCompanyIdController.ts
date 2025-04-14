@@ -18,6 +18,6 @@ export class ListFormByCompanyIdController {
     )
 
     const forms = await listFormByCompanyIdUseCase.execute(companyId)
-    return res.status(200).send({ forms })
+    return res.status(200).send(forms)
   }
 }

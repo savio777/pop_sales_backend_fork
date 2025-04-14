@@ -14,6 +14,6 @@ export class ListFormByCompanyIdUseCase {
       throw new NotFoundError("Empresa não encontrada")
     }
     const forms = await this.formRepository.listByCompanyId(companyId)
-    return forms 
+    return {forms} 
   }
 }

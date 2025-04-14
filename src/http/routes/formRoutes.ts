@@ -7,6 +7,7 @@ import { GetFormEntryByIdController } from "../controller/form/getFormEntryByIdC
 import { Auth } from "../middleware/auth"
 import { RBAC } from "../middleware/rbac"
 import { ListFormByCompanyIdController } from "../controller/form/listFormByCompanyIdController"
+import { ListEntryByFormIdController } from "../controller/form/ListEntryByFormIdController"
 
 const createFormController = new CreateFormController()
 const createFormEntryController = new CreateFormEntryController()
@@ -14,6 +15,7 @@ const deleteFormController = new DeleteFormController()
 const getFormByIdController = new GetFormByIdController()
 const getFormEntryByIdController = new GetFormEntryByIdController()
 const listFormByCompanyIdController = new ListFormByCompanyIdController()
+const listEntryByFormIdController = new ListEntryByFormIdController()
 
 export function FormRoutes(app: FastifyInstance) {
   //cria formulário
@@ -48,6 +50,13 @@ export function FormRoutes(app: FastifyInstance) {
     '/company/:companyId', 
     {preHandler: [Auth, RBAC(["list.form.company"])]},
     listFormByCompanyIdController.handle
+  );
+
+  //lista respostas de um formulários
+  app.get(
+    '/entries/:formId', 
+    {preHandler: [Auth, RBAC(["list.form.entry.company"])]},
+    listEntryByFormIdController.handle
   );
 
   //deleta formulário

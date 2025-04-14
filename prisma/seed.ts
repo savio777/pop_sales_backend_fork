@@ -41,7 +41,8 @@ async function main() {
         "delete.form",
         "create.form.entry",
         "create.form",
-        "list.form.company"
+        "list.form.company",
+        "list.form.entry.company"
       ]
     },
     {
