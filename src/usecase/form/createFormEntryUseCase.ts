@@ -58,6 +58,7 @@ export class CreateFormEntryUseCase {
 
     const formEntry = {
       id: data?.id,
+      formId: data?.formTemplateId,
       companyId: data?.companyId,
       taskId: data?.taskId,
       userId: data?.userId,
