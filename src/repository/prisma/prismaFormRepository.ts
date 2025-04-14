@@ -124,7 +124,6 @@ export class PrismaFormRepository implements FormRepository {
     {form, questions}:
     {form: CreateForm, questions: CreateQuestion[]}
   ): Promise<FormTemplate> {
-
     return await db.formTemplate.create({
       data: {
         formType: form.formType,
@@ -138,9 +137,18 @@ export class PrismaFormRepository implements FormRepository {
             }))
           }
         },
+      },
+      include: {
+        questions: {
+          select: {
+            id: true,
+            text: true,
+            required: true,
+            type: true
+          }
+        }
       }
     });
-    
   }
 
   async getFormEntryDetails({
