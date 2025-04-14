@@ -21,6 +21,7 @@ interface Answer {
 
 type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
   include: {
+    questions: true;
     formEntries: {
       include: {
         answers: true;
@@ -81,6 +82,7 @@ export class PrismaFormRepository implements FormRepository {
         id: formId
       }, 
       include: {
+        questions: true,
         formEntries: {
           include: {
             answers: true,
