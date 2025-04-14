@@ -9,8 +9,8 @@ interface FormResponse {
 
 interface FormEntryResponse {
   id: string;
-  userId: string;
-  taskId: string;
+  userId: string | null;
+  taskId: string | null;
   // formTemplateId: string;
   companyId: string;
   createdAt: Date;
@@ -51,8 +51,8 @@ export class GetFormEntryByIdUseCase {
 
     const formEntry: FormEntryResponse = {
       id: data.id,
-      userId: data.userId,
-      taskId: data.taskId ?? "",
+      userId: data.userId ?? null,
+      taskId: data.taskId ?? null,
       // formTemplateId: data.formTemplateId,
       companyId: data.companyId ?? "",
       createdAt: data.createdAt,
