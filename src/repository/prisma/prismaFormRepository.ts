@@ -35,6 +35,28 @@ type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
   }
 }>;
 
+type GetFormEntryByUserId = Prisma.FormEntryGetPayload<{
+  include: {
+    answers: true,
+    formTemplate: {
+      include: {
+        questions: true,
+        formEntries: {
+          include: {
+            answers: true,
+            formTemplate: {
+              include: {
+                questions: true
+              }
+            }
+          }
+        }
+      }
+    },
+  }
+}>;
+
+
 export class PrismaFormRepository implements FormRepository {
 
   async createFormEntry(
@@ -121,6 +143,33 @@ export class PrismaFormRepository implements FormRepository {
         }
       }
     });
+  }
+
+  async listByUserId(userId: string): Promise<GetFormEntryByUserId[]> {
+    const data = await db.formEntry.findMany({
+      where: {
+        userId
+      }, 
+      include: {
+        answers: true,
+        formTemplate: {
+          include: {
+            questions: true,
+            formEntries: {
+              include: {
+                answers: true,
+                formTemplate: {
+                  include: {
+                    questions: true
+                  }
+                }
+              }
+            }
+          }
+        },
+      }
+    })
+    return data
   }
   
   async getById(id: string): Promise<FormTemplate | null> {

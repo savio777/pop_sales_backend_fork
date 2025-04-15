@@ -42,7 +42,8 @@ async function main() {
         "create.form.entry",
         "create.form",
         "list.form.company",
-        "list.form.entry.company"
+        "list.form.entry.company",
+        "list.form.entry.user"
       ]
     },
     {

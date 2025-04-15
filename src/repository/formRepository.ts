@@ -33,6 +33,28 @@ type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
   }
 }>;
 
+type GetFormEntryByUserId = Prisma.FormEntryGetPayload<{
+  include: {
+    answers: true,
+    formTemplate: {
+      include: {
+        questions: true,
+        formEntries: {
+          include: {
+            answers: true,
+            formTemplate: {
+              include: {
+                questions: true
+              }
+            }
+          }
+        }
+      }
+    },
+  }
+}>;
+
+
 export interface FormRepository {
   create(
     {form, questions}:
@@ -45,6 +67,8 @@ export interface FormRepository {
   ): Promise<FormEntry | null>;
 
   getById(id: string): Promise<FormTemplate | null>;
+
+  listByUserId(userId: string): Promise<GetFormEntryByUserId[]>;
 
   delete(id: string): Promise<void>;
 
