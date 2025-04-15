@@ -1,14 +1,20 @@
-import { FormEntry, FormTemplate, FormType, Prisma, QuestionType } from "@prisma/client";
+import {
+  FormEntry,
+  FormTemplate,
+  FormType,
+  Prisma,
+  QuestionType,
+} from "@prisma/client";
 
 interface CreateForm {
-  formType: FormType;
+  formType?: FormType;
   companyId: string;
 }
 
 interface CreateQuestion {
   text: string;
   required: boolean;
-  type: QuestionType; 
+  type: QuestionType;
 }
 
 interface Answer {
@@ -26,63 +32,84 @@ type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
         formTemplate: {
           include: {
             questions: true;
-          }
-        }
-      }
-    }
-  }
+          };
+        };
+      };
+    };
+  };
 }>;
 
 type GetFormEntryByUserId = Prisma.FormEntryGetPayload<{
   include: {
-    answers: true,
+    answers: true;
     formTemplate: {
       include: {
-        questions: true,
+        questions: true;
         formEntries: {
           include: {
-            answers: true,
+            answers: true;
             formTemplate: {
               include: {
-                questions: true
-              }
-            }
-          }
-        }
-      }
-    },
-  }
+                questions: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 }>;
 
-
 export interface FormRepository {
-  create(
-    {form, questions}:
-    {form: CreateForm, questions: CreateQuestion[]}
-  ): Promise<FormTemplate>;
+  create({
+    form,
+    questions,
+  }: {
+    form: CreateForm;
+    questions: CreateQuestion[];
+  }): Promise<FormTemplate>;
 
-  createFormEntry(
-    { formId, answers, userId, companyId, taskId}:
-    { formId: string; answers: Answer[]; userId?: string, companyId: string, taskId?: string }
-  ): Promise<FormEntry | null>;
+  createFormEntry({
+    formId,
+    answers,
+    userId,
+    companyId,
+    taskId,
+  }: {
+    formId: string;
+    answers: Answer[];
+    userId?: string;
+    companyId: string;
+    taskId?: string;
+  }): Promise<FormEntry | null>;
 
   getById(id: string): Promise<FormTemplate | null>;
 
   listByUserId(userId: string): Promise<GetFormEntryByUserId[]>;
 
   delete(id: string): Promise<void>;
+  
+  update({
+    formId,
+    form,
+    questions,
+  }: {
+    formId: string;
+    form: CreateForm;
+    questions: CreateQuestion[];
+  }): Promise<FormTemplate>;
 
   listByCompanyId(companyId: string): Promise<FormTemplate[]>;
 
   getFormEntryDetails({
     companyId,
     taskId,
-    userId
+    userId,
   }: {
     companyId: string;
     taskId: string;
     userId: string;
-  }): Promise<FormEntry | null>
+  }): Promise<FormEntry | null>;
 
   getEntryById(id: string): Promise<FormEntry | null>;
   listEntryByFormId(id: string): Promise<FormTemplateWithEntries | null>;

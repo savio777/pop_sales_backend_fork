@@ -281,4 +281,53 @@ export class PrismaFormRepository implements FormRepository {
         }
       });
   }
+
+  async update(
+    {formId, form, questions }:
+    {formId: string, form: CreateForm, questions: CreateQuestion[] }
+    ): Promise<FormTemplate> {
+      await db.$transaction([
+        // Delete existing questions
+        db.question.deleteMany({
+          where: {
+            formTemplateId: formId,
+          }
+        }),
+        
+        // Update form template and create new questions
+        db.formTemplate.update({
+          where: {
+            id: formId
+          },
+          data: {
+            ...(form.formType? { formType: form.formType } : {}),
+            companyId: form.companyId,
+            questions: {
+              createMany: {
+                data: questions.map((question) => ({
+                  text: question.text,
+                  required: question.required,
+                  type: question.type
+                }))
+              }
+            }
+          }
+        })
+      ]);
+  
+      // Return updated form with questions
+      return await db.formTemplate.findUnique({
+        where: { id: formId },
+        include: {
+          questions: {
+            select: {
+              id: true,
+              text: true,
+              required: true,
+              type: true
+            }
+          }
+        }
+      }) as FormTemplate;
+    }
 }

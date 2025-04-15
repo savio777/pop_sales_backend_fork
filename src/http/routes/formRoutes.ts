@@ -9,6 +9,7 @@ import { RBAC } from "../middleware/rbac"
 import { ListFormByCompanyIdController } from "../controller/form/listFormByCompanyIdController"
 import { ListFormEntryByUserIdController } from "../controller/form/ListFormEntryByUserIdController"
 import { ListEntryByFormIdController } from "../controller/form/listEntryByFormIdController"
+import { UpdateFormController } from "../controller/form/updateFormController"
 
 const createFormController = new CreateFormController()
 const createFormEntryController = new CreateFormEntryController()
@@ -18,28 +19,9 @@ const getFormEntryByIdController = new GetFormEntryByIdController()
 const listFormByCompanyIdController = new ListFormByCompanyIdController()
 const listEntryByFormIdController = new ListEntryByFormIdController()
 const listFormEntryByUserIdController = new ListFormEntryByUserIdController()
+const updateFormController = new UpdateFormController()
 
 export function FormRoutes(app: FastifyInstance) {
-  //cria formulário
-  app.post( 
-    '/', 
-    {preHandler: [Auth, RBAC(["create.form"])]},
-    createFormController.handle
-  );
-
-  //cria resposta ao formulário
-  app.post( 
-    '/entry', 
-    {preHandler: [Auth, RBAC(["create.form.entry"])]},
-    createFormEntryController.handle
-  );
-
-  // pega formulário
-  app.get('/:formId', 
-    {preHandler: [Auth, RBAC(["get.form"])]},
-    getFormByIdController.handle
-  );
-
   //pega resposta ao formulário completa (perguntas e respostas)
   app.get(
     '/entry/:entryId', 
@@ -67,10 +49,38 @@ export function FormRoutes(app: FastifyInstance) {
     listFormEntryByUserIdController.handle
   );
 
+  //atualizar formulário
+  app.put( 
+    '/:formId/company/:companyId', 
+    {preHandler: [Auth, RBAC(["update.form"])]},
+    updateFormController.handle
+  );
+
+
+  //cria resposta ao formulário
+  app.post( 
+    '/entry', 
+    {preHandler: [Auth, RBAC(["create.form.entry"])]},
+    createFormEntryController.handle
+  );
+
+  // pega formulário
+  app.get('/:formId', 
+    {preHandler: [Auth, RBAC(["get.form"])]},
+    getFormByIdController.handle
+  );
+
   //deleta formulário
   app.delete(
     '/:formId', 
     {preHandler: [Auth, RBAC(["delete.form"])]},
     deleteFormController.handle
   );
+
+  //cria formulário
+  app.post( 
+    '/', 
+    {preHandler: [Auth, RBAC(["create.form"])]},
+    createFormController.handle
+  );  
 }
