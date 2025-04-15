@@ -120,11 +120,37 @@ export class PrismaFormRepository implements FormRepository {
   }
 
   async delete(id: string): Promise<void> {
-    await db.formTemplate.delete({
-      where: {
-        id: id
-      }
-    });
+    await db.$transaction([
+      // Delete all answers from form entries
+      db.answer.deleteMany({
+        where: {
+          formEntry: {
+            formTemplateId: id
+          }
+        }
+      }),
+
+      // Delete all form entries
+      db.formEntry.deleteMany({
+        where: {
+          formTemplateId: id
+        }
+      }),
+
+      // Delete all questions
+      db.question.deleteMany({
+        where: {
+          formTemplateId: id
+        }
+      }),
+      
+      // Finally delete the form template
+      db.formTemplate.delete({
+        where: {
+          id: id
+        }
+      })
+    ]);
   }
   
   async listByCompanyId(companyId: string): Promise<FormTemplate[]> {
