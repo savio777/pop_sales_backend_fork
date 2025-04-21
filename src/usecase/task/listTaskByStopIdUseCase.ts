@@ -8,13 +8,10 @@ export class ListTaskByStopIdUseCase {
     private readonly stopRepository: StopRepository
   ) {}
 
-  async execute(
-    data:
-    {stopId: string, page: number, limit: number}
-  ) {
-    const stop = await this.stopRepository.getById(data.stopId)
-    if(!stop){
-      throw new NotFoundError("Parada não encontrada.")
+  async execute(data: { stopId: string; page: number; limit: number }) {
+    const stop = await this.stopRepository.getById(data.stopId);
+    if (!stop) {
+      throw new NotFoundError("Parada não encontrada.");
     }
     const tasks = await this.taskRepository.listByStopId(data);
     return { tasks };
