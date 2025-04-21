@@ -1,3 +1,4 @@
+import { listClientServiceResponse } from "@/repository/clientRepository";
 import { UserCompany, Company, User, Client } from "@prisma/client";
 
 export const mockCompany: Company = {
@@ -40,4 +41,11 @@ export const mockClient: Client = {
   lat: "123456789",
   lon: "123456789",
   responsiblePerson: "John Doe",
+}
+
+
+export const mockClientService: listClientServiceResponse = {
+  client: mockClient,
+  createdAt: new Date(),
+  finalizedAt: null,
 }
