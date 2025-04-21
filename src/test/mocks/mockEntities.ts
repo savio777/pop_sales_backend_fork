@@ -1,4 +1,4 @@
-import { UserCompany, Company, User } from "@prisma/client";
+import { UserCompany, Company, User, Client } from "@prisma/client";
 
 export const mockCompany: Company = {
   id: "8702afd1-1928-42bb-be35-40fc524c2c85",
@@ -25,4 +25,19 @@ export const mockUserCompany: UserCompany = {
   companyId: "8702afd1-1928-42bb-be35-40fc524c2c85",
   createdAt: new Date(),
   updatedAt: new Date(),
+}
+
+export const mockClient: Client = {
+  id: "8702afd1-1928-42bb-be35-40fc524c2c85",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  name: "salmo 91",
+  address: "Rua dos bobos",
+  email: "jhondue@email.com",
+  companyId: "8702afd1-1928-42bb-be35-40fc524c2c85",
+  phoneNumber: "123456789",
+  zipCode: "12345678",
+  lat: "123456789",
+  lon: "123456789",
+  responsiblePerson: "John Doe",
 }
