@@ -1,9 +1,6 @@
-import { mockUser } from "@/test/mocks/mockUser";
+import { mockUser } from "@/test/mocks/mockEntities";
+import { mockUserRepository } from "@/test/mocks/mockRepositoryJest";
 import { GetUserByEmailUseCase } from "./getUserByEmailUseCase";
-
-const mockUserRepository = {
-  getByEmail: jest.fn(),
-};
 
 describe("Get user by email", () => {
   let sut: GetUserByEmailUseCase;

@@ -1,20 +1,6 @@
-import { mockCompany } from "@/test/mocks/mockCompany";
+import { mockCompanyRepository, mockUserCompanyRepository, mockUserRepository } from "@/test/mocks/mockRepositoryJest";
+import { mockCompany, mockUser, mockUserCompany } from "@/test/mocks/mockEntities";
 import { CreateUserUseCase } from "./createUserUseCase";
-import { mockUser } from "@/test/mocks/mockUser";
-import { mockUserCompany } from "@/test/mocks/mockUserCompany";
-
-const mockUserRepository = {
-  create: jest.fn(),
-  getByEmail: jest.fn(),
-};
-
-const mockCompanyRepository = {
-  getById: jest.fn(),
-};
-
-const mockUserCompanyRepository = {
-  create: jest.fn(),
-};
 
 describe("Create User", () => {
   let sut: CreateUserUseCase;
