@@ -27,7 +27,7 @@ export const mockUserCompanyRepository: jest.Mocked<UserCompanyRepository> = {
   getById: jest.fn(),
   getByUserIdAndCompanyId: jest.fn(),
   list: jest.fn(),
-  remove: jest.fn(),
+  delete: jest.fn(),
 };
 
 // client mock repository
