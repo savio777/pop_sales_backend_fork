@@ -23,14 +23,14 @@ export class CreateClientUseCase {
     companyId,
   }: {
     name: string;
-    email?: string;
-    lon?: string;
-    lat?: string;
-    phoneNumber?: string;
-    zipCode?: string;
-    responsiblePerson?: string;
+    email: string | null;
+    lon: string | null;
+    lat: string | null;
+    phoneNumber: string | null;
+    zipCode: string | null;
+    responsiblePerson: string | null;
     companyId: string;
-    address?: string;
+    address: string | null;
   }) {
     const company = await this.companyRepository.getById(companyId);
     if (!company) {
