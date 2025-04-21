@@ -1,4 +1,7 @@
-import { mockClientRepository, mockCompanyRepository } from "@/test/mocks/mockRepositoryJest";
+import {
+  mockClientRepository,
+  mockCompanyRepository,
+} from "@/test/mocks/mockRepositoryJest";
 import { CreateClientUseCase } from "./createClientUseCase";
 import { mockClient, mockCompany } from "@/test/mocks/mockEntities";
 
@@ -9,8 +12,8 @@ describe("create client usecase", () => {
       mockClientRepository as any,
       mockCompanyRepository as any
     );
-    jest.clearAllMocks(); 
-  })
+    jest.clearAllMocks();
+  });
 
   it("should create a client", async () => {
     mockCompanyRepository.getById.mockResolvedValue(mockCompany);
@@ -31,6 +34,5 @@ describe("create client usecase", () => {
     });
 
     expect(client).toEqual(mockClient);
-  })
-
-})
+  });
+});
