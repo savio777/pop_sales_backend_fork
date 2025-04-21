@@ -1,6 +1,8 @@
 import { ClientRepository } from "@/repository/clientRepository";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
+import { StopRepository } from "@/repository/stopRepository";
+import { TaskRepository } from "@/repository/taskRepository";
 import { UserCompanyRepository } from "@/repository/userCompanyRepository";
 import { UserRepository } from "@/repository/userRepository";
 import { UserRotationRepository } from "@/repository/userRotationRepository";
@@ -52,3 +54,19 @@ export const mockUserRotationRepository: jest.Mocked<UserRotationRepository> = {
   getRotationByUserId: jest.fn(),
   create: jest.fn(),
 };
+
+export const mockTaskRepository: jest.Mocked<TaskRepository> = {
+  update: jest.fn(),
+  create: jest.fn(),
+  getById: jest.fn(),
+  delete: jest.fn(),
+  listByStopId: jest.fn(),
+};
+
+export const mockStopRepository: jest.Mocked<StopRepository> = {
+  create: jest.fn(),
+  getById: jest.fn(),
+  getByRotationId: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+}

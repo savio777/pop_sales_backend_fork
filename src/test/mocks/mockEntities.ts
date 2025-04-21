@@ -1,5 +1,14 @@
 import { listClientServiceResponse } from "@/repository/clientRepository";
-import { UserCompany, Company, User, Client, Rotation, UserRotation } from "@prisma/client";
+import {
+  UserCompany,
+  Company,
+  User,
+  Client,
+  Rotation,
+  UserRotation,
+  Stop,
+  Task,
+} from "@prisma/client";
 import { randomUUID } from "crypto";
 
 export const mockCompany: Company = {
@@ -8,7 +17,7 @@ export const mockCompany: Company = {
   updatedAt: new Date(),
   createdAt: new Date(),
   status: "ACTIVE",
-}
+};
 
 export const mockUser: User = {
   id: randomUUID(),
@@ -18,8 +27,8 @@ export const mockUser: User = {
   phone: "123456789",
   email: "johndoe@email.com",
   password: "123456",
-  status: "ACTIVE"
-}
+  status: "ACTIVE",
+};
 
 export const mockUserCompany: UserCompany = {
   id: randomUUID(),
@@ -27,7 +36,7 @@ export const mockUserCompany: UserCompany = {
   companyId: mockCompany.id,
   createdAt: new Date(),
   updatedAt: new Date(),
-}
+};
 
 export const mockClient: Client = {
   id: randomUUID(),
@@ -42,22 +51,21 @@ export const mockClient: Client = {
   lat: "123456789",
   lon: "123456789",
   responsiblePerson: "John Doe",
-}
-
+};
 
 export const mockClientService: listClientServiceResponse = {
   client: mockClient,
   createdAt: new Date(),
   finalizedAt: null,
-}
+};
 
 export const mockRotation: Rotation = {
   id: randomUUID(),
   createdAt: new Date(),
   updatedAt: new Date(),
   companyId: mockClient.id,
-  description: "descrição para rotação teste"
-}
+  description: "descrição para rotação teste",
+};
 
 export const mockUserRotation: UserRotation = {
   id: randomUUID(),
@@ -65,4 +73,26 @@ export const mockUserRotation: UserRotation = {
   updatedAt: new Date(),
   userId: mockUser.id,
   rotationId: mockRotation.id,
-}
+};
+
+export const mockStop: Stop = {
+  id: randomUUID(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  clientId: mockClient.id,
+  finalizedAt: new Date(),
+  status: "COMPLETED",
+  sequence: 1,
+  rotationId: mockRotation.id,
+};
+
+export const mockTask: Task = {
+  id: randomUUID(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  description: "descrição para tarefa teste",
+  status: "COMPLETED",
+  stopId: mockStop.id,
+  finishedAt: new Date(),
+  title: "tarefa teste",
+};
