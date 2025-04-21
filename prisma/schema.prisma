@@ -206,10 +206,10 @@ model ServiceAssessment {
 }
 
 enum FormType {
-  CLIENT // cliente
-  PROMOTER // promotor
-  SELLER // vendedor
-  DELIVERER // entregador
+  CLIENT 
+  PROMOTER 
+  SELLER 
+  DELIVERER 
 }
 
 enum QuestionType {
@@ -253,13 +253,14 @@ model FormEntry {
   taskId String?
   task   Task?   @relation(fields: [taskId], references: [id])
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 
   formTemplateId String
   formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
 
   answers   Answer[]
+  
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId String?
 }
