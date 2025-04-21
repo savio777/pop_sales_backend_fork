@@ -2,7 +2,7 @@ import { mockCompanyRepository, mockUserCompanyRepository, mockUserRepository } 
 import { mockCompany, mockUser, mockUserCompany } from "@/test/mocks/mockEntities";
 import { CreateUserUseCase } from "./createUserUseCase";
 
-describe("Create User", () => {
+describe("create user usecase", () => {
   let sut: CreateUserUseCase;
 
   beforeEach(() => {

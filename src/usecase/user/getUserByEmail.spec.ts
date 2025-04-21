@@ -2,7 +2,7 @@ import { mockUser } from "@/test/mocks/mockEntities";
 import { mockUserRepository } from "@/test/mocks/mockRepositoryJest";
 import { GetUserByEmailUseCase } from "./getUserByEmailUseCase";
 
-describe("Get user by email", () => {
+describe("get user by email usecase", () => {
   let sut: GetUserByEmailUseCase;
 
   beforeEach(() => {
