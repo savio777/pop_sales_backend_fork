@@ -103,7 +103,7 @@ model Stop {
   clientId String
 }
 
-model UserRotation {
+model UserRotation { //TODO: colocar companyId para facilitar a busca
   id         String    @id @default(uuid())
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
