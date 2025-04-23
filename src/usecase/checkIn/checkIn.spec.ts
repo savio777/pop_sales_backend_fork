@@ -196,7 +196,7 @@ describe("check in usecase", () => {
     ).rejects.toBeInstanceOf(BadRequestError);
   });
 
-  it.only("should not be able to check in if distance is greater than 100m", async () => {
+  it("should not be able to check in if distance is greater than 100m", async () => {
     mockUserRepository.getById.mockResolvedValueOnce(mockUser);
     mockClientRepository.getById.mockResolvedValueOnce({
       ...mockClient,
