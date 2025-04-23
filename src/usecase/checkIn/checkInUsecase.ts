@@ -56,7 +56,6 @@ export class CheckInUseCase {
     if (stop.status === "COMPLETED") {
       throw new BadRequestError("Você já fez check-in nesta empresa hoje");
     }
-
     if (stop.clientId !== clientId) {
       throw new BadRequestError(
         "Você não pode fazer o check-in deste cliente, pois ele não está na sua rotação."
@@ -73,7 +72,6 @@ export class CheckInUseCase {
         lon,
       },
     });
-
     if (distance > 100) {
       throw new UnauthorizedError(
         "Você precisa estar a pelo menos 100m de distância do cliente para fazer o check-in"

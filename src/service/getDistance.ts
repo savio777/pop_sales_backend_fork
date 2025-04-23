@@ -1,5 +1,6 @@
 import { getDistance as Getdistance } from 'geolib';
 
+//isto retorna a distancia em metros
 export function getDistance(
   { address1, address2 }: {
     address1: { lat: string, lon: string };

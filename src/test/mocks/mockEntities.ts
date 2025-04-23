@@ -106,3 +106,13 @@ export const mockCheckInCheckOut: CheckinCheckout = {
   clientId: mockClient.id,
   serviceDuration: 200,
 }
+
+export const mockCheckInCheckOutCreate = {
+  clientId: mockClient.id,
+  userId: mockUser.id,
+  stopId: mockStop.id,
+  checkInChekcOutId: randomUUID(),
+  rotationId: mockRotation.id,
+  lat: "-12.312",
+  lon: "60.123",
+}

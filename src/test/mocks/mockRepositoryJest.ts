@@ -70,6 +70,7 @@ export const mockStopRepository: jest.Mocked<StopRepository> = {
   getByRotationId: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),
+  listByRotationIdAndStatus: jest.fn(),
 }
 
 export const mockCheckInCheckOutRepository: jest.Mocked<CheckInCheckOutRepository> = {

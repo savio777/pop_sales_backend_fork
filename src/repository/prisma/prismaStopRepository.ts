@@ -1,8 +1,20 @@
-import { Prisma, Stop } from "@prisma/client";
+import { Prisma, StatusStop, Stop } from "@prisma/client";
 import { StopRepository } from "../stopRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaStopRepository implements StopRepository {
+  async listByRotationIdAndStatus(
+    data: 
+    { rotationId: string; status: StatusStop; }
+  ): Promise<Stop[] | null> {
+    const stop = await db.stop.findMany({
+      where: {
+        rotationId: data.rotationId,
+        status: data.status
+      }
+    })
+    return stop
+  }
   async getByRotationId(id: string): Promise<Stop[] | null> {
     const stop = await db.stop.findMany({
       where: {
