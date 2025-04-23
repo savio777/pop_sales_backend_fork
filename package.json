@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "test:uni": "npx jest",
+    "test:uni": "npx jest --detectOpenHandles",
     "dev": "tsx watch src/server.ts",
     "build": "tsup src --out-dir dist"
   },
