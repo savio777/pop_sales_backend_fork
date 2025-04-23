@@ -8,6 +8,7 @@ import {
   UserRotation,
   Stop,
   Task,
+  CheckinCheckout,
 } from "@prisma/client";
 import { randomUUID } from "crypto";
 
@@ -96,3 +97,12 @@ export const mockTask: Task = {
   finishedAt: new Date(),
   title: "tarefa teste",
 };
+
+export const mockCheckInCheckOut: CheckinCheckout = {
+  id: randomUUID(),
+  createdAt: new Date(),
+  userId: mockUser.id,
+  finalizedAt: new Date(),
+  clientId: mockClient.id,
+  serviceDuration: 200,
+}

@@ -1,3 +1,4 @@
+import { CheckInCheckOutRepository } from "@/repository/checkinCheckoutRepository";
 import { ClientRepository } from "@/repository/clientRepository";
 import { CompanyRepository } from "@/repository/companyRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
@@ -69,4 +70,11 @@ export const mockStopRepository: jest.Mocked<StopRepository> = {
   getByRotationId: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),
+}
+
+export const mockCheckInCheckOutRepository: jest.Mocked<CheckInCheckOutRepository> = {
+  create: jest.fn(),
+  getById: jest.fn(),
+  update: jest.fn(),
+  getCheckInByDate: jest.fn(),
 }
