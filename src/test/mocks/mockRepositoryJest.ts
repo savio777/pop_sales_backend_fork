@@ -1,6 +1,7 @@
 import { CheckInCheckOutRepository } from "@/repository/checkinCheckoutRepository";
 import { ClientRepository } from "@/repository/clientRepository";
 import { CompanyRepository } from "@/repository/companyRepository";
+import { FormRepository } from "@/repository/formRepository";
 import { RotationRepository } from "@/repository/rotationRepository";
 import { StopRepository } from "@/repository/stopRepository";
 import { TaskRepository } from "@/repository/taskRepository";
@@ -78,4 +79,17 @@ export const mockCheckInCheckOutRepository: jest.Mocked<CheckInCheckOutRepositor
   getById: jest.fn(),
   update: jest.fn(),
   getCheckInByDate: jest.fn(),
+}
+
+export const mockFormRepository: jest.Mocked<FormRepository> = {
+  create: jest.fn(),
+  getById: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+  createFormEntry: jest.fn(),
+  listByUserId: jest.fn(),
+  getEntryById: jest.fn(),
+  getFormEntryDetails: jest.fn(),
+  listByCompanyId: jest.fn(),
+  listEntryByFormId: jest.fn(),
 }

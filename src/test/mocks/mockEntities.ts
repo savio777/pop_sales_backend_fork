@@ -9,6 +9,8 @@ import {
   Stop,
   Task,
   CheckinCheckout,
+  FormEntry,
+  FormTemplate,
 } from "@prisma/client";
 import { randomUUID } from "crypto";
 
@@ -105,7 +107,7 @@ export const mockCheckInCheckOut: CheckinCheckout = {
   finalizedAt: new Date(),
   clientId: mockClient.id,
   serviceDuration: 200,
-}
+};
 
 export const mockCheckInCheckOutCreate = {
   clientId: mockClient.id,
@@ -115,4 +117,20 @@ export const mockCheckInCheckOutCreate = {
   rotationId: mockRotation.id,
   lat: "-12.312",
   lon: "60.123",
-}
+};
+
+export const mockFormTemplate: FormTemplate = {
+  id: randomUUID(),
+  createdAt: new Date(),
+  companyId: mockCompany.id,
+  formType: "CLIENT",
+};
+
+export const mockFormEntry: FormEntry = {
+  id: randomUUID(),
+  createdAt: new Date(),
+  companyId: mockCompany.id,
+  formTemplateId: mockFormTemplate.id,
+  taskId: mockTask.id,
+  userId: mockUser.id,
+};
