@@ -8,29 +8,33 @@ export class CreateStopUseCase {
     private readonly stopRepository: StopRepository,
     private readonly rotationRepository: RotationRepository,
     private readonly clientRepository: ClientRepository
-  ){}
+  ) {}
 
-  async execute(
-    { rotationId, clientId, sequence}:
-    {rotationId: string, clientId: string, sequence: number}
-  ){
-
-    const rotation = await this.rotationRepository.getById(rotationId)
-    if(!rotation){
-      throw new NotFoundError("Rotação não encontrada.")
+  async execute({
+    rotationId,
+    clientId,
+    sequence,
+  }: {
+    rotationId: string;
+    clientId: string;
+    sequence: number;
+  }) {
+    const rotation = await this.rotationRepository.getById(rotationId);
+    if (!rotation) {
+      throw new NotFoundError("Rotação não encontrada.");
     }
 
-    const client = await this.clientRepository.getById(clientId)
-    if(!client){
-      throw new NotFoundError("Cliente não encontrado.")
+    const client = await this.clientRepository.getById(clientId);
+    if (!client) {
+      throw new NotFoundError("Cliente não encontrado.");
     }
 
-    let stop = await this.stopRepository.create({
-      client: {connect: {id: clientId}},
+    const stop = await this.stopRepository.create({
+      client: { connect: { id: clientId } },
       sequence,
-      Rotation: {connect: {id: rotationId}}
-    })
-    
-    return {stop}
+      Rotation: { connect: { id: rotationId } },
+    });
+
+    return { stop };
   }
 }

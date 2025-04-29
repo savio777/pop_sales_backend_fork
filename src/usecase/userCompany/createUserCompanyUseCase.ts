@@ -9,31 +9,33 @@ export class CreateUserCompanyUseCase {
     private readonly userCompanyRepository: UserCompanyRepository,
     private readonly companyRepository: CompanyRepository,
     private readonly userRepository: UserRepository
-  ){}
+  ) {}
 
-  async execute(
-    {userId, companyId}:
-    {userId: string, companyId: string}
-  ){
-    const user = await this.userRepository.getById(userId)
-    if(!user){
-      throw new NotFoundError("Usuário não encontrado.")
-    }
-    
-    const company = await this.companyRepository.getById(companyId)
-    if(!company){
-      throw new NotFoundError("Empresa não encontrada.")
+  async execute({ userId, companyId }: { userId: string; companyId: string }) {
+    const user = await this.userRepository.getById(userId);
+    if (!user) {
+      throw new NotFoundError("Usuário não encontrado.");
     }
 
-    const userCompanyExist = await this.userCompanyRepository.getByUserIdAndCompanyId({
-      companyId, userId
-    })
-    if(userCompanyExist){
-      throw new BadRequestError("Usuário empresa já existe.")
+    const company = await this.companyRepository.getById(companyId);
+    if (!company) {
+      throw new NotFoundError("Empresa não encontrada.");
     }
 
-    const userCompany = await this.userCompanyRepository.create({userId, companyId})
+    const userCompanyExist =
+      await this.userCompanyRepository.getByUserIdAndCompanyId({
+        companyId,
+        userId,
+      });
+    if (userCompanyExist) {
+      throw new BadRequestError("Usuário empresa já existe.");
+    }
 
-    return {userCompany}
+    const userCompany = await this.userCompanyRepository.create({
+      userId,
+      companyId,
+    });
+
+    return { userCompany };
   }
 }

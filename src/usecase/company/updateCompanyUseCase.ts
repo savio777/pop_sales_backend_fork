@@ -3,33 +3,35 @@ import { NotFoundError } from "@/error/notfound.error";
 import { CompanyRepository } from "@/repository/companyRepository";
 
 interface UpdateCompanySchema {
-  id: string, 
-  name?: string, 
-  status?: "ACTIVE" | "INACTIVE",
+  id: string;
+  name?: string;
+  status?: "ACTIVE" | "INACTIVE";
 }
 
 export class UpdateCompanyUseCase {
-  constructor(
-    private readonly companyRepository: CompanyRepository,
-  ){}
+  constructor(private readonly companyRepository: CompanyRepository) {}
 
-  async execute(
-    {id, name, status}: UpdateCompanySchema
-  ){
-
-    const company = await this.companyRepository.getById(id)
-    if (!company) {
-      throw new NotFoundError("Empresa não existe.")
+  async execute({ id, name, status }: UpdateCompanySchema) {
+    const companyExist = await this.companyRepository.getById(id);
+    if (!companyExist) {
+      throw new NotFoundError("Empresa não encontrada.");
     }
 
-    const companyUpdate = await this.companyRepository.update({
-      id, 
+    if (name) {
+      const companyNameExist = await this.companyRepository.findByName(name);
+      if (companyNameExist) {
+        throw new BadRequestError("Nome de empresa já cadastrado.");
+      }
+    }
+
+    const company = await this.companyRepository.update({
+      id,
       data: {
         ...(status && { status }),
-        ...(name && { name })
-      }
-    })
+        ...(name && { name }),
+      },
+    });
 
-    return { company: companyUpdate }
+    return { company };
   }
 }

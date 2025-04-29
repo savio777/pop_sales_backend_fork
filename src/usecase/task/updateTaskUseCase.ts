@@ -3,25 +3,25 @@ import { TaskRepository } from "@/repository/taskRepository";
 
 interface UpdateTask {
   title?: string;
-  description?: string;
+  description?: string | null;
   status?: "COMPLETED" | "PENDING";
-  finishedAt?: Date;
+  finishedAt?: Date | null;
 }
 
 export class UpdateTaskUseCase {
   constructor(private readonly taskRepository: TaskRepository) {}
 
   async execute({ taskId, data }: { taskId: string; data: UpdateTask }) {
-    const task = await this.taskRepository.getById(taskId);
-    if (!task) {
+    const taskExists = await this.taskRepository.getById(taskId);
+    if (!taskExists) {
       throw new NotFoundError("Tarefa não encontrada.");
     }
 
-    const taskUpdated = await this.taskRepository.update({
+    const task = await this.taskRepository.update({
       id: taskId,
       data,
     });
 
-    return { task: taskUpdated };
+    return { task };
   }
 }

@@ -1,6 +1,6 @@
 import { Client, Prisma } from "@prisma/client";
 
-interface listClientServiceResponse {
+export interface listClientServiceResponse {
   client: {
     name: string;
     id: string;

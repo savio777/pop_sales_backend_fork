@@ -7,6 +7,6 @@ export interface CompanyRepository {
   getById(id: string): Promise<Company | null>
   findByName(name: string): Promise<Company | null>
   update({id, data}:{id: string, data: Prisma.CompanyUpdateInput}): Promise<Company | null>
-  delete(id: string): Promise<void>
+  delete(id: string): Promise<Company>
   list(): Promise<Company[]>
 }

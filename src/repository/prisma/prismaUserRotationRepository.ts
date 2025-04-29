@@ -5,30 +5,30 @@ import { db } from "@/lib/prisma";
 export class PrismaUserRotaionRepository implements UserRotationRepository {
   async create(data: Prisma.UserRotationCreateInput): Promise<UserRotation> {
     const userRotation = await db.userRotation.create({
-      data
-    })
-    return userRotation
+      data,
+    });
+    return userRotation;
   }
   async getRotationByUserId(userId: string): Promise<UserRotation[]> {
-        const rotations = await db.userRotation.findMany({
+    const rotations = await db.userRotation.findMany({
       where: {
-        userId
+        userId,
       },
       include: {
         Rotation: {
           include: {
             stops: {
               include: {
-                client: true
-              }
-            }
-          }
-        }
+                client: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: "asc"
-      }
-    })
-    return rotations
+        createdAt: "asc",
+      },
+    });
+    return rotations;
   }
 }

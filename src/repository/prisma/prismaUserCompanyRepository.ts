@@ -58,9 +58,9 @@ export class PrismaUserCompanyRepository implements UserCompanyRepository {
     });
     return userCompany;
   }
-  
-  async remove(id: string): Promise<void> {
-    await db.userCompany.delete({
+
+  async delete(id: string): Promise<UserCompany> {
+    return await db.userCompany.delete({
       where: {
         id,
       },

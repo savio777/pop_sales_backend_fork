@@ -2,7 +2,7 @@ import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyReposi
 import { PrismaUserCompanyRepository } from "@/repository/prisma/prismaUserCompanyRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
 import { CreateUserCompanyUseCase } from "@/usecase/userCompany/createUserCompanyUseCase";
-import { RemoveUserCompanyUseCase } from "@/usecase/userCompany/removeUserCompanyUseCase";
+import { DeleteUserCompanyUseCase } from "@/usecase/userCompany/deleteUserCompanyUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -39,13 +39,13 @@ export class SetUserCompanyController {
     }
 
     if(method === "REMOVE"){
-      const removeUserCompanyUseCase = new RemoveUserCompanyUseCase(
+      const deleteUserCompanyUseCase = new DeleteUserCompanyUseCase(
         userCompanyRepository,
         userRepository,
         companyRepository
       )
 
-      await removeUserCompanyUseCase.execute({
+      await deleteUserCompanyUseCase.execute({
         userId, companyId
       })
       return res.status(200).send()

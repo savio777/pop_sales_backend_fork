@@ -35,7 +35,15 @@ async function main() {
         "list.service.assessment.user",
         "list.service.assessment.client",
         "list.service.assessment.company",
-        "get.service.assessment"
+        "get.service.assessment",
+        "get.form.response",
+        "get.form",
+        "delete.form",
+        "create.form.entry",
+        "create.form",
+        "list.form.company",
+        "list.form.entry.company",
+        "list.form.entry.user"
       ]
     },
     {

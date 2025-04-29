@@ -6,17 +6,22 @@ interface CreateCompanySchema {
 }
 
 export class CreateCompanyUseCase {
-  constructor(
-    private readonly companyRepository: CompanyRepository,
-  ) {}
+  constructor(private readonly companyRepository: CompanyRepository) {}
 
   async execute(data: CreateCompanySchema) {
-    const companyAlreadyExist = await this.companyRepository.findByName(data.name);
+    const companyAlreadyExist = await this.companyRepository.findByName(
+      data.name
+    );
     if (companyAlreadyExist) {
-      throw new BadRequestError("Já existe uma empresa cadastrada com este nome.");
+      throw new BadRequestError(
+        "Já existe uma empresa cadastrada com este nome."
+      );
     }
 
-    const company = await this.companyRepository.create(data);
+    const company = await this.companyRepository.create({
+      ...data,
+      status: "ACTIVE",
+    });
 
     return { company };
   }
