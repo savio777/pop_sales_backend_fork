@@ -11,6 +11,8 @@ import {
   CheckinCheckout,
   FormEntry,
   FormTemplate,
+  Question,
+  Answer,
 } from "@prisma/client";
 import { randomUUID } from "crypto";
 
@@ -133,4 +135,84 @@ export const mockFormEntry: FormEntry = {
   formTemplateId: mockFormTemplate.id,
   taskId: mockTask.id,
   userId: mockUser.id,
+};
+
+interface FormResponse {
+  question: string;
+  answer: string | null;
+}
+
+interface FormEntryResponse {
+  id: string;
+  userId: string | null;
+  taskId: string | null;
+  // formTemplateId: string;
+  companyId: string | null;
+  createdAt: Date;
+  form: FormResponse[];
+}
+
+interface FormEntryWithRelations extends FormEntry {
+  formTemplate: FormTemplate & {
+    questions: Question[];
+  };
+  answers: (Answer & {
+    question: Question;
+  })[];
+}
+
+export const mockFormEntryWithRelations: FormEntryWithRelations = {
+  id: mockFormEntry.id,
+  userId: mockFormEntry.userId,
+  taskId: mockFormEntry.taskId,
+  companyId: mockFormEntry.companyId,
+  createdAt: mockFormEntry.createdAt,
+  answers: [
+    {
+      id: "1234-5678-9012-3456",
+      createdAt: new Date(),
+      text: "resposta teste",
+      imageUrl: null,
+      questionId: randomUUID(),
+      formEntryId: mockFormEntry.id,
+      question: {
+        id: "1234-5678-9012-3456",
+        formTemplateId: mockFormTemplate.id,
+        text: "pergunta teste",
+        required: true,
+        type: "TEXT",
+      },
+    }
+  ],
+  formTemplate: {
+    id: mockFormTemplate.id,
+    createdAt: mockFormTemplate.createdAt,
+    companyId: mockFormTemplate.companyId,
+    formType: mockFormTemplate.formType,
+    questions: [
+      {
+        id: "1234-5678-9012-3456",
+        formTemplateId: mockFormTemplate.id,
+        text: "pergunta teste",
+        required: true,
+        type: "TEXT",
+      }
+    ]
+  },
+  formTemplateId: mockFormTemplate.id,
+};
+
+export const mockformEntryResponse: FormEntryResponse = {
+  id: randomUUID(),
+  userId: mockUser.id ?? null,
+  taskId: mockTask.id ?? null,
+  // formTemplateId: data.formTemplateId,
+  companyId: mockCompany.id ?? null,
+  createdAt: mockFormEntry.createdAt,
+  form: [
+    {
+      question: "pergunta teste",
+      answer: "resposta teste",
+    }
+  ],
 };

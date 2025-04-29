@@ -30,13 +30,16 @@ export class GetFormEntryByIdUseCase {
   constructor(private readonly formRepository: FormRepository) {}
 
   async execute(id: string): Promise<{ formEntry: FormEntryResponse }> {
-    const data = await this.formRepository.getEntryById(id) as FormEntryWithRelations;
-    if (!data) {
-      throw new NotFoundError("Form response not found");
+    const formExist = (await this.formRepository.getEntryById(
+      id
+    )) as FormEntryWithRelations;
+    
+    if (!formExist) {
+      throw new NotFoundError("Formulário não encontrado");
     }
 
-    const form = data.formTemplate.questions.map((question) => {
-      const answer = data.answers.find(
+    const form = formExist.formTemplate.questions.map((question) => {
+      const answer = formExist.answers.find(
         (res) => res.questionId === question.id
       );
 
@@ -50,12 +53,12 @@ export class GetFormEntryByIdUseCase {
     });
 
     const formEntry: FormEntryResponse = {
-      id: data.id,
-      userId: data.userId ?? null,
-      taskId: data.taskId ?? null,
+      id: formExist.id,
+      userId: formExist.userId ?? null,
+      taskId: formExist.taskId ?? null,
       // formTemplateId: data.formTemplateId,
-      companyId: data.companyId ?? null,
-      createdAt: data.createdAt,
+      companyId: formExist.companyId ?? null,
+      createdAt: formExist.createdAt,
       form,
     };
 
