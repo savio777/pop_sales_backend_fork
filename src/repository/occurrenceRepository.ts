@@ -7,9 +7,13 @@ export interface OccurrenceRepository {
     companyId,
     periodEnd,
     periodStart,
+    limit,
+    page
   }: {
     companyId: string;
     periodStart: Date;
     periodEnd: Date;
+    limit: number,
+    page: number
   }): Promise<Occurrence[]>;
 }
