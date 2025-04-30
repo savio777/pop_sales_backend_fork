@@ -3,12 +3,13 @@ import { GetOccurrenceByIdUseCase } from "@/usecase/occurrence/getOccurrenceById
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export class getOccurrenceByIdController {
+export class GetOccurrenceByIdController {
   async handler(req: FastifyRequest, res: FastifyReply) {
     const requestParams = z.object({
       id: z.string().uuid(),
     });
     const { id } = requestParams.parse(req.params);
+    
     const prismaOcuurrenceRepository = new PrismaOccurrenceRepository();
     const getOccurrenceByIdUseCase = new GetOccurrenceByIdUseCase(
       prismaOcuurrenceRepository
