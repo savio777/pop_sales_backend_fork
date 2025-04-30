@@ -28,13 +28,3 @@ export class EmailService {
     }
   }
 }
-
-// Exemplo de uso:
-// const emailService = new EmailService();
-
-// emailService.sendEmail({
-//   from: env.GMAIL_HOST,
-//   to: "destinatario@gmail.com",
-//   subject: "Assunto do e-mail",
-//   text: "Conteúdo do e-mail aqui",
-// });
