@@ -1,7 +1,6 @@
 import { PrismaOccurrenceRepository } from "@/repository/prisma/prismaOccurrenceRepository";
 import { CreateOcurrenceUseCase } from "@/usecase/occurrence/createOccurrenceUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { connect } from "http2";
 import { z } from "zod";
 
 export class CreateOccurrenceController {
