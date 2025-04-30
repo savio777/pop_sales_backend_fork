@@ -3,6 +3,14 @@ import { CompanyRepository } from "../companyRepository";
 import { db } from "@/lib/prisma";
 
 export class PrismaCompanyRepository implements CompanyRepository {
+  async delete(id: string): Promise<Company> {
+    const company = await db.company.delete({
+      where: {
+        id
+      }
+    })
+    return company
+  }
   async list(): Promise<Company[]> {
    const companies = db.company.findMany()
    return companies
@@ -40,11 +48,5 @@ export class PrismaCompanyRepository implements CompanyRepository {
     })
     return company
   }
-  async delete(id: string): Promise<void> {
-    await db.company.delete({
-      where: {
-        id
-      }
-    })
-  }
+
 }

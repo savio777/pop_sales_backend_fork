@@ -87,7 +87,7 @@ export interface FormRepository {
 
   listByUserId(userId: string): Promise<GetFormEntryByUserId[]>;
 
-  delete(id: string): Promise<void>;
+  delete(id: string): Promise<FormTemplate>;
   
   update({
     formId,

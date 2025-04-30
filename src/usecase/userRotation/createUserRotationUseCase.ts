@@ -1,34 +1,37 @@
-import { NotFoundError } from "@/error/notfound.error"
-import { db } from "@/lib/prisma"
+import { NotFoundError } from "@/error/notfound.error";
+import { RotationRepository } from "@/repository/rotationRepository";
+import { UserRepository } from "@/repository/userRepository";
+import { UserRotationRepository } from "@/repository/userRotationRepository";
 
 export class CreateUserRotationUseCase {
-  async execute({rotationId, userId}:{userId: string, rotationId: string}) {
-    const user = await db.user.findUnique({
-      where: {
-        id: userId
-      }
-    })
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly rotationRepository: RotationRepository,
+    private readonly userRotationRepository: UserRotationRepository
+  ) {}
 
+  async execute({
+    rotationId,
+    userId,
+  }: {
+    userId: string;
+    rotationId: string;
+  }) {
+    const user = await this.userRepository.getById(userId);
     if (!user) {
-      throw new NotFoundError("Usuário não encontrado") 
+      throw new NotFoundError("Usuário não encontrado");
     }
 
-    const rotation = await db.rotation.findUnique({
-      where: {
-        id: rotationId
-      }
-    })
-
+    const rotation = await this.rotationRepository.getById(rotationId);
     if (!rotation) {
-      throw new NotFoundError("Rota não encontrada")
+      throw new NotFoundError("Rota não encontrada");
     }
 
-    const userRotation = await db.userRotation.create({
-      data: {
-        userId,
-        rotationId
-      }
-    })
-    return userRotation
+    const userRotation = await this.userRotationRepository.create({
+      User: { connect: { id: userId } },
+      Rotation: { connect: { id: rotationId } },
+    });
+
+    return { userRotation };
   }
 }

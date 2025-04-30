@@ -119,8 +119,8 @@ export class PrismaFormRepository implements FormRepository {
     });
   }
 
-  async delete(id: string): Promise<void> {
-    await db.$transaction([
+  async delete(id: string): Promise<FormTemplate> {
+    const data = await db.$transaction([
       // Delete all answers from form entries
       db.answer.deleteMany({
         where: {
@@ -151,6 +151,8 @@ export class PrismaFormRepository implements FormRepository {
         }
       })
     ]);
+
+    return data[data.length - 1] as FormTemplate;
   }
   
   async listByCompanyId(companyId: string): Promise<FormTemplate[]> {

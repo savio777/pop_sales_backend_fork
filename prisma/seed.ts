@@ -43,7 +43,10 @@ async function main() {
         "create.form",
         "list.form.company",
         "list.form.entry.company",
-        "list.form.entry.user"
+        "list.form.entry.user",
+        "create.occurrence",
+        "get.occurrence",
+        "list.occurrence"
       ]
     },
     {
@@ -63,7 +66,10 @@ async function main() {
         "list.task.by.rotation.stop.id",
         "create.client",
         "create.check.in",
-        "create.check.out"
+        "create.check.out",
+        "list.occurrence",
+        "get.occurrence",
+        "create.occurrence"
       ]
     },
     {
@@ -71,7 +77,8 @@ async function main() {
       permissions: [
         "list.rotations.assigned.to.me",
         "create.check.in",
-        "create.check.out"
+        "create.check.out",
+        "create.occurrence"
       ]
     },
     

@@ -22,6 +22,7 @@ model User {
   CheckinCheckout   CheckinCheckout[]
   ServiceAssessment ServiceAssessment[]
   Forms             FormEntry[]
+  Occurrence        Occurrence[]
 }
 
 model Permission {
@@ -56,6 +57,7 @@ model Company {
   ServiceAssessment ServiceAssessment[]
   forms             FormEntry[]
   FormTemplate      FormTemplate[]
+  Occurrence        Occurrence[]
 }
 
 model UserCompany {
@@ -206,10 +208,10 @@ model ServiceAssessment {
 }
 
 enum FormType {
-  CLIENT 
-  PROMOTER 
-  SELLER 
-  DELIVERER 
+  CLIENT
+  PROMOTER
+  SELLER
+  DELIVERER
 }
 
 enum QuestionType {
@@ -259,8 +261,8 @@ model FormEntry {
   formTemplateId String
   formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
 
-  answers   Answer[]
-  
+  answers Answer[]
+
   Company   Company? @relation(fields: [companyId], references: [id])
   companyId String?
 }
@@ -277,6 +279,19 @@ model Answer {
 
   formEntryId String
   formEntry   FormEntry @relation(fields: [formEntryId], references: [id])
+}
+
+model Occurrence {
+  id        String   @id @default(uuid())
+  title String
+  description String?
+  createdAt DateTime @default(now())
+
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 }
 
 /**

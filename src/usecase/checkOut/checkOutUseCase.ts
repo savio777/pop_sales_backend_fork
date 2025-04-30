@@ -1,8 +1,9 @@
 import { BadRequestError } from "@/error/badRequest.error";
+import { NotFoundError } from "@/error/notfound.error";
 import { UnauthorizedError } from "@/error/unauthorized.error";
-import { db } from "@/lib/prisma";
 import { CheckInCheckOutRepository } from "@/repository/checkinCheckoutRepository";
 import { ClientRepository } from "@/repository/clientRepository";
+import { RotationRepository } from "@/repository/rotationRepository";
 import { StopRepository } from "@/repository/stopRepository";
 import { UserRepository } from "@/repository/userRepository";
 import { getDistance } from "@/service/getDistance";
@@ -13,7 +14,8 @@ export class CheckOutUseCase {
     private readonly checkInCheckOutRepository: CheckInCheckOutRepository,
     private readonly userRepository: UserRepository,
     private readonly clientRepository: ClientRepository,
-    private readonly stopRepository: StopRepository
+    private readonly stopRepository: StopRepository,
+    private readonly rotationRepository: RotationRepository
   ) {}
 
   async execute({
@@ -23,7 +25,7 @@ export class CheckOutUseCase {
     lat,
     stopId,
     checkInChekcOutId,
-    rotationId
+    rotationId,
   }: {
     clientId: string;
     userId: string;
@@ -41,12 +43,12 @@ export class CheckOutUseCase {
 
     const user = await this.userRepository.getById(userId);
     if (!user) {
-      throw new BadRequestError("Usuário não existe");
+      throw new NotFoundError("Usuário não existe");
     }
 
     const client = await this.clientRepository.getById(clientId);
     if (!client) {
-      throw new BadRequestError("Cliente não existe");
+      throw new NotFoundError("Cliente não existe");
     }
     if (!client.lat || !client.lon) {
       throw new BadRequestError(
@@ -56,20 +58,15 @@ export class CheckOutUseCase {
 
     const stop = await this.stopRepository.getById(stopId);
     if (!stop) {
-      throw new BadRequestError("Parada não existe");
+      throw new NotFoundError("Parada não existe");
     }
     if (stop.status === "COMPLETED") {
       throw new BadRequestError("Você já fez check-out nesta empresa hoje");
     }
 
-    const rotation = await db.rotation.findUnique({
-      where: {
-        id: rotationId,
-      }
-    });
-
-    if(!rotation){
-      throw new BadRequestError("Rotação não existe");
+    const rotation = await this.rotationRepository.getById(rotationId);
+    if (!rotation) {
+      throw new NotFoundError("Rotação não existe");
     }
 
     const distance = getDistance({
@@ -93,7 +90,7 @@ export class CheckOutUseCase {
       checkInChekcOutId
     );
     if (!checkIn) {
-      throw new BadRequestError("checkIn não encontrado");
+      throw new NotFoundError("checkIn não encontrado");
     }
 
     const finalizedAt = new Date();
@@ -103,31 +100,34 @@ export class CheckOutUseCase {
       id: stop.id,
       data: {
         status: "COMPLETED",
-        finalizedAt: new Date(),      },
-    });
-
-    const isStopsFinalized = await db.stop.findMany({
-      where: {
-        rotationId,
-        status: "PENDING",
+        finalizedAt: new Date(),
       },
     });
 
-    console.log(isStopsFinalized)
+    const isStopsFinalized =
+      await this.stopRepository.listByRotationIdAndStatus({
+        rotationId,
+        status: "PENDING",
+      });
 
-    if(isStopsFinalized.length === 0){
+    if (isStopsFinalized && isStopsFinalized.length === 0) {
       await this.checkInCheckOutRepository.update({
         id: checkInChekcOutId,
         data: {
-          finalizedAt: new Date(), 
+          finalizedAt: new Date(),
           serviceDuration: minutes,
         },
       });
 
-      return { mensage: "Todas as paradas foram finalizadas, rotação concluida!"}
+      return {
+        message: "Todas as paradas foram finalizadas, rotação concluida!",
+      };
     }
 
-
-    return { mensage: `Parada foi concluida!, mas ainda faltam ${isStopsFinalized.length} paradas para finalizar a rotação.`};
+    return {
+      message: `Parada foi concluida!, mas ainda faltam ${
+        isStopsFinalized ? isStopsFinalized.length : "algumas"
+      } paradas para finalizar a rotação.`,
+    };
   }
 }

@@ -8,7 +8,7 @@ export interface TaskRepository {
     {id: string, data: Prisma.TaskUpdateInput}
   ): Promise<Task>
   create(data: Prisma.TaskCreateInput): Promise<Task>
-  delete(id: string): Promise<void>
+  delete(id: string): Promise<Task>
   listByStopId(    
     {limit, page, stopId}:
     {stopId: string, page?: number, limit?: number}
