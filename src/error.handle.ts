@@ -9,6 +9,7 @@ import { BadRequestError } from "./error/badRequest.error";
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from "jsonwebtoken";
 import { ForbiddenError } from "./error/forbiddenError.error";
 import { env } from "./env";
+import { SendEmailError } from "./error/sendEmail.error";
 
 export function errorHandler(error: FastifyError, req: FastifyRequest, res: FastifyReply) {
 
@@ -41,6 +42,15 @@ export function errorHandler(error: FastifyError, req: FastifyRequest, res: Fast
       statusCode: 401,
       timestamp: new Date().getTime(),
       instance: "TokenError",
+      code: error.message,
+    });
+  }
+
+  if (error instanceof SendEmailError) {
+    return res.status(500).send({
+      statusCode: 500,
+      timestamp: new Date().getTime(),
+      instance: "SendEmailError",
       code: error.message,
     });
   }
