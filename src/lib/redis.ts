@@ -14,9 +14,9 @@ redis.on('error', (err) => {
 });
 
 class CacheService {
-  async set<T>(key: string, value: T, seconds = 60): Promise<void> {
+  async set<T>(key: string, value: T, minutes = 60): Promise<void> {
     const data = JSON.stringify(value);
-    await redis.set(key, data, 'EX', seconds);
+    await redis.set(key, data, 'EX', minutes);
   }
 
   async get<T>(key: string): Promise<T | null> {

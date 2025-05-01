@@ -1,10 +1,23 @@
 import { env } from "@/env";
+import { NotFoundError } from "@/error/notfound.error";
 import { SendEmailError } from "@/error/sendEmail.error";
 import { cache } from "@/lib/redis";
+import { UserRepository } from "@/repository/userRepository";
 import { EmailService } from "@/service/email/sendEmail";
 
 export class PasswordRecoverySendEmailUseCase {
-  async execute(email: string, linkChangePassword: string) {
+  constructor(
+    private readonly userRepository: UserRepository
+  ){}
+
+  async execute(
+    {email, linkChangePassword}:
+    {email: string, linkChangePassword: string}
+  ) {
+    const user = await this.userRepository.getByEmail(email);
+    if(!user){
+      throw new NotFoundError("Usuário não encontrado com este email")
+    }
     const emailService = new EmailService();
 
     const code = [];
@@ -19,7 +32,7 @@ export class PasswordRecoverySendEmailUseCase {
       code,
     };
 
-    const ttl = 1000 * 60 * 20; //20 minutos
+    const ttl = 60 * 20; //20 minutos
     const key = "recovery:password:code:" + email;
     await cache.set(key, payload, ttl);
 
