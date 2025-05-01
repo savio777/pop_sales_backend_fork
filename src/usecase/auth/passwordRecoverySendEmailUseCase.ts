@@ -3,7 +3,7 @@ import { SendEmailError } from "@/error/sendEmail.error";
 import { cache } from "@/lib/redis";
 import { EmailService } from "@/service/email/sendEmail";
 
-export class PasswordRecoverySendEmail {
+export class PasswordRecoverySendEmailUseCase {
   async execute(email: string, linkChangePassword: string) {
     const emailService = new EmailService();
 
