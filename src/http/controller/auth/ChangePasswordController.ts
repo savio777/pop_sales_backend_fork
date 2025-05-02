@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export class ChangePasswordController {
-  async handler(req: FastifyRequest, res: FastifyReply) {
+  async handle(req: FastifyRequest, res: FastifyReply) {
     const requestBody = z.object({
       code: z.array(z.number()),
       password: z.string(),
