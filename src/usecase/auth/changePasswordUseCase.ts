@@ -25,7 +25,6 @@ export class ChangePasswordUseCase {
       }
   ) {
 
-
     const user = await this.userRepository.getByEmail(email);
     if (!user) {
       throw new NotFoundError("Usuário não encontrado com este email");
