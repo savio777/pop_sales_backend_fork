@@ -21,7 +21,11 @@ const envSchema = z.object({
   USER_ROOT_PASSWORD: z.string(),
 
   //GOOGLE API
-  GOOGLE_API_KEY: z.string()
+  GOOGLE_API_KEY: z.string(),
+
+  // EMAIL
+  GMAIL_PASSWORD: z.string(),
+  GMAIL_HOST: z.string().email(),
 })
 
 const _env = envSchema.safeParse(process.env)
