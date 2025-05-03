@@ -1,15 +1,19 @@
-import Fastify from 'fastify'
-import { errorHandler } from './error.handle'
-import { AppRoutes } from './http/routes/appRoutes'
+import Fastify from 'fastify';
+import { errorHandler } from './error.handle';
+import { AppRoutes } from './http/routes/appRoutes';
 import jwt from '@fastify/jwt';
 import { env } from './env';
-import multipartPlugin from './plugins/multipart';
 import fastifyStatic from '@fastify/static';
 import path from 'path';
+import multipart from '@fastify/multipart'
 
 export const app = Fastify();
 
-app.register(multipartPlugin);
+app.register(multipart, {
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5 MB
+  }
+})
 
 app.register(fastifyStatic, {
   root: path.resolve('public'),

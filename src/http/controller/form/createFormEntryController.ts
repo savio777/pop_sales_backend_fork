@@ -5,9 +5,22 @@ import { CreateFormEntryUseCase } from "@/usecase/form/createFormEntryUseCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-export class CreateFormEntryController {
-  async handle(req: FastifyRequest, res: FastifyReply){
+import path from "path";
+import { uploadFile } from "@/utils/uploadFile";
 
+export class CreateFormEntryController {
+  async handle(req: FastifyRequest, res: FastifyReply) {
+
+
+
+
+    const filePath = path.resolve("public", "images");
+    const result = await uploadFile({ req, res, filePath });
+    
+    return result;
+
+
+    // --------------------
     const createFormEntryRequestBody = z.object({
       companyId: z.string().uuid(),
       formId: z.string().uuid(),
@@ -22,9 +35,9 @@ export class CreateFormEntryController {
       )
     })
 
-    const { companyId, formId, userId, answers, taskId} = createFormEntryRequestBody.parse(req.body)
+    const { companyId, formId, userId, answers, taskId } = createFormEntryRequestBody.parse(req.body)
 
-    const formRepository = new PrismaFormRepository() 
+    const formRepository = new PrismaFormRepository()
     const companyRepository = new PrismaCompanyRepository()
     const userRepository = new PrismaUserRepository()
 
