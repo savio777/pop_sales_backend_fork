@@ -41,6 +41,13 @@ export class SignInController {
 
     const {password, ...userWithOutPassword} = user
 
+    res.setCookie('token', token, {
+      path: '/',
+      httpOnly: true,    // O cookie será inacessível ao JavaScript
+      secure: false,     // Coloque `true` apenas se você estiver usando HTTPS
+      sameSite: 'none',  // Necessário para permitir que o cookie seja enviado entre domínios diferentes
+    });
+    
     return res.status(200).send({user: userWithOutPassword, token})
   }
 }
