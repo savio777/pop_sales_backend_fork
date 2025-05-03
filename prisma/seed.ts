@@ -123,6 +123,7 @@ async function main() {
       name: USER_ROOT_NAME,
       email: USER_ROOT_EMAIL,
       password: passwordHash,
+      type: "ADMIN"
     }
   })
   
