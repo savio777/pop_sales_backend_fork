@@ -56,7 +56,6 @@ export function FormRoutes(app: FastifyInstance) {
     updateFormController.handle
   );
 
-
   //cria resposta ao formulário
   app.post( 
     '/entry', 
