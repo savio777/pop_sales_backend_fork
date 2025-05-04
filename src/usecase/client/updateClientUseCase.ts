@@ -9,12 +9,12 @@ export class UpdateClientUseCase {
 
   async execute(id: string, data: Prisma.ClientUpdateInput) {
     const emailAlreadyExist = await this.clientRepository.getByEmail(data.email as string)
-    if (emailAlreadyExist) {
+    if (emailAlreadyExist && data.email !== emailAlreadyExist.email) {
       throw new BadRequestError("Email já cadastrado")
     }
 
     const nameAlreadyExists = await this.clientRepository.getByName(data.name as string)
-    if (nameAlreadyExists) {
+    if (nameAlreadyExists && data.name!== nameAlreadyExists.name) {
       throw new BadRequestError("Nome já cadastrado")
     }
 
