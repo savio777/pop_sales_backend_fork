@@ -4,10 +4,12 @@ import { GetMyUserController } from "../controller/user/getMyUserController";
 import { UpdateUserController } from "../controller/user/updateUserController";
 import { RBAC } from "../middleware/rbac";
 import { ListUserByCompanyIdController } from "../controller/user/listUserByCompanyIdController";
+import { DeleteUserController } from "../controller/user/deleteUserController";
 
 const getMyUserController = new GetMyUserController()
 const updateUserController = new UpdateUserController()
 const listUserByCompanyIdController = new ListUserByCompanyIdController()
+const deleteUserController = new DeleteUserController()
 
 export function UserRoutes(app: FastifyInstance){
   app.get(
@@ -26,5 +28,11 @@ export function UserRoutes(app: FastifyInstance){
     "/company/:companyId",
     {preHandler: [Auth, RBAC(["list.user.by.company.id"])]}, 
     listUserByCompanyIdController.handler
+  ),
+
+  app.delete(
+    "/:userId",
+    {preHandler: [Auth, RBAC(["delete.user"])]}, 
+    deleteUserController.handler
   )
 }

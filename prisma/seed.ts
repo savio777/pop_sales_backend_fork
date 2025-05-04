@@ -49,7 +49,8 @@ async function main() {
         "list.occurrence",
         "update.client",
         "delete.client",
-        "list.user.by.company.id"
+        "list.user.by.company.id",
+        "delete.user"
       ]
     },
     {
@@ -75,7 +76,8 @@ async function main() {
         "create.occurrence",
         "update.client",
         "delete.client",
-        "list.user.by.company.id"
+        "list.user.by.company.id",
+        "delete.user"
       ]
     },
     {
