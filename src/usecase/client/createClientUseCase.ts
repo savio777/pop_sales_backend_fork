@@ -71,6 +71,7 @@ export class CreateClientUseCase {
       zipCode,
       Company: { connect: { id: companyId } },
       responsiblePerson,
+      address: address?? null,
     });
 
     return { client };
