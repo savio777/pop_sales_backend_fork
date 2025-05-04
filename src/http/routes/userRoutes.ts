@@ -3,19 +3,28 @@ import { Auth } from "../middleware/auth";
 import { GetMyUserController } from "../controller/user/getMyUserController";
 import { UpdateUserController } from "../controller/user/updateUserController";
 import { RBAC } from "../middleware/rbac";
+import { ListUserByCompanyIdController } from "../controller/user/listUserByCompanyIdController";
 
 const getMyUserController = new GetMyUserController()
 const updateUserController = new UpdateUserController()
+const listUserByCompanyIdController = new ListUserByCompanyIdController()
 
 export function UserRoutes(app: FastifyInstance){
   app.get(
     "/", 
     {preHandler: [Auth]}, 
     getMyUserController.handle
-  )
+  );
+
   app.patch(
     "/:userId", 
     {preHandler: [Auth, RBAC(["update.user"])]}, 
     updateUserController.handle
+  );
+
+  app.get(
+    "/company/:companyId",
+    {preHandler: [Auth, RBAC(["list.user.by.company.id"])]}, 
+    listUserByCompanyIdController.handler
   )
 }
