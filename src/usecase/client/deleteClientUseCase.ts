@@ -11,7 +11,12 @@ export class DeleteClientUseCase {
       throw new Error("Cliente não encontrado")
     }
 
-    const client = await this.clientRepository.delete(id)
+    const client = await this.clientRepository.update({
+      id,
+      data: {
+        status: "INACTIVE"
+      }
+    })
 
     return {
       client   
