@@ -46,7 +46,9 @@ async function main() {
         "list.form.entry.user",
         "create.occurrence",
         "get.occurrence",
-        "list.occurrence"
+        "list.occurrence",
+        "update.client",
+        "delete.client"
       ]
     },
     {
@@ -69,7 +71,9 @@ async function main() {
         "create.check.out",
         "list.occurrence",
         "get.occurrence",
-        "create.occurrence"
+        "create.occurrence",
+        "update.client",
+        "delete.client"
       ]
     },
     {

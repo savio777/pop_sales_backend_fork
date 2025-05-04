@@ -27,7 +27,7 @@ export interface ClientRepository {
   listClientService(companyId: string): Promise<listClientServiceResponse[]>
   update(
     {id, data}:
-    {id: string, data: Client}
+    {id: string, data: Prisma.ClientUpdateInput}
   ): Promise<Client>
   delete(id: string): Promise<void>
 }
