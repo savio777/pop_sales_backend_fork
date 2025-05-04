@@ -13,7 +13,9 @@ export class SignUpController {
       email: z.string().email(),
       password: z.string().min(4, "password is very small").max(20, "password is very big"),
       phone: z.string().min(8, "phone number is very small").max(20, "phone number is very big").optional(),
-      companyId: z.string().uuid()
+      companyId: z.string().uuid(),
+      type: z.enum(["MANAGER", "EMPLOYEE"]).default("EMPLOYEE"),
+      status: z.enum(["ACTIVE", "INACTIVE"]).default("ACTIVE"),
     })
 
     const data = signUpSchema.parse(req.body)
@@ -36,7 +38,9 @@ export class SignUpController {
       email: data.email,
       companyId: data.companyId,
       password: passwordHash,
-      phone: data.phone
+      phone: data.phone,
+      type: data.type,
+      status: data.status
     });
 
     const { password, ...userWithOutPassword } = result.user

@@ -10,6 +10,8 @@ interface SignUpInputs {
   email: string;
   password: string;
   companyId: string;
+  type: "MANAGER" | "EMPLOYEE";
+  status: "ACTIVE" | "INACTIVE";
 }
 
 export class CreateUserUseCase {
@@ -41,7 +43,8 @@ export class CreateUserUseCase {
       email: data.email,
       password: data.password,
       phone: data.phone,
-      status: "ACTIVE"
+      status: data.status,
+      type: data.type
     });
 
     //TODO: REMOVER ISTO E POR EM UM ENDPOINT ESPECIFICO
