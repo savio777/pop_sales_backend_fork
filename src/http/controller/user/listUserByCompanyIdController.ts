@@ -28,17 +28,37 @@ export class ListUserByCompanyIdController {
     }
 
     const offset = (page - 1) * limit
-    const users = await db.user.findMany({
+    const result = await db.userCompany.findMany({
       where: {
-        companys: {
-          some: { 
-            id: companyId,
+        companyId,
+        User: {
+          name: {
+            not: {
+              equals: "admin"
+            }
           }
-        },
+        }
+      },
+      select: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+            status: true, 
+            phone: true,
+            type: true
+          }
+        }
       },
       take: limit,
       skip: offset,
     })
+    
+
+    const users = result.map(item => item.User).filter((user): user is NonNullable<typeof user> => user !== null)
 
     return res.status(200).send({users})
   }
