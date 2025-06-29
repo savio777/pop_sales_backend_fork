@@ -36,23 +36,20 @@ export class CreateUserUseCase {
       );
     }
 
-    //TODO: verificar usuario com mesmo nome, email e phone
-
     const user = await this.userRepository.create({
       name: data.name,
       email: data.email,
       password: data.password,
       phone: data.phone,
       status: data.status,
-      type: data.type
+      type: data.type,
     });
 
-    //TODO: REMOVER ISTO E POR EM UM ENDPOINT ESPECIFICO
-    await this.userCompanyRepository.create({
+    const userCompany = await this.userCompanyRepository.create({
       companyId: data.companyId,
       userId: user.id,
     });
 
-    return { user };
+    return { user, userCompany };
   }
 }

@@ -54,6 +54,12 @@ model UserPermission {
 model Company {
   id                String              @id @default(uuid())
   name              String              @unique
+  cnpj              String?             @unique
+  emailContact      String?             @unique
+  nameContact       String?
+  phone             String?             @unique
+  address           String?
+  zipCode           String?
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   status            StatusCompany       @default(ACTIVE)
