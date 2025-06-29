@@ -4,35 +4,35 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
 export class DeleteUserController {
-  async handler(req: FastifyRequest, res: FastifyReply){
+  async handler(req: FastifyRequest, res: FastifyReply) {
     const requestParams = z.object({
-      id: z.string().uuid()
-    })
+      userId: z.string().uuid(),
+    });
 
-    const {id} = requestParams.parse(req.params)
+    const { userId } = requestParams.parse(req.params);
 
     const userExist = await db.user.findUnique({
       where: {
-        id
-      }
-    })
-    if(!userExist) {
-      throw new NotFoundError("Usuário não encontrado")
+        id: userId,
+      },
+    });
+    if (!userExist) {
+      throw new NotFoundError("Usuário não encontrado");
     }
 
     await db.userCompany.deleteMany({
       where: {
-        userId: id
-      }
-    })
+        userId,
+      },
+    });
 
     await db.user.update({
       where: {
-        id
+        id: userId,
       },
       data: {
-        status: "INACTIVE"
-      }
-    })
+        status: "INACTIVE",
+      },
+    });
   }
 }

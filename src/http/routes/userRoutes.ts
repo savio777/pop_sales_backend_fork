@@ -32,10 +32,11 @@ export function UserRoutes(app: FastifyInstance) {
     "/company/:companyId",
     { preHandler: [Auth, RBAC(["list.user.by.company.id"])] },
     listUserByCompanyIdController.handler
-  ),
-    app.delete(
-      "/:userId",
-      { preHandler: [Auth, RBAC(["delete.user"])] },
-      deleteUserController.handler
-    );
+  );
+
+  app.delete(
+    "/:userId",
+    { preHandler: [Auth, RBAC(["delete.user"])] },
+    deleteUserController.handler
+  );
 }
