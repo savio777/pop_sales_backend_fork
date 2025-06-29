@@ -1,0 +1,316 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TypeUser {
+  ADMIN
+  EMPLOYEE
+  MANAGER
+}
+
+model User {
+  id                String              @id @default(uuid())
+  name              String              @unique
+  email             String              @unique
+  type              TypeUser            @default(EMPLOYEE)
+  password          String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  phone             String?             @unique
+  status            StatusUser          @default(ACTIVE)
+  companys          UserCompany[]
+  permissions       UserPermission[]
+  rotations         UserRotation[]
+  CheckinCheckout   CheckinCheckout[]
+  ServiceAssessment ServiceAssessment[]
+  Forms             FormEntry[]
+  Occurrence        Occurrence[]
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  permissions String[]
+  users       UserPermission[]
+}
+
+model UserPermission {
+  id           String      @id @default(uuid())
+  userId       String?
+  permissionId String?
+  Permission   Permission? @relation(fields: [permissionId], references: [id])
+  User         User?       @relation(fields: [userId], references: [id])
+
+  @@unique([userId, permissionId])
+}
+
+model Company {
+  id                String              @id @default(uuid())
+  name              String              @unique
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  status            StatusCompany       @default(ACTIVE)
+  products          Product[]
+  rotations         Rotation[]
+  users             UserCompany[]
+  clients           Client[]
+  ServiceAssessment ServiceAssessment[]
+  forms             FormEntry[]
+  FormTemplate      FormTemplate[]
+  Occurrence        Occurrence[]
+}
+
+model UserCompany {
+  id        String   @id @default(uuid())
+  userId    String?
+  companyId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Company   Company? @relation(fields: [companyId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, companyId])
+}
+
+model Rotation {
+  id          String         @id @default(uuid())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  companyId   String?
+  description String?
+  Company     Company?       @relation(fields: [companyId], references: [id])
+  stops       Stop[]
+  users       UserRotation[]
+}
+
+enum StatusStop {
+  PENDING // O usuário ainda não visitou
+  COMPLETED // O usuário já visitou
+}
+
+model Stop {
+  id          String     @id @default(uuid())
+  sequence    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  finalizedAt DateTime?
+  status      StatusStop @default(PENDING)
+
+  tasks Task[]
+
+  rotationId String?
+  Rotation   Rotation? @relation(fields: [rotationId], references: [id])
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+}
+
+model UserRotation {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  userId     String?
+  rotationId String?
+  Rotation   Rotation? @relation(fields: [rotationId], references: [id])
+  User       User?     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, rotationId])
+}
+
+model Task {
+  id          String      @id @default(uuid())
+  title       String
+  description String?
+  finishedAt  DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  status      TaskStatus  @default(PENDING)
+  stopId      String?
+  Stop        Stop?       @relation(fields: [stopId], references: [id])
+  forms       FormEntry[]
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  companyId String?
+  Company   Company? @relation(fields: [companyId], references: [id])
+}
+
+enum StatusUser {
+  ACTIVE
+  INACTIVE
+}
+
+enum StatusCompany {
+  ACTIVE
+  INACTIVE
+}
+
+enum TaskStatus {
+  COMPLETED
+  PENDING
+}
+
+enum StatusClient {
+  ACTIVE
+  INACTIVE
+}
+
+model Client {
+  id                String       @id @default(uuid())
+  status            StatusClient @default(ACTIVE)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  name              String       @unique
+  zipCode           String?
+  responsiblePerson String?
+  phoneNumber       String?      @unique
+  email             String?      @unique
+  address           String?
+  lon               String?
+  lat               String?
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  CheckinCheckout CheckinCheckout[]
+
+  ServiceAssessment ServiceAssessment[]
+
+  Stop Stop[]
+}
+
+model CheckinCheckout {
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  finalizedAt     DateTime?
+  serviceDuration Int?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+}
+
+model ServiceAssessment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  description String?
+  ratingStars Int?
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Client   Client? @relation(fields: [clientId], references: [id])
+  clientId String?
+}
+
+enum FormType {
+  CLIENT
+  PROMOTER
+  SELLER
+  DELIVERER
+}
+
+enum QuestionType {
+  TEXT
+  YES_NO
+  MULTIPLE_CHOICE
+  IMAGE
+}
+
+// FORMULÁRIO MODELO
+model FormTemplate {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  formType  FormType
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  questions   Question[]
+  formEntries FormEntry[]
+}
+
+// PERGUNTAS DO FORMULÁRIO
+model Question {
+  id       String       @id @default(uuid())
+  text     String
+  required Boolean      @default(false)
+  type     QuestionType
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers Answer[]
+}
+
+// PREENCHIMENTO DO FORMULÁRIO POR USUÁRIO
+model FormEntry {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  taskId String?
+  task   Task?   @relation(fields: [taskId], references: [id])
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  formTemplateId String
+  formTemplate   FormTemplate @relation(fields: [formTemplateId], references: [id])
+
+  answers Answer[]
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+// RESPOSTAS ÀS PERGUNTAS
+model Answer {
+  id        String   @id @default(uuid())
+  text      String?
+  imageUrl  String?
+  createdAt DateTime @default(now())
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+
+  formEntryId String
+  formEntry   FormEntry @relation(fields: [formEntryId], references: [id])
+}
+
+model Occurrence {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+/**
+ * - Uma empresa cria um único FormTemplate por tipo (formType): ✔️
+ * - Vários usuários podem preencher (FormEntry) esse mesmo FormTemplate sem duplicá-lo: ✔️
+ * - Cada FormEntry está atrelado a um user e pode estar vinculado a uma task: ✔️
+ * - As respostas (Answer) são associadas tanto à pergunta (Question) quanto à entrada (FormEntry): ✔️
+ * - As Questions pertencem ao FormTemplate e não diretamente a uma empresa ou task: ✔️
+ */
