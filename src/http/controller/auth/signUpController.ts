@@ -1,6 +1,7 @@
 import { PrismaCompanyRepository } from "@/repository/prisma/prismaCompanyRepository";
 import { PrismaUserCompanyRepository } from "@/repository/prisma/prismaUserCompanyRepository";
 import { PrismaUserRepository } from "@/repository/prisma/prismaUserRepository";
+import { PrismaUserPermissionRepository } from "@/repository/prisma/prismaUserPermissionRepository";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import bcrypt from "bcrypt";
@@ -30,6 +31,8 @@ export class SignUpController {
     const userRepository = new PrismaUserRepository();
     const companyRepository = new PrismaCompanyRepository();
     const userCompanyRepository = new PrismaUserCompanyRepository();
+    const userPermissionRepository = new PrismaUserPermissionRepository();
+    // add repository permission
 
     const signUpUseCase = new CreateUserUseCase(
       userRepository,
@@ -50,10 +53,26 @@ export class SignUpController {
       status: data.status,
     });
 
+    // Associar permissão ao usuário conforme o tipo
+    const permission = await userPermissionRepository.findPermissionByName(
+      data.type
+    );
+    let userPermission = null;
+    if (permission) {
+      userPermission = await userPermissionRepository.create(
+        result.user.id,
+        permission.id
+      );
+    }
+
     const { password, ...userWithOutPassword } = result.user;
 
     return res
       .status(201)
-      .send({ user: userWithOutPassword, userCompany: result.userCompany });
+      .send({
+        user: userWithOutPassword,
+        userCompany: result.userCompany,
+        userPermission,
+      });
   }
 }
