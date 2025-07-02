@@ -1,12 +1,12 @@
-import {db} from "../src/lib/prisma"
-import bcrypt from 'bcrypt';
-import "dotenv/config"
+import { db } from "../src/lib/prisma";
+import bcrypt from "bcrypt";
+import "dotenv/config";
 
 async function main() {
   // PERMISSIONS
   const permissions = [
-    { 
-      name: "Admin", 
+    {
+      name: "Admin",
       permissions: [
         "create.company",
         "list.company",
@@ -50,8 +50,8 @@ async function main() {
         "update.client",
         "delete.client",
         "list.user.by.company.id",
-        "delete.user"
-      ]
+        "delete.user",
+      ],
     },
     {
       name: "Manager", // Gestor
@@ -77,8 +77,13 @@ async function main() {
         "update.client",
         "delete.client",
         "list.user.by.company.id",
-        "delete.user"
-      ]
+        "delete.user",
+        "create.form",
+        "list.form.company",
+        "delete.form",
+        "get.form",
+        "get.form.response",
+      ],
     },
     {
       name: "Employee", // Empregado
@@ -86,19 +91,18 @@ async function main() {
         "list.rotations.assigned.to.me",
         "create.check.in",
         "create.check.out",
-        "create.occurrence"
-      ]
+        "create.occurrence",
+      ],
     },
-    
-  ];  
+  ];
 
-  let permissionAdminId: string
-  
+  let permissionAdminId: string;
+
   for (const perm of permissions) {
     const existingPermission = await db.permission.findUnique({
       where: { name: perm.name },
     });
-  
+
     if (!existingPermission) {
       const permissionCreated = await db.permission.create({
         data: {
@@ -107,58 +111,57 @@ async function main() {
         },
       });
 
-      if(perm.name === "Admin"){
-        permissionAdminId = permissionCreated.id
+      if (perm.name === "Admin") {
+        permissionAdminId = permissionCreated.id;
       }
     }
   }
   //----------
   // USER
-  const USER_ROOT_PASSWORD = process.env.USER_ROOT_PASSWORD
-  const USER_ROOT_NAME = process.env.USER_ROOT_NAME
-  const USER_ROOT_EMAIL = process.env.USER_ROOT_EMAIL
+  const USER_ROOT_PASSWORD = process.env.USER_ROOT_PASSWORD;
+  const USER_ROOT_NAME = process.env.USER_ROOT_NAME;
+  const USER_ROOT_EMAIL = process.env.USER_ROOT_EMAIL;
 
-  if(!USER_ROOT_PASSWORD || !USER_ROOT_NAME || !USER_ROOT_EMAIL){
-    throw new Error("please set credentials user root in .env")
+  if (!USER_ROOT_PASSWORD || !USER_ROOT_NAME || !USER_ROOT_EMAIL) {
+    throw new Error("please set credentials user root in .env");
   }
 
-  const saltRounds = 10; 
+  const saltRounds = 10;
   const passwordHash = await bcrypt.hash(USER_ROOT_PASSWORD, saltRounds);
 
- 
   const user = await db.user.create({
     data: {
       name: USER_ROOT_NAME,
       email: USER_ROOT_EMAIL,
       password: passwordHash,
-      type: "ADMIN"
-    }
-  })
-  
+      type: "ADMIN",
+    },
+  });
+
   //----
 
   // USER PERMISSIONS
   await db.userPermission.create({
     data: {
       userId: user.id,
-      permissionId: permissionAdminId!
-    }
-  })
+      permissionId: permissionAdminId!,
+    },
+  });
 
   // COMPANY
   const company = await db.company.create({
     data: {
       name: "POP SALES",
-    }
-  })
+    },
+  });
 
   // USER COMPANY
   await db.userCompany.create({
     data: {
       companyId: company.id,
-      userId: user.id
-    }
-  })
+      userId: user.id,
+    },
+  });
 }
 
 main()
