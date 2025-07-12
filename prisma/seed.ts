@@ -83,6 +83,12 @@ async function main() {
         "delete.form",
         "get.form",
         "get.form.response",
+        "create.client",
+        "update.client",
+        "get.client",
+        "list.client.service",
+        "get.client",
+        "delete.client",
       ],
     },
     {
