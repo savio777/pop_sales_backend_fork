@@ -1,4 +1,10 @@
-import { FormEntry, FormTemplate, FormType, QuestionType, Prisma } from "@prisma/client";
+import {
+  FormEntry,
+  FormTemplate,
+  FormType,
+  QuestionType,
+  Prisma,
+} from "@prisma/client";
 import { FormRepository } from "../formRepository";
 import { db } from "@/lib/prisma";
 
@@ -10,7 +16,7 @@ interface CreateForm {
 interface CreateQuestion {
   text: string;
   required: boolean;
-  type: QuestionType; 
+  type: QuestionType;
 }
 
 interface Answer {
@@ -28,41 +34,48 @@ type FormTemplateWithEntries = Prisma.FormTemplateGetPayload<{
         formTemplate: {
           include: {
             questions: true;
-          }
-        }
-      }
-    }
-  }
+          };
+        };
+      };
+    };
+  };
 }>;
 
 type GetFormEntryByUserId = Prisma.FormEntryGetPayload<{
   include: {
-    answers: true,
+    answers: true;
     formTemplate: {
       include: {
-        questions: true,
+        questions: true;
         formEntries: {
           include: {
-            answers: true,
+            answers: true;
             formTemplate: {
               include: {
-                questions: true
-              }
-            }
-          }
-        }
-      }
-    },
-  }
+                questions: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 }>;
 
-
 export class PrismaFormRepository implements FormRepository {
-
-  async createFormEntry(
-    { formId, answers, userId, companyId, taskId}:
-    { formId: string; answers: Answer[]; userId?: string, companyId: string, taskId?: string }
-  ): Promise<FormEntry | null> {
+  async createFormEntry({
+    formId,
+    answers,
+    userId,
+    companyId,
+    taskId,
+  }: {
+    formId: string;
+    answers: Answer[];
+    userId?: string;
+    companyId: string;
+    taskId?: string;
+  }): Promise<FormEntry | null> {
     return await db.formEntry.create({
       data: {
         ...(userId ? { userId } : {}),
@@ -74,35 +87,37 @@ export class PrismaFormRepository implements FormRepository {
             data: answers.map((answer) => ({
               questionId: answer.questionId,
               imageUrl: answer.imageUrl ?? null,
-              text: answer.text
-            }))
-          }
-        }
-      } 
-    })
+              text: answer.text,
+            })),
+          },
+        },
+      },
+    });
   }
 
   async getEntryById(id: string): Promise<FormEntry | null> {
     return await db.formEntry.findUnique({
       where: {
-        id: id
-      }, 
+        id: id,
+      },
       include: {
         answers: true,
         formTemplate: {
           include: {
-            questions: true
-          }
-        }
-      }
-    })
+            questions: true,
+          },
+        },
+      },
+    });
   }
 
-  async listEntryByFormId(formId: string): Promise<FormTemplateWithEntries | null> {
+  async listEntryByFormId(
+    formId: string
+  ): Promise<FormTemplateWithEntries | null> {
     return await db.formTemplate.findUnique({
       where: {
-        id: formId
-      }, 
+        id: formId,
+      },
       include: {
         questions: true,
         formEntries: {
@@ -110,12 +125,12 @@ export class PrismaFormRepository implements FormRepository {
             answers: true,
             formTemplate: {
               include: {
-                questions: true
-              }
-            }
-          }
-        }
-      }
+                questions: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
@@ -125,40 +140,40 @@ export class PrismaFormRepository implements FormRepository {
       db.answer.deleteMany({
         where: {
           formEntry: {
-            formTemplateId: id
-          }
-        }
+            formTemplateId: id,
+          },
+        },
       }),
 
       // Delete all form entries
       db.formEntry.deleteMany({
         where: {
-          formTemplateId: id
-        }
+          formTemplateId: id,
+        },
       }),
 
       // Delete all questions
       db.question.deleteMany({
         where: {
-          formTemplateId: id
-        }
+          formTemplateId: id,
+        },
       }),
-      
+
       // Finally delete the form template
       db.formTemplate.delete({
         where: {
-          id: id
-        }
-      })
+          id: id,
+        },
+      }),
     ]);
 
     return data[data.length - 1] as FormTemplate;
   }
-  
+
   async listByCompanyId(companyId: string): Promise<FormTemplate[]> {
     return await db.formTemplate.findMany({
       where: {
-        companyId: companyId
+        companyId: companyId,
       },
       include: {
         questions: {
@@ -167,17 +182,17 @@ export class PrismaFormRepository implements FormRepository {
             text: true,
             required: true,
             type: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
   async listByUserId(userId: string): Promise<GetFormEntryByUserId[]> {
     const data = await db.formEntry.findMany({
       where: {
-        userId
-      }, 
+        userId,
+      },
       include: {
         answers: true,
         formTemplate: {
@@ -188,22 +203,22 @@ export class PrismaFormRepository implements FormRepository {
                 answers: true,
                 formTemplate: {
                   include: {
-                    questions: true
-                  }
-                }
-              }
-            }
-          }
+                    questions: true,
+                  },
+                },
+              },
+            },
+          },
         },
-      }
-    })
-    return data
+      },
+    });
+    return data;
   }
-  
+
   async getById(id: string): Promise<FormTemplate | null> {
     return await db.formTemplate.findUnique({
       where: {
-        id: id
+        id: id,
       },
       include: {
         questions: {
@@ -212,16 +227,19 @@ export class PrismaFormRepository implements FormRepository {
             text: true,
             required: true,
             type: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
-  
-  async create(
-    {form, questions}:
-    {form: CreateForm, questions: CreateQuestion[]}
-  ): Promise<FormTemplate> {
+
+  async create({
+    form,
+    questions,
+  }: {
+    form: CreateForm;
+    questions: CreateQuestion[];
+  }): Promise<FormTemplate> {
     return await db.formTemplate.create({
       data: {
         formType: form.formType,
@@ -231,9 +249,9 @@ export class PrismaFormRepository implements FormRepository {
             data: questions.map((question) => ({
               text: question.text,
               required: question.required,
-              type: question.type
-            }))
-          }
+              type: question.type,
+            })),
+          },
         },
       },
       include: {
@@ -242,94 +260,107 @@ export class PrismaFormRepository implements FormRepository {
             id: true,
             text: true,
             required: true,
-            type: true
-          }
-        }
-      }
+            type: true,
+          },
+        },
+      },
     });
   }
 
   async getFormEntryDetails({
-      companyId,
-      taskId,
-      userId
-    }: {
-      companyId: string;
-      taskId: string;
-      userId: string;
-    }): Promise<FormEntry | null> {
-      return await db.formEntry.findFirst({
-        where: {
-          companyId,
-          taskId,
-          userId
-        },
-        include: {
-          formTemplate: {
-            include: {
-              questions: {
-                include: {
-                  answers: true
-                },
-              }
-            }
+    companyId,
+    taskId,
+    userId,
+  }: {
+    companyId: string;
+    taskId: string;
+    userId: string;
+  }): Promise<FormEntry | null> {
+    return await db.formEntry.findFirst({
+      where: {
+        companyId,
+        taskId,
+        userId,
+      },
+      include: {
+        formTemplate: {
+          include: {
+            questions: {
+              include: {
+                answers: true,
+              },
+            },
           },
-          user: {
-            select: {
-              name: true,
-              email: true
-            }
-          }
-        }
-      });
+        },
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
   }
 
-  async update(
-    {formId, form, questions }:
-    {formId: string, form: CreateForm, questions: CreateQuestion[] }
-    ): Promise<FormTemplate> {
-      await db.$transaction([
-        // Delete existing questions
-        db.question.deleteMany({
-          where: {
+  async update({
+    formId,
+    form,
+    questions,
+  }: {
+    formId: string;
+    form: CreateForm;
+    questions: CreateQuestion[];
+  }): Promise<FormTemplate> {
+    await db.$transaction([
+      // Delete answers linked to questions of this form
+      db.answer.deleteMany({
+        where: {
+          question: {
             formTemplateId: formId,
-          }
-        }),
-        
-        // Update form template and create new questions
-        db.formTemplate.update({
-          where: {
-            id: formId
           },
-          data: {
-            ...(form.formType? { formType: form.formType } : {}),
-            companyId: form.companyId,
-            questions: {
-              createMany: {
-                data: questions.map((question) => ({
-                  text: question.text,
-                  required: question.required,
-                  type: question.type
-                }))
-              }
-            }
-          }
-        })
-      ]);
-  
-      // Return updated form with questions
-      return await db.formTemplate.findUnique({
-        where: { id: formId },
-        include: {
+        },
+      }),
+      // Delete existing questions
+      db.question.deleteMany({
+        where: {
+          formTemplateId: formId,
+        },
+      }),
+
+      // Update form template and create new questions
+      db.formTemplate.update({
+        where: {
+          id: formId,
+        },
+        data: {
+          ...(form.formType ? { formType: form.formType } : {}),
+          companyId: form.companyId,
           questions: {
-            select: {
-              id: true,
-              text: true,
-              required: true,
-              type: true
-            }
-          }
-        }
-      }) as FormTemplate;
-    }
+            createMany: {
+              data: questions.map((question) => ({
+                text: question.text,
+                required: question.required,
+                type: question.type,
+              })),
+            },
+          },
+        },
+      }),
+    ]);
+
+    // Return updated form with questions
+    return (await db.formTemplate.findUnique({
+      where: { id: formId },
+      include: {
+        questions: {
+          select: {
+            id: true,
+            text: true,
+            required: true,
+            type: true,
+          },
+        },
+      },
+    })) as FormTemplate;
+  }
 }
