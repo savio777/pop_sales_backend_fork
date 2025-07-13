@@ -89,6 +89,8 @@ async function main() {
         "list.client.service",
         "get.client",
         "delete.client",
+        "list.form.entry.company",
+        "list.form.entry.user",
       ],
     },
     {
